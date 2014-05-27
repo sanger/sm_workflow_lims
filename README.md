@@ -1,4 +1,4 @@
-sm_workflow_lims
+Sample Management Workflow LIMS
 ================
 
-A small Lims to assist with managing workflows
+A simple workflow management system, originally developed for use in Sample Management.
