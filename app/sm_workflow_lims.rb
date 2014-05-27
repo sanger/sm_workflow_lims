@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sinatra/activerecord'
 
 class SmWorkflowLims < Sinatra::Base
 
