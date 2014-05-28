@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20140527130338) do
     t.string   "identifier",                null: false
     t.integer  "asset_type_id",             null: false
     t.integer  "workflow_id",               null: false
-    t.integer  "comment_id",                null: false
+    t.integer  "comment_id"
     t.integer  "batch_id",                  null: false
     t.string   "study"
     t.integer  "sample_count",  default: 1, null: false
