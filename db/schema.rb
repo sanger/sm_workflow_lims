@@ -14,8 +14,9 @@
 ActiveRecord::Schema.define(version: 20140527130338) do
 
   create_table "asset_types", force: true do |t|
-    t.string   "name",            null: false
-    t.string   "identifier_type", null: false
+    t.string   "name",                              null: false
+    t.string   "identifier_type",                   null: false
+    t.boolean  "has_sample_number", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -24,7 +25,9 @@ ActiveRecord::Schema.define(version: 20140527130338) do
     t.string   "identifier",                null: false
     t.integer  "asset_type_id",             null: false
     t.integer  "workflow_id",               null: false
+    t.integer  "comment_id",                null: false
     t.integer  "batch_id",                  null: false
+    t.string   "study"
     t.integer  "sample_count",  default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -40,7 +43,6 @@ ActiveRecord::Schema.define(version: 20140527130338) do
 
   create_table "comments", force: true do |t|
     t.text     "comment"
-    t.integer  "asset_id",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

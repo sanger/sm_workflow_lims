@@ -5,7 +5,9 @@ class CreateAssetTable < ActiveRecord::Migration
       t.string      :identifier,   :null => false
       t.references  :asset_type,   :null => false
       t.references  :workflow,     :null => false
+      t.references  :comment,      :null => false
       t.references  :batch,        :null => false
+      t.string      :study
       t.integer     :sample_count, :null=> false, :default => 1
       t.timestamps
       t.datetime    :completed_at
