@@ -3,6 +3,9 @@ require 'sinatra/activerecord'
 
 class SmWorkflowLims < Sinatra::Base
 
+  # Need to find somewhere better for this, but lets just stop the messages for now.
+  I18n.enforce_available_locales = true
+
   get '/' do
     "Main Page"
     # The landing page.
