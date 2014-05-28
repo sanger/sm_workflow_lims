@@ -59,4 +59,38 @@ describe Asset do
 
   end
 
+  context 'scopes' do
+
+    let(:basics) { {identifier:'one',asset_type_id:1,batch_id:1,workflow_id:1} }
+    let(:completed) { basics.merge(completed_at:Time.now) }
+    let(:created_last) { basics.merge(created_at:Time.at(1000)) }
+    let(:created_first) { basics.merge(created_at:Time.at(10)) }
+
+    it 'in_progress filters on completed_at' do
+      incomplete = Asset.new(basics)
+      complete = Asset.new(completed)
+
+      incomplete.save(validate: false)
+      complete.save(validate: false)
+
+      Asset.in_progress.should include(incomplete)
+      Asset.in_progress.should_not include(complete)
+    end
+
+    it 'latest_first orders by created_at' do
+      earliest = Asset.new(created_first)
+      latest   = Asset.new(created_last)
+
+      earliest.save(validate: false)
+      latest.save(validate: false)
+
+      Asset.latest_first.first.should eq(latest)
+    end
+
+    after do
+      Asset.destroy_all
+    end
+
+  end
+
 end

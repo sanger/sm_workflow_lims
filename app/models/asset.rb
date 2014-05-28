@@ -10,4 +10,7 @@ class Asset < ActiveRecord::Base
   validates_presence_of :workflow, :batch, :identifier, :asset_type
 
   delegate :identifier_type, :to => :asset_type
+
+  scope :in_progress, -> { where(completed_at: nil) }
+  scope :latest_first, -> { order('created_at DESC') }
 end
