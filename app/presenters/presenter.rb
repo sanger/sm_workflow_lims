@@ -1,11 +1,5 @@
 class Presenter
 
-  attr_reader :object
-
-  def initialize(object)
-    @object = object
-  end
-
   begin
     require './lib/deployed_version'
   rescue LoadError
