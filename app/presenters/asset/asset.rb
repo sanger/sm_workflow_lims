@@ -1,2 +1,6 @@
-class Presenter::Asset < Presenter
+require './app/presenters/presenter'
+
+module Presenter::AssetPresenter
+  class Asset < Presenter
+  end
 end

@@ -1,2 +1,6 @@
-class Presenter::Asset::Index < Presenter
+require './app/presenters/presenter'
+
+module Presenter::AssetPresenter
+  class Index < Presenter
+  end
 end
