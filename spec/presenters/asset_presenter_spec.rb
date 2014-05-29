@@ -12,20 +12,24 @@ describe Presenter::AssetPresenter::Asset do
     it "should return the created at time as a formatted string for created_at"
   end
 
-  example "with an asset with comments" do
+  context "with an asset with comments" do
+    include_examples "shared behaviour"
     it "should return the comment for comments"
   end
 
-  example "with an asset without comments" do
+  context "with an asset without comments" do
+    include_examples "shared behaviour"
     it "should return an empty string for comments"
   end
 
-  example "an unfinished asset" do
+  context "an unfinished asset" do
+    include_examples "shared behaviour"
     it "should return 'in progress' for completed_at"
   end
 
-  example "an unfinished asset" do
+  context "an unfinished asset" do
+    include_examples "shared behaviour"
     it "should return 'in progress' for completed_at"
-  endcap
+  end
 
 end
