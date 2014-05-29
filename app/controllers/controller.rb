@@ -64,6 +64,16 @@ class Controller
     show
   end
 
+  def get_new
+    valid_parameters_for!(:new)
+    new
+  end
+
+  def get_index
+    valid_parameters_for!(:new)
+    index
+  end
+
   def put
     valid_parameters_for!(:update)
     update
@@ -80,6 +90,14 @@ class Controller
   end
 
   def update
+    raise NotImplimented
+  end
+
+  def new
+    raise NotImplimented
+  end
+
+  def index
     raise NotImplimented
   end
 
