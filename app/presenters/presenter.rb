@@ -25,13 +25,13 @@ class Presenter
 
     def each_asset_type
       AssetType.all.each do |asset_type|
-        yield(asset_type.name,asset_type.identifier_type,asset_type.variable_samples)
+        yield(asset_type.name,asset_type.identifier_type,asset_type.variable_samples,asset_type.id)
       end
     end
 
     def each_workflow
       Workflow.all.each do |workflow|
-        yield(workflow.name,workflow.has_comment)
+        yield(workflow.name,workflow.has_comment,workflow.id)
       end
     end
 
