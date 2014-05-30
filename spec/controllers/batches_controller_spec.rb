@@ -6,6 +6,19 @@ require './app/models/asset_type'
 
 describe BatchesController do
 
+  let(:mocked_lookups) {
+      Workflow.stub(:find_by_id).
+        with(3).
+        and_return('wf')
+      AssetType.stub(:find_by_id).
+        with(3).
+        and_return('at')
+      Batch.stub(:find_by_id).
+        with(3).
+        and_return('bat')
+
+    }
+
   context "new" do
 
     let(:request) { BatchesController.new().get_new }
@@ -50,21 +63,12 @@ describe BatchesController do
 
     let(:request) { BatchesController.new(params).post }
 
-    let(:mocked_lookups) {
-      Workflow.stub(:find_by_id).
-        with(3).
-        and_return('wf')
-      AssetType.stub(:find_by_id).
-        with(3).
-        and_return('at')
-    }
-
     context "with full parameters" do
 
       let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test',:assets=>{
         1=>{identifier:'a',sample_count:1},
         2=>{identifier:'b',sample_count:1}
-      } } }
+      }, :comment => 'comment' } }
 
 
       it "should pass the options to a batch creator" do
@@ -79,7 +83,8 @@ describe BatchesController do
             assets:[
               {identifier:'a',sample_count:1},
               {identifier:'b',sample_count:1}
-            ]
+            ],
+            comment: 'comment'
           )
 
         request
@@ -128,11 +133,28 @@ describe BatchesController do
     let(:request) { BatchesController.new(params).put }
 
     context "with full parameters" do
-      it "should pass the options to a batch updater" do
 
+      let(:params)  { {:batch_id=>3,:workflow_id=>3,:asset_type_id=>3,:study=>'test',:assets=>{
+        1=>{identifier:'a',sample_count:1},
+        2=>{identifier:'b',sample_count:1}
+      }, comment:'comment' } }
+
+      it "should pass the options to a batch updater" do
+        mocked_lookups
+        Batch::Updater.should_receive(:create!).with(
+          batch:'bat',
+          workflow:'wf',
+          study: 'test',
+          comment:'comment'
+        )
+        request
       end
 
       it "should return the show batch presenter for the updated batch" do
+        mocked_lookups
+        Batch::Updater.stub(:create!).and_return('bat')
+        Presenter::BatchPresenter::Show.should_receive(:new).with('bat').and_return('Pres')
+        request.should eq('Pres')
       end
     end
 
