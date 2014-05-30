@@ -30,15 +30,9 @@ class SmWorkflowLims < Sinatra::Base
     # A quick summary of a batch and its assets, mainly as feedback after registration
   end
 
-  get 'assets/:id' do
-    AssetsController.new(params).get
-    "Show page for asset (if needed)"
-    # May not be needed, lets a user move an asset to a new workflow
-  end
-
-  put '/assets/:id' do
-    AssetsController.new(params).put
-    # Receives the form, updates an assets workflow
+  put '/batches/:id' do
+    BatchesController.new(params).put
+    # Updates a batch workflow
   end
 
   post '/batches' do
