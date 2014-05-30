@@ -2,17 +2,19 @@ require './app/controllers/controller'
 require './app/presenters/batch/new'
 require './app/presenters/batch/show'
 
+
 class BatchesController < Controller
-  required_parameters_for :create, [:workflow_id], 'You must specify a workflow.'
-  required_parameters_for :create, [:asset_type_id], 'You must specify an asset type.'
-  required_parameters_for :create, [:study], 'You must specify a study.'
+    
+  required_parameters_for :create, ["workflow_id"], 'You must specify a workflow.'
+  required_parameters_for :create, ["asset_type_id"], 'You must specify an asset type.'
+  required_parameters_for :create, ["study"], 'You must specify a study.'
 
   validate_parameters_for :create, :assets_provided, 'You must register at least one asset.'
 
-  required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
-  required_parameters_for :update, [:batch_id], 'You must specify a batch.'
+  required_parameters_for :update, ["workflow_id"], 'You must specify a workflow.'
+  required_parameters_for :update, ["batch_id"], 'You must specify a batch.'
 
-  required_parameters_for :show, [:batch_id], 'You must specify a batch.'
+  required_parameters_for :show, ["batch_id"], 'You must specify a batch.'
 
   def new
     Presenter::BatchPresenter::New.new

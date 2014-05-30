@@ -32,6 +32,10 @@ module Presenter::AssetPresenter
     def created_at
       asset.created_at.strftime('%d/%m/%Y')
     end
+    
+    def updated_at
+      asset.updated_at.strftime('%d/%m/%Y')
+    end    
 
     def comments
       return asset.comment.comment if asset.comment

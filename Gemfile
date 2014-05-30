@@ -7,6 +7,8 @@ gem "sinatra-activerecord"
 gem "activerecord"
 gem "mysql2"
 gem "rake"
+gem "pry"
+gem "pry-nav"
 
 # Asset Pipeline
 gem "bootstrap-sass"

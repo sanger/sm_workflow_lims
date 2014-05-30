@@ -3,10 +3,11 @@ require 'sinatra/activerecord'
 require 'sass'
 require 'bootstrap-sass'
 require 'sinatra/assetpack'
+require 'pry-nav'
 require './app/manifest'
 
 class SmWorkflowLims < Sinatra::Base
-
+ set :root, File.dirname(__FILE__) 
   # Need to find somewhere better for this, but lets just stop the messages for now.
   I18n.enforce_available_locales = true
 
@@ -23,12 +24,14 @@ class SmWorkflowLims < Sinatra::Base
     serve '/assets/javascripts', :from => 'app/assets/javascripts'
     serve '/assets/stylesheets', :from => 'app/assets/stylesheets'
 
-    css :application, '/assets/stylesheets/application.css', [
-      '/assets/stylesheets/application.css'
+    css :application, '/assets/stylesheets/app.css', [
+      '/assets/stylesheets/*.css',
     ]
 
-    js :application, '/assets/javascripts/application.js', [
-      '/assets/javascripts/*.js'
+    js :application, '/assets/javascripts/app.js', [
+      '/assets/javascripts/jquery.min.js',
+      '/assets/javascripts/bootstrap.min.js',
+      '/assets/javascripts/application.js'
     ]
 
 
@@ -62,8 +65,8 @@ class SmWorkflowLims < Sinatra::Base
     erb :'batches/new', :locals=>{:presenter=>presenter}
   end
 
-  get '/batches/:id' do
-    presenter = BatchesController.new(params).get
+  get '/batches/:batch_id' do
+    presenter = BatchesController.new(params).show
     # A quick summary of a batch and its assets, mainly as feedback after registration
     erb :'batches/show', :locals=>{:presenter=>presenter}
   end

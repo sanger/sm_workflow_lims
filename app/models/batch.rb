@@ -47,7 +47,7 @@ class Batch < ActiveRecord::Base
         }
       end
     end
-
+    
   end
 
   class Updater
@@ -69,6 +69,7 @@ class Batch < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         batch.assets.update_all(study:study,workflow:workflow,comment:comment_object)
       end
+      batch
     end
 
     private
