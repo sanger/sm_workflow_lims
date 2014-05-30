@@ -11,4 +11,11 @@ class Batch < ActiveRecord::Base
 
   end
 
+  class Updater
+
+    def initialize(*args)
+    end
+
+  end
+
 end

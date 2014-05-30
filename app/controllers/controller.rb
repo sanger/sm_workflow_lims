@@ -105,4 +105,8 @@ class Controller
     self.class.endpoint_validator(endpoint).all? {|validator| validator.validate(self) }
   end
 
+  def user_error(message)
+    raise Controller::ParameterError, @message
+  end
+
 end

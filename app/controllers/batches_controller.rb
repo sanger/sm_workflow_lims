@@ -22,14 +22,25 @@ class BatchesController < Controller
     Presenter::BatchPresenter::Show.new(batch)
   end
 
+  def update
+    updated_batch = Batch::Updater.create!(
+      batch: batch,
+      study: params[:study],
+      workflow: workflow,
+      comment: params[:comment]
+      )
+    Presenter::BatchPresenter::Show.new(updated_batch)
+  end
+
   def create
-    batch = Batch::Creator.create!(
+    updated_batch = Batch::Creator.create!(
       study: params[:study],
       workflow: workflow,
       asset_type: asset_type,
-      assets: params[:assets].values
+      assets: params[:assets].values,
+      comment: params[:comment]
     )
-    Presenter::BatchPresenter::Show.new(batch)
+    Presenter::BatchPresenter::Show.new(updated_batch)
   end
 
   private
