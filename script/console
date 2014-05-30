@@ -1,0 +1,3 @@
+#!/bin/bash -l
+echo "Starting Console..."
+irb -r './app/sm_workflow_lims'
