@@ -13,4 +13,9 @@ class Asset < ActiveRecord::Base
 
   scope :in_progress, -> { where(completed_at: nil) }
   scope :latest_first, -> { order('created_at DESC') }
+
+  class Completer
+    def initialize(*args)
+    end
+  end
 end
