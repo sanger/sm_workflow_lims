@@ -10,7 +10,14 @@ class AssetsController < Controller
   end
 
   def index
-    # TODO: index is used for searching and listing all
+    if params[:identifier].present?
+      assets = Asset.find_all_by_identifier(params[:identifier])
+      search = "identifier matches '#{params[:identifier]}'"
+    else
+      assets = Asset.in_progress
+      search = nil
+    end
+    Presenter::AssetPresenter::Index.new(assets,search)
   end
 
   private
