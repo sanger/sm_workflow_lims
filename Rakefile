@@ -11,7 +11,8 @@ namespace :build do
     puts "Building manifest!"
     File.open('./app/manifest.rb','w') do |file|
       `git ls-files ./app*.rb`.split.each do |req|
-        file.puts "require './#{req}'"
+        next if req == 'app/manifest.rb'
+        file.puts "require './#{req.gsub(/\.rb$/,'')}'"
         print '.'
       end
     end
