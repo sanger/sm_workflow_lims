@@ -1,0 +1,11 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <!-- Just a whole app outline -->
+    <% render_messages do |klass,message| %>
+      <div class='<%= klass %>'><%= message %></div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

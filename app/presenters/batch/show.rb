@@ -9,6 +9,10 @@ class Presenter::BatchPresenter
       @batch=batch
     end
 
+    def id
+      batch.id
+    end
+
     def each_asset
       batch.assets.each do |asset|
         yield Presenter::AssetPresenter::Asset.new(asset)
