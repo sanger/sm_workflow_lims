@@ -41,18 +41,18 @@ describe AssetsController do
     let(:params)  { {:identifier=>'Test'} }
 
     it "should look up all assets with an identifier" do
-      Asset.should_receive(:find_all_by_identifier).with('Test').and_return([mock_asset])
+      Asset.should_receive(:where).with(:all,:conditions=>{:identifier=>'Test'}).and_return([mock_asset])
       request
     end
 
     it "should return an assets index presenter" do
-      Asset.stub(:find_all_by_identifier).and_return([mock_asset])
+      Asset.stub(:where).and_return([mock_asset])
       Presenter::AssetPresenter::Index.should_receive(:new).and_return('presenter')
       request.should eq('presenter')
     end
 
     it "should pass a search parameter and assets to the presenter" do
-      Asset.stub(:find_all_by_identifier).and_return([mock_asset])
+      Asset.stub(:where).and_return([mock_asset])
       Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],"identifier matches 'Test'")
       request
     end
