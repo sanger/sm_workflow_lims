@@ -41,7 +41,7 @@ describe AssetsController do
     let(:params)  { {:identifier=>'Test'} }
 
     it "should look up all assets with an identifier" do
-      Asset.should_receive(:where).with(:all,:conditions=>{:identifier=>'Test'}).and_return([mock_asset])
+      Asset.should_receive(:where).with(:identifier=>'Test').and_return([mock_asset])
       request
     end
 

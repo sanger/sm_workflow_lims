@@ -11,7 +11,7 @@ class AssetsController < Controller
 
   def index
     if params[:identifier].present?
-      assets = Asset.where(:all, :conditions=>{:identifier=>params[:identifier]})
+      assets = Asset.where(:identifier=>params[:identifier])
       search = "identifier matches '#{params[:identifier]}'"
     else
       assets = Asset.in_progress
