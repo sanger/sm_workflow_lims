@@ -4,7 +4,7 @@ class CreateAssetTypeTable < ActiveRecord::Migration
       # id
       t.string :name,                :null => false
       t.string :identifier_type,     :null => false
-      t.boolean :has_sample_number, :null => false, :default => false
+      t.boolean :has_sample_count, :null => false, :default => false
       t.timestamps
     end
   end
