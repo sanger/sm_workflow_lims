@@ -15,7 +15,16 @@ class Asset < ActiveRecord::Base
   scope :latest_first, -> { order('created_at DESC') }
 
   class Completer
+
+    def self.create!(*args)
+      self.new(*args).do!
+    end
+
     def initialize(*args)
     end
+
+    def do!
+    end
+
   end
 end

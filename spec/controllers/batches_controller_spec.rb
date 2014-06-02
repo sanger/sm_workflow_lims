@@ -134,10 +134,7 @@ describe BatchesController do
 
     context "with full parameters" do
 
-      let(:params)  { {:batch_id=>3,:workflow_id=>3,:asset_type_id=>3,:study=>'test',:assets=>{
-        1=>{identifier:'a',sample_count:1},
-        2=>{identifier:'b',sample_count:1}
-      }, comment:'comment' } }
+      let(:params)  { {:batch_id=>3,:workflow_id=>3,:study=>'test',comment:'comment' } }
 
       it "should pass the options to a batch updater" do
         mocked_lookups
