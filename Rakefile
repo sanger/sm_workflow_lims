@@ -1,5 +1,11 @@
 require "sinatra/activerecord/rake"
 
+# Rakefile
+APP_FILE  = './app.rb'
+APP_CLASS = 'SmWorkflowLims'
+
+require 'sinatra/assetpack/rake'
+
 namespace :db do
   task :load_config do
     require "./app"
@@ -20,10 +26,11 @@ namespace :build do
     puts 'Manifest Built:'
     puts `cat ./app/manifest.rb`
   end
+
+  task :assets => ['assetpack:build'] do
+
+    `mkdir public/fonts`
+    `cp -r $(bundle show bootstrap-sass)/vendor/assets/fonts/ public/fonts/`
+  end
 end
 
-# Rakefile
-APP_FILE  = './app.rb'
-APP_CLASS = 'SmWorkflowLims'
-
-require 'sinatra/assetpack/rake'

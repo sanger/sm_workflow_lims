@@ -25,7 +25,8 @@ class Batch < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         Batch.new.tap do |batch|
           batch.assets.build(assets_map)
-        end.save!
+          batch.save!
+        end
       end
     end
 
