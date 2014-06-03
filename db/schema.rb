@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603083106) do
+ActiveRecord::Schema.define(version: 20140603152601) do
 
   create_table "asset_types", force: true do |t|
     t.string   "name",                             null: false
@@ -34,7 +34,12 @@ ActiveRecord::Schema.define(version: 20140603083106) do
     t.datetime "completed_at"
   end
 
+  add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
   add_index "assets", ["batch_id"], name: "index_assets_on_batch_id", using: :btree
+  add_index "assets", ["comment_id"], name: "fk_assets_to_comments", using: :btree
+  add_index "assets", ["completed_at"], name: "index_assets_on_completed_at", using: :btree
+  add_index "assets", ["identifier"], name: "index_assets_on_identifier", using: :btree
+  add_index "assets", ["workflow_id"], name: "fk_assets_to_workflows", using: :btree
 
   create_table "batches", force: true do |t|
     t.datetime "created_at"
