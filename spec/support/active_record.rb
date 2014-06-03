@@ -1,5 +1,5 @@
 require 'active_record'
-require './app/sm_workflow_lims'
+require './app'
 
 ActiveRecord::Base.establish_connection(:test)
 ActiveRecord::Base.logger.level = 1

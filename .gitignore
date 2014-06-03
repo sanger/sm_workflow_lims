@@ -19,6 +19,8 @@ build/
 /_yardoc/
 /doc/
 /rdoc/
+/.sass-cache/
+/public/assets/
 
 ## Environment normalisation:
 /.bundle/

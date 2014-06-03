@@ -1,5 +1,8 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'sass'
+require 'bootstrap-sass'
+require 'sinatra/assetpack'
 require './app/manifest'
 
 class SmWorkflowLims < Sinatra::Base
@@ -7,8 +10,30 @@ class SmWorkflowLims < Sinatra::Base
   # Need to find somewhere better for this, but lets just stop the messages for now.
   I18n.enforce_available_locales = true
 
+  set :views, settings.root + '/app/views'
+
   configure :development do
     set :show_exceptions => :after_handler
+  end
+
+  register Sinatra::AssetPack
+
+  assets do
+
+    serve '/assets/javascripts', :from => 'app/assets/javascripts'
+    serve '/assets/stylesheets', :from => 'app/assets/stylesheets'
+
+    css :application, '/assets/stylesheets/application.css', [
+      '/assets/stylesheets/application.css'
+    ]
+
+    js :application, '/assets/javascripts/application.js', [
+      '/assets/javascripts/*.js'
+    ]
+
+
+    js_compression :jsmin
+    css_compression :sass
   end
 
   enable :sessions

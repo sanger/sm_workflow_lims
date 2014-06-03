@@ -1,3 +1,4 @@
 #\ -s puma
-require './app/sm_workflow_lims'
+require './app'
+
 run SmWorkflowLims
