@@ -98,6 +98,21 @@
       });
     });
     attachBatchValidation();
+    attachBatchSelection();
+    attachComplete();
+  }
+  
+  function attachComplete() {
+    $("input[type=checkbox]").on("change", function(event) {
+      var node = event.currentTarget;
+      var value = $(node).prop("checked");
+      var row = $(node).parent().parent().parent();
+      $("[data-psg-batch-id]", row).each(function(pos, button) {
+        row[value ? 'addClass' : 'removeClass']("success");
+        $(button).html(value ? "Unselect batch" : "Select batch");
+      });
+    });
+    
   }
   
   function attachBatchValidation() {
@@ -108,8 +123,49 @@
       }
     });
   }
+  // in_progress inbox
+  function attachBatchSelection() {
+    function checkboxForNode(node) {
+      return $("input[type=checkbox]", $(node).parent().parent());
+    }
+    
+    var batchSelectButtons = $("[data-psg-batch-id]");
+    batchSelectButtons.each(function(pos, node) {
+      var batchId = $(node).attr("data-psg-batch-id");
+      $(node).click(function(event) {
+        var value = !checkboxForNode(node).prop("checked");        
+        $(batchSelectButtons.filter(function(pos, evaluatedNode) {
+          return ($(evaluatedNode).attr("data-psg-batch-id") === batchId);
+        })).each(function(pos, selectedNode) {
+          checkboxForNode(selectedNode).prop("checked", value).change();
+        });
+      });
+    });
+  }
+  
+  function attachFormMethodsSubmitHandlers() {
+    var forms = $("form[data-psg-form-method]");
+    forms.each(function(pos, form) {
+      form = $(form);
+      //$("[type=submit]", form)
+      form.on("submit", function(event) {
+        event.preventDefault();
+        $.ajax(form.attr("action"), {
+          type: form.attr("data-psg-form-method"),
+          data: form.serialize(), 
+          success: function() {
+            
+          },
+          error: function() {
+            
+          }
+        });
+      });
+    });
+  }
   
   $(document).ready(function() {
+    attachFormMethodsSubmitHandlers();
     attachAssetsCreationHandlers();
     attachValidations();
   });

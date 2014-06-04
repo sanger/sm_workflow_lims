@@ -27,7 +27,11 @@ class AssetsController < Controller
   end
 
   def assets
-    @assets||=Asset.find(*params[:complete].keys)
+    assets = Asset.find(*params[:complete].keys)
+    if (!assets.is_a?(Array))
+      assets = [assets]
+    end
+    @assets||=assets
   end
 
 

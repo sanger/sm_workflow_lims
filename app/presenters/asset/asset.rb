@@ -47,5 +47,12 @@ module Presenter::AssetPresenter
       'in progress'
     end
 
+    def completed?
+      !asset.completed_at.nil?
+    end
+    
+    def batch_id
+      asset.batch.id
+    end
   end
 end
