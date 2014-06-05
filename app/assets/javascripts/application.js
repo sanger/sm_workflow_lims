@@ -10,8 +10,8 @@
     });
     return (max+1).toString();
   }
-  
-  var validateAssetId = function(addedAssetIdsList) { 
+
+  function buildAssetIdValidator(addedAssetIdsList) { 
     return function(identifier) { 
       if ($.inArray(identifier, addedAssetIdsList)<0) {
         addedAssetIdsList.push(identifier);
@@ -19,7 +19,9 @@
       }
       return false;
     } 
-  }([]);
+  }  
+  
+  var validateAssetId = buildAssetIdValidator([]);
   
   function addAsset(asset) {
     if (!validateAssetId(asset.identifier)) {
@@ -64,6 +66,7 @@
           inputs.each(function(pos, input) {
             var obj = {};
             obj[input.name] = input.value;
+            input.value = "";
             asset = $.extend(asset, obj);
           });
           addAsset(asset);
@@ -236,11 +239,48 @@
     });
   }
   
+  function getFragmentId(url) {
+    var list = url.split("#");
+    if (list.length === 2) {
+      return list[1];
+    }
+    return null;
+  }
+  
+  function attachTabHandlers() {
+    var tabId = getFragmentId(window.location.href);
+    $("[data-toggle=tab]").each(function(pos, node) {
+      if (tabId===null) {
+        // Disables create assets outside /batches/new
+        $(node).removeAttr("data-toggle");
+      } else {
+        // Select tab from URL using the fragment identifier
+        if (getFragmentId($(node).attr("href")) === tabId) {
+          $(node).tab("show");        
+        }
+      }
+      // Resets the batch every time a new template is selected
+      $(node).on("show.bs.tab", function() {
+        resetBatch();
+      });
+      $(node).on("click", function(event) {
+        $(node).tab("show");
+      });
+    });    
+  }
+  
+  function resetBatch() {
+    $("#batch-table").html("");
+    $(".batch-view").addClass("hidden");    
+    validateAssetId = buildAssetIdValidator([]);
+  }
+  
   $(document).ready(function() {
     //attachFormMethodsSubmitHandlers();
     attachAssetsCreationHandlers();
     attachValidations();
     attachFilters();
+    attachTabHandlers();
   });
 
   window.psg = {};
