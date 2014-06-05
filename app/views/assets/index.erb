@@ -1,19 +1,20 @@
 <div class="search-view">
 <h3>Filter by:  <small><strong>Edit</strong></small> </h3>
-<form class="form-inline" role="form" action="/assets" data-psg-form-method="PUT">
+<form class="form-inline" role="form" action="/assets" method="POST">
+  <input type="hidden" name="_method" value="PUT"/>
   <div class="form-group col-sm-6">
-    <label for="study" class="col-sm-3 control-label">Study</label>
+    <label for="filter-study" class="col-sm-3 control-label">Study</label>
     <div class="col-sm-9">
-      <input type="text" id="study" class="form-control" style="width: 100%" name="study" placeholder="Enter a study or abbreviation">
+      <input type="text" id="filter-study" class="form-control" style="width: 100%" name="study" placeholder="Enter a study or abbreviation" autocomplete="off">
     </div>
   </div>
   <div class="form-group col-sm-6">
-    <label for="study" class="col-sm-4 control-label">Workflow</label>
+    <label for="filter-workflow" class="col-sm-4 control-label">Workflow</label>
     <div class="col-sm-8">
-<select id="workflow_id" name="workflow_id" style="width: 100%" class="form-control">
-  <option value="None" default>Select a workflow</option>
+<select id="filter-workflow" name="workflow_id" style="width: 100%" class="form-control">
+  <option value="" default>Any workflow</option>
 <% presenter.each_workflow do |name, comment, id| %>
-  <option value="<%= id %>" <%= (presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
+  <option value="<%= name %>" <%= (presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
 <% end %>
 </select>
     </div>

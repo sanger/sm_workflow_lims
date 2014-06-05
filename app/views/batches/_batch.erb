@@ -1,12 +1,12 @@
 <form id="form-batch" class="form-horizontal" role="form" action="/batches" method="POST">
   <input type="hidden" name="asset_type_id" value="1" />
-
   <table class="table table-striped table-bordered">
   <thead>
   <tr><th>Type</th><th>Id</th><th>Num. Samples</th><th>Created at</th><th>Updated at</th><th>Completed?</th>
   </tr>
   </thead>
   <tbody id="batch-table">
+  
 <script type="text/javascript">
 (function() {
   <% presenter.each_asset do |asset, pos| %>

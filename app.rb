@@ -12,6 +12,7 @@ class SmWorkflowLims < Sinatra::Base
   I18n.enforce_available_locales = true
 
   set :views, settings.root + '/app/views'
+  set :method_override, true
 
   configure :development do
     set :show_exceptions => :after_handler

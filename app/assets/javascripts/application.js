@@ -16,6 +16,7 @@
     var fields = ["type", "identifier", "sample_count", "created", "updated", "completed"];
     var row = $("<tr></tr>");
     var table = $("#batch-table");
+    $("input[name=asset_type_id]", table.parent().parent()).val(asset["asset_type_id"]);
     var position = getNextPosition(table);
     fields.forEach(function(name) {
       var fieldTdString = new String(fieldTemplate);
@@ -147,7 +148,6 @@
     var forms = $("form[data-psg-form-method]");
     forms.each(function(pos, form) {
       form = $(form);
-      //$("[type=submit]", form)
       form.on("submit", function(event) {
         event.preventDefault();
         $.ajax(form.attr("action"), {
@@ -164,10 +164,63 @@
     });
   }
   
+  function attachFilters() {
+    attachFilterStudy();
+    attachFilterWorkflow();
+  }
+  
+  function attachFilterWorkflow() {
+    var filterWorkflow = $("#filter-workflow");
+    filterWorkflow.on("change", function() {
+      var value = filterWorkflow.val();
+      $("tr[data-psg-workflow]").each(function(pos, tr) {
+        if (($(tr).attr("data-psg-workflow")===value) || (value.length===0)) {
+          $(tr).show();
+        } else {
+          $(tr).hide();
+        }
+      });
+    });    
+  }
+  
+  function attachFilterStudy() {
+    var filterStudy = $("#filter-study");
+    filterStudy.on("keydown", function(event) {
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }      
+    });
+    filterStudy.on("keyup", function(event) {
+      var filterStudyRegExp = new RegExp(filterStudy.val());
+      $("table.filter-table").each(function(pos, table) {
+        var studyPos = -1;
+        $("th", table).each(function(pos, th) {
+          if ($(th).text().toLowerCase() === "study") {
+            studyPos = pos;
+          }
+        });
+        if (studyPos > 0) {
+          $("tbody tr", table).each(function(pos, tr) {
+            var fieldSelected = $($("td", tr)[studyPos]);
+            fieldSelected.html(fieldSelected.html().replace("<b>", "").replace("</b>", ""));              
+            if (fieldSelected.text().search(filterStudyRegExp)>=0) {
+              fieldSelected.html(fieldSelected.html().replace(filterStudy.val(), "<b>" + filterStudy.val() + "</b>"));
+              $(tr).show();
+            } else {
+              $(tr).hide();
+            }
+          });
+        }
+      });
+    });
+  }
+  
   $(document).ready(function() {
-    attachFormMethodsSubmitHandlers();
+    //attachFormMethodsSubmitHandlers();
     attachAssetsCreationHandlers();
     attachValidations();
+    attachFilters();
   });
 
   window.psg = {};

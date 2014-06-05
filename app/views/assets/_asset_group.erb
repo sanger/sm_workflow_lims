@@ -1,8 +1,8 @@
 <% presenter.each_asset(asset_group_name) do |asset, pos| %>
-<tr>
+<tr data-psg-workflow="<%= asset.workflow %>">
   <% asset_fields.each do |asset_field| %>
     <% if asset_field == :completed? %>
-      <td><%= (asset.completed?) ? "Yes":"No" %><span style="float: right;"><input name="complete[<%= asset.identifier %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> /></span></td>
+      <td><%= (asset.completed?) ? "Yes":"No" %><span style="float: right;"><input name="complete[<%= asset.id %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> /></span></td>
     <% else %>
       <td><%= asset.method(asset_field).call %></td>
     <% end %>

@@ -12,6 +12,10 @@ module Presenter::AssetPresenter
     def identifier_type
       asset.asset_type.identifier_type
     end
+    
+    def id
+      asset.id
+    end
 
     def identifier
       asset.identifier
