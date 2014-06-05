@@ -12,6 +12,10 @@ class Presenter::BatchPresenter
     def id
       batch.id
     end
+    
+    def action
+      "/batches/#{id}"
+    end
 
     def each_asset
       batch.assets.each do |asset|

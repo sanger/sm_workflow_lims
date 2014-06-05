@@ -14,5 +14,8 @@ class Presenter::BatchPresenter
     def workflow
       'None'
     end
+    def action
+      "/batches"
+    end
   end
 end

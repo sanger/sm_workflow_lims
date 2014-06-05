@@ -67,7 +67,8 @@ class Batch < ActiveRecord::Base
 
     def do!
       ActiveRecord::Base.transaction do
-        batch.assets.update_all(study:study,workflow:workflow,comment:comment_object)
+        comment_id = comment_object.nil? ? nil : comment_object[:id]
+        batch.assets.update_all(study:study,workflow_id:workflow,comment_id:comment_id)
       end
       batch
     end
