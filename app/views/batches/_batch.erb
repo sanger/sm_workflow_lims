@@ -1,0 +1,64 @@
+<form id="form-batch" class="form-horizontal" role="form" method="POST"
+  action="<%= presenter.action %>">
+<% if defined?(presenter.batch) %>
+  <input type="hidden" name="_method" value="PUT"/>
+  <input type="hidden" name="batch_id" value="<%= presenter.id %>" />
+<% end %>
+  <input type="hidden" name="asset_type_id" value="1" />
+  <table class="table table-striped table-bordered">
+  <thead>
+  <tr><th>Type</th><th>Id</th><th>Num. Samples</th><th>Created at</th><th>Updated at</th><th>Completed?</th>
+  </tr>
+  </thead>
+  <tbody id="batch-table">
+  
+<script type="text/javascript">
+(function() {
+  <% presenter.each_asset do |asset, pos| %>
+    window.psg.addAsset({
+      type: "<%= asset.identifier_type %>",
+      identifier: "<%= asset.identifier %>",
+      sample_count: "<%= asset.sample_count %>",
+      created: "<%= asset.created_at %>",
+      updated: "<%= asset.updated_at %>"
+    });
+  <% end %>
+})();  
+  </script>
+  
+  </tbody>
+  </table>
+  
+  <div class="form-group">
+    <label for="study" class="col-sm-2 control-label">Study</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="study" name="study" data-psg-regexp="^\w+$" placeholder="Enter a study or abbreviation" value="<%= presenter.study %>">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="study" class="col-sm-2 control-label">Workflow</label>
+    <div class="col-sm-10">
+<select id="workflow_id" name="workflow_id" data-psg-regexp="^(?!None).+$" class="form-control">
+  <option value="None" default>Select a workflow</option>
+<% presenter.each_workflow do |name, comment, id| %>
+  <option value="<%= id %>" <%= (presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
+<% end %>
+</select>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="study" class="col-sm-2 control-label">Comments</label>
+    <div class="col-sm-10">
+        <textarea class="form-control" rows="3" name="comment" id="comment"><%= presenter.comment %></textarea>
+    </div>
+  </div>
+  
+  
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Save</button>
+    </div>
+  </div>  
+
+</form>

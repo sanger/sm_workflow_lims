@@ -30,7 +30,7 @@ class Asset < ActiveRecord::Base
     end
 
     def do!
-      ActiveRecord::Base.transaction do
+      ActiveRecord::Base.transaction do 
         assets.each {|a| a.update_attributes!(completed_at:time) }
       end
     end
