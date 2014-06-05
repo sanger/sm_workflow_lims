@@ -17,5 +17,8 @@ class Presenter::BatchPresenter
     def action
       "/batches"
     end
+    def comment
+      ''
+    end
   end
 end

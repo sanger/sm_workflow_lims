@@ -13,7 +13,7 @@
   
   function addAsset(asset) {
     var fieldTemplate = "<td>#{value}</td><input type=\"hidden\" value=\"#{value}\" name=\"assets[#{position}][#{name}]\" />";
-    var fields = ["type", "identifier", "sample_count", "created", "updated", "completed"];
+    var fields = ["type", "identifier", "sample_count", "created"];
     var row = $("<tr></tr>");
     var table = $("#batch-table");
     $("input[name=asset_type_id]", table.parent().parent()).val(asset["asset_type_id"]);
@@ -21,7 +21,7 @@
     fields.forEach(function(name) {
       var fieldTdString = new String(fieldTemplate);
       if (typeof asset[name] === "undefined") {
-        fieldTdString = "<td></td>";
+        fieldTdString = "<td>-</td>";
       } else {
         fieldTdString = fieldTdString.replace(/#{name}/g, name);
         fieldTdString = fieldTdString.replace(/#{value}/g, asset[name]);
@@ -29,6 +29,12 @@
       }
       row.append($(fieldTdString));
     });
+    var removeButton = $("<td><button class=\"btn btn-default\">Remove</button></td>");
+    removeButton.on("click", function(event) {
+      event.preventDefault();
+      $(row).remove();
+    });
+    row.append(removeButton);
     table.append(row);
     $(".batch-view").removeClass("hidden");
   }
