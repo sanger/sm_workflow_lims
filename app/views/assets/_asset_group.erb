@@ -1,13 +1,19 @@
 <% presenter.each_asset(asset_group_name) do |asset, pos| %>
 <tr data-psg-workflow="<%= asset.workflow %>">
   <% asset_fields.each do |asset_field| %>
-    <% if asset_field == :completed? %>
-      <td><%= (asset.completed?) ? "Yes":"No" %><span style="float: right;"><input name="complete[<%= asset.id %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> /></span></td>
+    <% if (asset_field == :completed?) %>
+      <% if (!presenter.is_search?) %>
+        <td><%= (asset.completed?) ? "Yes":"No" %><span style="float: right;"><input name="complete[<%= asset.id %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> /></span></td>
+      <% end %>  
     <% else %>
       <td><%= asset.method(asset_field).call %></td>
     <% end %>
   <% end %>
-  <td class="assets-select-batch"><button type="button" class="btn btn-default" data-psg-batch-id="<%= asset.batch_id %>" >Select batch</button></td>
+  <% if presenter.is_search? %>
+    <td class="assets-show-batch"><a href="/batches/<%= asset.batch_id %>"><button type="button" class="btn btn-default" data-psg-batch-id="<%= asset.batch_id %>" >Show batch</button></a></td>
+  <% else %>
+    <td class="assets-select-batch"><button type="button" class="btn btn-default" data-psg-batch-id="<%= asset.batch_id %>" >Select batch</button></td>
+  <% end %>
 </tr>
 
 <% end %>
