@@ -11,7 +11,20 @@
     return (max+1).toString();
   }
   
+  var validateAssetId = function(addedAssetIdsList) { 
+    return function(identifier) { 
+      if ($.inArray(identifier, addedAssetIdsList)<0) {
+        addedAssetIdsList.push(identifier);
+        return true;
+      }
+      return false;
+    } 
+  }([]);
+  
   function addAsset(asset) {
+    if (!validateAssetId(asset.identifier)) {
+      return null;
+    }
     var fieldTemplate = "<td>#{value}</td><input type=\"hidden\" value=\"#{value}\" name=\"assets[#{position}][#{name}]\" />";
     var fields = ["type", "identifier", "sample_count", "created"];
     var row = $("<tr></tr>");
@@ -37,6 +50,7 @@
     row.append(removeButton);
     table.append(row);
     $(".batch-view").removeClass("hidden");
+    return asset;
   }
 
   function attachAssetsCreationHandlers() {

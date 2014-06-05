@@ -11,21 +11,13 @@
   </tr>
   </thead>
   <tbody id="batch-table">
-  
-<script type="text/javascript">
-(function() {
-  <% presenter.each_asset do |asset, pos| %>
-    window.psg.addAsset({
-      type: "<%= asset.identifier_type %>",
-      identifier: "<%= asset.identifier %>",
-      sample_count: "<%= asset.sample_count %>",
-      created: "<%= asset.created_at %>",
-      updated: "<%= asset.updated_at %>"
-    });
-  <% end %>
-})();  
-  </script>
-  
+   <% presenter.each_asset do |asset, pos| %>
+     <tr>
+       <% [:identifier_type, :identifier, :sample_count, :created_at].each do |field| %>
+          <td><%= asset.method(field).call %></td>
+       <% end %>
+     </tr>
+   <% end %>
   </tbody>
   </table>
   
