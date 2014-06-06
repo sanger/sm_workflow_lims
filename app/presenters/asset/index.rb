@@ -8,8 +8,12 @@ module Presenter::AssetPresenter
 
     def initialize(found_assets,search=nil)
       @total  = found_assets.count
-      @assets = found_assets.group_by {|a| a.asset_type.name}
+      @assets = found_assets.group_by {|a| a.asset_type.name}.tap {|h| h.default = [] }
       @search = search
+    end
+
+    def asset_identifiers
+      assets.values.flatten.map(&:identifier)
     end
 
     def each_asset(type)

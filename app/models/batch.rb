@@ -67,8 +67,9 @@ class Batch < ActiveRecord::Base
 
     def do!
       ActiveRecord::Base.transaction do
-        batch.assets.update_all(study:study,workflow:workflow,comment:comment_object)
+        batch.assets.update_all(study:study,workflow_id:workflow,comment_id:comment_object)
       end
+      batch
     end
 
     private
