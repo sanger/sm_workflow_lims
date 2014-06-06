@@ -2,7 +2,12 @@
 @import "bootstrap";
 
 /* Put custom stylesheet stuff here */
-table td.assets-select-batch {
-	border: 0;
-	background-color: white;
+td.with-button {
+	border: 0 !important;
+	background-color: white !important;
+}
+
+table.with-button-per-row {
+	border-right: 0px !important;
+	border-bottom: 0px !important;
 }

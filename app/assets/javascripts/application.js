@@ -46,7 +46,7 @@
       }
       row.append($(fieldTdString));
     });
-    var removeButton = $("<td><button class=\"btn btn-default\">Remove</button></td>");
+    var removeButton = $("<td class=\"with-button\"><button class=\"btn btn-default\">Remove</button></td>");
     removeButton.on("click", function(event) {
       event.preventDefault();
       $(row).remove();

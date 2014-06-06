@@ -2,6 +2,8 @@
 <h3>Filter by:  <small><strong>Edit</strong></small> </h3>
 <form class="form-inline" role="form" action="/assets" method="POST">
   <input type="hidden" name="_method" value="PUT"/>
+  
+  <div class="row">
   <div class="form-group col-sm-6">
     <label for="filter-study" class="col-sm-3 control-label">Study</label>
     <div class="col-sm-9">
@@ -19,11 +21,12 @@
 </select>
     </div>
   </div>
+  </div>
   
 <% presenter.each_asset_type do |asset_type_name,asset_type_identifier,has_sample_count| %>
 <div class="asset-group-view row">
 <h3><%= asset_type_name %> <small><strong>Edit</strong></small> </h3>
-  <table class="table table-striped table-bordered filter-table">
+  <table class="table table-striped table-bordered filter-table with-button-per-row">
   <thead>
   <tr><th>Type</th><th>Id</th><th>Study</th><th>Batch</th>
   <% if has_sample_count %><th>Num. Samples</th><% end %>
