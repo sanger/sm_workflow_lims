@@ -1,4 +1,4 @@
-<% presenter.each_asset(asset_group_name) do |asset, pos| %>
+  <% presenter.each_asset(asset_group_name) do |asset, pos| %>
 <tr data-psg-workflow="<%= asset.workflow %>">
   <% asset_fields.each do |asset_field| %>
     <% if (asset_field == :completed?) %>

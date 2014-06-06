@@ -28,7 +28,7 @@ class Presenter
         yield(asset_type.name,asset_type.identifier_type,asset_type.has_sample_count,asset_type.id)
       end
     end
-
+    
     def each_workflow
       Workflow.all.each do |workflow|
         yield(workflow.name,workflow.has_comment,workflow.id)

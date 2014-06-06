@@ -16,6 +16,10 @@ module Presenter::AssetPresenter
       assets.values.flatten.map(&:identifier)
     end
 
+    def has_assets?(type)
+      return assets[type].length > 0
+    end
+    
     def each_asset(type)
       if assets[type].nil?
         return
