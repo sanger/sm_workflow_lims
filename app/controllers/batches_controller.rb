@@ -2,7 +2,9 @@ require './app/controllers/controller'
 require './app/presenters/batch/new'
 require './app/presenters/batch/show'
 
+
 class BatchesController < Controller
+
   required_parameters_for :create, [:workflow_id], 'You must specify a workflow.'
   required_parameters_for :create, [:asset_type_id], 'You must specify an asset type.'
   required_parameters_for :create, [:study], 'You must specify a study.'
@@ -46,11 +48,11 @@ class BatchesController < Controller
   private
 
   def workflow
-    Workflow.find_by_id(params[:workflow_id])||user_error("There is no workflow with the id #{params[:batch_id]}.")
+    Workflow.find_by_id(params[:workflow_id])||user_error("There is no workflow with the id #{params[:workflow_id]}.")
   end
 
   def asset_type
-    AssetType.find_by_id(params[:asset_type_id])||user_error("There is no asset type with the id #{params[:batch_id]}.")
+    AssetType.find_by_id(params[:asset_type_id])||user_error("There is no asset type with the id #{params[:asset_type_id]}.")
   end
 
   def batch

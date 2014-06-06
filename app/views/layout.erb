@@ -1,13 +1,23 @@
+<!DOCTYPE html>
 <html>
   <head>
     <%= css :application, media: 'screen' %>
     <%= js :application %>
   </head>
-  <body>
+<body>
     <!-- Just a whole app outline -->
     <% render_messages do |klass,message| %>
       <div class='<%= klass %>'><%= message %></div>
     <% end %>
-    <%= yield %>
-  </body>
+    
+ <%= erb(:_menu, :layout => false) %>
+
+<div class="container" id="body">
+
+  <%= yield %>
+
+</div>
+<div class="container" id="footer"></div>
+  
+</body>
 </html>

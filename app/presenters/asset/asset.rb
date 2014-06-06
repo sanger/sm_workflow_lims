@@ -13,6 +13,10 @@ module Presenter::AssetPresenter
       asset.asset_type.identifier_type
     end
 
+    def id
+      asset.id
+    end
+
     def identifier
       asset.identifier
     end
@@ -33,6 +37,10 @@ module Presenter::AssetPresenter
       asset.created_at.strftime('%d/%m/%Y')
     end
 
+    def updated_at
+      asset.updated_at.strftime('%d/%m/%Y')
+    end
+
     def comments
       return asset.comment.comment if asset.comment
       ''
@@ -43,5 +51,12 @@ module Presenter::AssetPresenter
       'in progress'
     end
 
+    def completed?
+      asset.completed_at.present?
+    end
+
+    def batch_id
+      asset.batch.id
+    end
   end
 end

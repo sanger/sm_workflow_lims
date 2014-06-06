@@ -1,0 +1,12 @@
+  <div id="creation-templates" class="tab-content">
+    <!--  EMPTY -->
+    <div id="empty-template" class="tab-pane fade active"></div>
+    <!--  PLATE ID -->
+    <%= erb(:"creation_templates/_plate_template", :layout => false) %>
+    <!--  PLATE NAME -->
+    <%= erb(:"creation_templates/_plate_name_template", :layout => false) %>
+    <!--  Tube -->
+    <%= erb(:"creation_templates/_tube_template", :layout => false) %>
+    <!--  Sample -->
+    <%= erb(:"creation_templates/_sample_template", :layout => false) %>
+  </div>

@@ -1,0 +1,51 @@
+  <div class="container">
+    <div class="row">
+      <!-- div class="col-md-1"><div class="logo">Sanger</div></div -->
+      <!-- div class="col-md-9 col-md-offset-2" -->
+      <div class="">
+
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle"
+                data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span> <span
+                  class="icon-bar"></span> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand center-block" href="#"><span>Sample Management Workflow LIMS</span></a>
+            </div>
+
+
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"><a href="#"
+                  class="dropdown-toggle" data-toggle="dropdown">New Batch <b class="caret"></b>
+                </a>
+                  <ul class="dropdown-menu">
+                    <li><a data-toggle="tab" href="/batches/new#plate-template">Plates with Id</a></li>
+                    <li><a data-toggle="tab" href="/batches/new#plate_name-template">Plates with Name</a></li>
+                    <li><a data-toggle="tab" href="/batches/new#tube-template">Tubes</a></li>
+                    <li><a data-toggle="tab" href="/batches/new#sample-template">Samples</a></li>
+                  </ul></li>
+                <li><a href="/assets">In Progress</a></li>
+                <li>
+                  <form class="navbar-form navbar-right" role="search" method="GET" action="/assets">
+                    <div class="form-group">
+                      <input type="text" name="identifier" id="search-box" class="form-control"
+                        placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">
+                      <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>

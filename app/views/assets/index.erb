@@ -1,2 +1,37 @@
-<h1>Asset Index/Search Result Page</h1>
-<p>placeholder</p>
+<div class="search-view">
+<h3>Filter by:  <small><strong>Edit</strong></small> </h3>
+<form class="form-inline" role="form" action="/assets" method="POST">
+  <input type="hidden" name="_method" value="PUT"/>
+  <div class="form-group col-sm-6">
+    <label for="filter-study" class="col-sm-3 control-label">Study</label>
+    <div class="col-sm-9">
+      <input type="text" id="filter-study" class="form-control" style="width: 100%" name="study" placeholder="Enter a study or abbreviation" autocomplete="off">
+    </div>
+  </div>
+  <div class="form-group col-sm-6">
+    <label for="filter-workflow" class="col-sm-4 control-label">Workflow</label>
+    <div class="col-sm-8">
+<select id="filter-workflow" name="workflow_id" style="width: 100%" class="form-control">
+  <option value="" default>Any workflow</option>
+<% presenter.each_workflow do |name, comment, id| %>
+  <option value="<%= name %>" <%= (presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
+<% end %>
+</select>
+    </div>
+  </div>
+
+  <%= erb(:"assets/plates", :layout => false, :locals => {:presenter => presenter}) %>
+  <%= erb(:"assets/tubes", :layout => false, :locals => {:presenter => presenter}) %>
+  <%= erb(:"assets/samples", :layout => false, :locals => {:presenter => presenter}) %>
+
+  <div class="form-group center-block">
+      <button type="submit" class="btn btn-default">Update</button>
+  </div>  
+</form>
+
+
+  </div>
+  <div class="container" id="footer">
+  </div>
+</body>
+</html>

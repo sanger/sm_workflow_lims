@@ -17,6 +17,9 @@ module Presenter::AssetPresenter
     end
 
     def each_asset(type)
+      if assets[type].nil?
+        return
+      end
       assets[type].each do |asset|
         yield Presenter::AssetPresenter::Asset.new(asset)
       end
@@ -30,6 +33,9 @@ module Presenter::AssetPresenter
       search.present?
     end
 
+    def workflow
+      'None'
+    end
 
   end
 end

@@ -1,2 +1,5 @@
-<h1>Show batch page</h1>
-<p>A Placeholder</p>
+<%= erb(:"_templates", :layout => false) %>
+<div class="batch-view">
+<h3>Batch  <small><strong>Show</strong></small> </h3>
+<%= erb(:"batches/_batch", :layout => false, :locals => {:presenter => presenter}) %>
+</div>

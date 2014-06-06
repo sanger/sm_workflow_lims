@@ -9,8 +9,6 @@ describe AssetsController do
 
   context "index" do
 
-    # S27: So can delay
-
     let(:request) { AssetsController.new(params).get_index }
     let(:params)  { {} }
 

@@ -16,7 +16,7 @@ class Controller
 
   class RequiredValidator < Validator
     def validate(controller)
-      return true if @parameters.all? {|parameter| controller.params.keys.include?(parameter)}
+      return true if @parameters.all? {|parameter| controller.params.stringify_keys.key?(parameter.to_s)}
       invalid!
     end
   end

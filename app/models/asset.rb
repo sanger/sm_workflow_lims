@@ -14,7 +14,7 @@ class Asset < ActiveRecord::Base
   scope :in_progress, -> { where(completed_at: nil) }
   scope :latest_first, -> { order('created_at DESC') }
 
-  default_scope { includes(:workflow,:asset_type,:comment) }
+  default_scope { includes(:workflow,:asset_type,:comment,:batch) }
 
   class Completer
 
