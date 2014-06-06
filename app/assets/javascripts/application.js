@@ -1,14 +1,11 @@
 (function() {
   function getNextPosition(table) {
-    var max = -1;
-    $("input", table).each(function(pos, input) {
-      var str = new String(input.name);
-      str = str.replace(/assets/, ""); // Removes asset string
-      str = str.substring(1);  // Remove first char
-      var value = parseInt(str.split("]")[0], 10); // Gets value
-      max = Math.max(max, value);
-    });
-    return (max+1).toString();
+    var lastNode = $("tr:last", table);
+    if (lastNode.length === 0) {
+      return 0;
+    } else {
+      return lastNode.data("position") + 1;
+    }
   }
 
   function showAlert(type, message) {
@@ -49,11 +46,12 @@
       }
       row.append($(fieldTdString));
     });
-    var removeButton = $("<td><button class=\"btn btn-default\">Remove</button></td>");
+    var removeButton = $("<td class=\"with-button\"><button class=\"btn btn-default\">Remove</button></td>");
     removeButton.on("click", function(event) {
       event.preventDefault();
       $(row).remove();
     });
+    row.data("position", position);    
     row.append(removeButton);
     table.append(row);
     $(".batch-view").removeClass("hidden");
@@ -86,11 +84,19 @@
     $("#creation-templates form").each(function(pos, form) {
       $("input[type!=hidden]:first", form).on("focus", function(event) {
         $("input[type!=hidden]", form).each(function(pos, node) {
-          setValidationStatus(node);
+          setValidationStatus($(node), true);
         });
       });
       
-      $("input[type!=hidden]:last", form).on("keydown", function(event) {
+      var inputs = $("input[type!=hidden]", form);
+      inputs.not(":last").on("keydown", function(event) {
+        var input = event.target;
+        if (event.which === 13) {
+          event.preventDefault();
+          inputs[$.inArray(input, inputs)+1].focus();
+        }
+      });
+      inputs.filter(":last").on("keydown", function(event) {
         switch(event.which) {
         case 9:
         case 13:

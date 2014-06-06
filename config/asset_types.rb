@@ -2,10 +2,10 @@ module AssetTypeFactory
 
   def self.asset_types
     [
-      {:name =>'Plate (Name)',     :identifier_type => 'Name', :has_sample_count=>true},
-      {:name =>'Plate (ID)',       :identifier_type => 'ID'  , :has_sample_count=>true},
+      {:name =>'Plate with Name',     :identifier_type => 'Name', :has_sample_count=>true},
+      {:name =>'Plate with Id',       :identifier_type => 'ID'  , :has_sample_count=>true},
       {:name =>'Tube',             :identifier_type => 'ID'  , :has_sample_count=>false},
-      {:name =>'Sanger Sample ID', :identifier_type => 'Sample Name'  , :has_sample_count=>false},
+      {:name =>'Sample', :identifier_type => 'Sample Name'  , :has_sample_count=>false},
     ]
   end
 
