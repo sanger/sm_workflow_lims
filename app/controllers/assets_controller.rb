@@ -27,7 +27,7 @@ class AssetsController < Controller
   end
 
   def assets
-    @assets||=Asset.find(*params[:complete].keys)
+    @assets||=Asset.find(params[:complete].keys)
   end
 
 

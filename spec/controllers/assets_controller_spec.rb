@@ -82,7 +82,7 @@ describe AssetsController do
       it "should pass the assets and the current time to the asset completer" do
         DateTime.stub(:now).and_return { time }
 
-        Asset.should_receive(:find).with(1,2,3).and_return([mock_asset])
+        Asset.should_receive(:find).with([1,2,3]).and_return([mock_asset])
         Asset::Completer.should_receive(:create!).with(
           assets: [mock_asset],
           time: time
@@ -90,7 +90,7 @@ describe AssetsController do
         request
       end
       it "should return an asset index presenter containing completed assets" do
-        Asset.should_receive(:find).with(1,2,3).and_return([mock_asset])
+        Asset.should_receive(:find).with([1,2,3]).and_return([mock_asset])
         Asset::Completer.stub(:create!)
         Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],'were updated').and_return('Pres')
         request.should eq('Pres')
