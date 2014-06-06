@@ -13,6 +13,7 @@ class SmWorkflowLims < Sinatra::Base
 
   set :views, settings.root + '/app/views'
   set :method_override, true
+  set :server, :puma
 
   configure :development do
     set :show_exceptions => :after_handler
@@ -99,6 +100,10 @@ class SmWorkflowLims < Sinatra::Base
 
   not_found do
     send_file 'public/404.html', :status => 404
+  end
+
+  after do
+    ActiveRecord::Base.connection_pool.release_connection
   end
 
   def render_messages
