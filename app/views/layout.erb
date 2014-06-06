@@ -5,14 +5,16 @@
     <%= js :application %>
   </head>
 <body>
-    <!-- Just a whole app outline -->
-    <% render_messages do |klass,message| %>
-      <div class='<%= klass %>'><%= message %></div>
-    <% end %>
     
  <%= erb(:_menu, :layout => false) %>
 
 <div class="container" id="body">
+    <div id="alerts-box">
+    <!-- Just a whole app outline -->
+    <% render_messages do |klass,message| %>
+      <div class='alert alert-<%= klass %>'><%= message %></div>
+    <% end %>
+    </div>
 
   <%= yield %>
 

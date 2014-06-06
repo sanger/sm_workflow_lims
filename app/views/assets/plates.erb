@@ -2,14 +2,14 @@
 <h3>Plates  <small><strong>Edit</strong></small> </h3>
   <table class="table table-striped table-bordered filter-table">
   <thead>
-  <tr><th>Type</th><th>Id</th><th>Study</th><th>Num. Samples</th><th>Created at</th><% if (!presenter.is_search?) %><th>Completed?</th><% end %>
+  <tr><th>Type</th><th>Id</th><th>Study</th><th>Batch</th><th>Num. Samples</th><th>Created at</th><% if (!presenter.is_search?) %><th>Completed?</th><% end %>
   </tr>
   </thead>
   <tbody>
   <%= erb(:"assets/_asset_group", :layout => false, :locals => {:presenter => presenter, :asset_group_name => "Plate (Name)", 
-        :asset_fields => [:identifier_type, :identifier, :study, :sample_count, :created_at, :completed?] }) %>
+        :asset_fields => [:identifier_type, :identifier, :study, :batch_id, :sample_count, :created_at, :completed?] }) %>
   <%= erb(:"assets/_asset_group", :layout => false, :locals => {:presenter => presenter, :asset_group_name => "Plate (ID)", 
-        :asset_fields => [:identifier_type, :identifier, :study, :sample_count, :created_at, :completed?] }) %>
+        :asset_fields => [:identifier_type, :identifier, :study, :batch_id, :sample_count, :created_at, :completed?] }) %>
   
   </tbody>
   </table>

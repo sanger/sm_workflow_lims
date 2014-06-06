@@ -56,7 +56,7 @@ class SmWorkflowLims < Sinatra::Base
   put '/assets' do
     presenter = AssetsController.new(params).put
     # Propose that 'complete' is set as an array of asset ids to complete
-    identifers = presenter.asset_identifiers
+    identifiers = presenter.asset_identifiers
     session[:flash] = ['success',"#{identifiers.to_sentence} were marked as completed."]
     redirect to('/assets')
   end
@@ -107,7 +107,11 @@ class SmWorkflowLims < Sinatra::Base
   end
 
   def render_messages
-    yield(*session[:flash])
+    if !session.nil?
+      message = session[:flash] #tmp get the value
+      session[:flash] = nil # unset the value
+      yield(*message)
+    end
   end
 
 end
