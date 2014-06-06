@@ -38,6 +38,10 @@ class Presenter::BatchPresenter
       ''
     end
 
+    def show_completed?
+      true
+    end
+    
     def first_asset
       batch.assets.first
     end

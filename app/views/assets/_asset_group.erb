@@ -3,10 +3,10 @@
   <% asset_fields.each do |asset_field| %>
     <% if (asset_field == :completed?) %>
       <% if (!presenter.is_search?) %>
-        <td><%= (asset.completed?) ? "Yes":"No" %><span style="float: right;"><input name="complete[<%= asset.id %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> /></span></td>
+        <td><%= asset.completed_at %><span style="float: right;"><input name="complete[<%= asset.id %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> /></span></td>
       <% end %>  
     <% else %>
-      <td><%= asset.method(asset_field).call %></td>
+      <td><%= asset.send(asset_field) %></td>
     <% end %>
   <% end %>
   <% if presenter.is_search? %>
