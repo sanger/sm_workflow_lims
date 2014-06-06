@@ -179,6 +179,7 @@
     $("button[type=submit]", form).click(function(event) {
       if (!validateForm(form)) {
         event.preventDefault();
+        showAlert("danger", "The batch provided contains some errors.");
       }
     });
   }
