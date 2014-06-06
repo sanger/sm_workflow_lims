@@ -6,7 +6,11 @@
         <td><%= asset.completed_at %><span style="float: right;"><input name="complete[<%= asset.id %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> /></span></td>
       <% end %>  
     <% else %>
-      <td><%= asset.send(asset_field) %></td>
+      <% if (asset_field == :sample_count) && has_sample_count %>
+        <td><%= asset.sample_count %></td>
+      <% else %>
+        <td><%= asset.send(asset_field) %></td>
+      <% end %>
     <% end %>
   <% end %>
   <% if presenter.is_search? %>
@@ -15,5 +19,4 @@
     <td class="assets-select-batch"><button type="button" class="btn btn-default" data-psg-batch-id="<%= asset.batch_id %>" >Select batch</button></td>
   <% end %>
 </tr>
-
 <% end %>
