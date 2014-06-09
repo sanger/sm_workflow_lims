@@ -20,5 +20,8 @@ class Presenter::BatchPresenter
     def comment
       ''
     end
+    def show_completed?
+      false
+    end    
   end
 end

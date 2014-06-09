@@ -11,6 +11,7 @@ mysql: &MYSQL
   encoding: utf8
   host: localhost
   port: 3306
+  reaping_frequency: 600
 
 development:
   <<: *MYSQL

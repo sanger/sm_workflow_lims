@@ -5,16 +5,19 @@
   <input type="hidden" name="batch_id" value="<%= presenter.id %>" />
 <% end %>
   <input type="hidden" name="asset_type_id" value="1" />
-  <table class="table table-striped table-bordered">
+  <table class="table table-striped table-bordered table-condensed <%= class_for_table %>">
   <thead>
-  <tr><th>Type</th><th>Id</th><th>Num. Samples</th><th>Created at</th>
+  <tr><th>Type</th><th>Id</th><th>Num. Samples</th><th>Created at</th><% if presenter.show_completed? %><th>Completed?</th><% end %>
   </tr>
   </thead>
   <tbody id="batch-table">
    <% presenter.each_asset do |asset, pos| %>
      <tr>
        <% [:identifier_type, :identifier, :sample_count, :created_at].each do |field| %>
-          <td><%= asset.method(field).call %></td>
+          <td><%= asset.send(field) %></td>
+       <% end %>
+       <% if presenter.show_completed? %>
+         <td><%= asset.completed_at %></td>
        <% end %>
      </tr>
    <% end %>

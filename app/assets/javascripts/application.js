@@ -1,16 +1,18 @@
 (function() {
   function getNextPosition(table) {
-    var max = -1;
-    $("input", table).each(function(pos, input) {
-      var str = new String(input.name);
-      str = str.replace(/assets/, ""); // Removes asset string
-      str = str.substring(1);  // Remove first char
-      var value = parseInt(str.split("]")[0], 10); // Gets value
-      max = Math.max(max, value);
-    });
-    return (max+1).toString();
+    var lastNode = $("tr:last", table);
+    if (lastNode.length === 0) {
+      return 0;
+    } else {
+      return lastNode.data("position") + 1;
+    }
   }
 
+  function showAlert(type, message) {
+    $("#alert-shown").remove();
+    $("#alerts-box").append($("<div id='alert-shown' class='alert alert-" + type + "'>" + message + "</div>"));
+  }
+  
   function buildAssetIdValidator(addedAssetIdsList) { 
     return function(identifier) { 
       if ($.inArray(identifier, addedAssetIdsList)<0) {
@@ -27,7 +29,7 @@
     if (!validateAssetId(asset.identifier)) {
       return null;
     }
-    var fieldTemplate = "<td>#{value}</td><input type=\"hidden\" value=\"#{value}\" name=\"assets[#{position}][#{name}]\" />";
+    var fieldTemplate = "<td>#{value}<input type=\"hidden\" value=\"#{value}\" name=\"assets[#{position}][#{name}]\" /></td>";
     var fields = ["type", "identifier", "sample_count", "created"];
     var row = $("<tr></tr>");
     var table = $("#batch-table");
@@ -44,35 +46,70 @@
       }
       row.append($(fieldTdString));
     });
-    var removeButton = $("<td><button class=\"btn btn-default\">Remove</button></td>");
+    var removeButton = $("<td class=\"with-button\"><button class=\"btn btn-default\">Remove</button></td>");
     removeButton.on("click", function(event) {
       event.preventDefault();
       $(row).remove();
     });
+    row.data("position", position);    
     row.append(removeButton);
     table.append(row);
     $(".batch-view").removeClass("hidden");
     return asset;
   }
 
+  function processFormAssetCreation(form) {
+    if (validateForm(form)) {
+      var inputs = $("input", form);
+      var asset = {};
+      inputs.each(function(pos, input) {
+        var obj = {};
+        obj[input.name] = input.value;
+        if ($(input).prop("type")!=="hidden") {
+          input.value = ""; 
+        }
+        asset = $.extend(asset, obj);
+      });
+      if (addAsset(asset)===null) {
+        showAlert("danger", "The asset identifier must be unique inside the batch");
+      } else {
+        showAlert("success", "Asset added to the batch");
+      }
+    } else {
+      showAlert("danger", "The entry can't be created as the form contains some errors.");
+    }    
+  }
+  
   function attachAssetsCreationHandlers() {
     $("#creation-templates form").each(function(pos, form) {
+      $("input[type!=hidden]:first", form).on("focus", function(event) {
+        $("input[type!=hidden]", form).each(function(pos, node) {
+          setValidationStatus($(node), true);
+        });
+      });
+      
+      var inputs = $("input[type!=hidden]", form);
+      inputs.not(":last").on("keydown", function(event) {
+        var input = event.target;
+        if (event.which === 13) {
+          event.preventDefault();
+          inputs[$.inArray(input, inputs)+1].focus();
+        }
+      });
+      inputs.filter(":last").on("keydown", function(event) {
+        switch(event.which) {
+        case 9:
+        case 13:
+          $("input[type!=hidden]:first", form).focus();
+          processFormAssetCreation(form);          
+          event.preventDefault();
+          break;
+        }
+      });
       
       $("button", form).click(function(event) {  
         event.preventDefault();
-        var inputs = $("input", form);
-        if (validateForm(form)) {
-          var asset = {};
-          inputs.each(function(pos, input) {
-            var obj = {};
-            obj[input.name] = input.value;
-            input.value = "";
-            asset = $.extend(asset, obj);
-          });
-          addAsset(asset);
-        } else {
-          
-        }
+        processFormAssetCreation(form);
       });
     });    
   };
@@ -89,6 +126,21 @@
     return value;
   }
   
+  function setValidationStatus(node, isSuccess) {
+    node.parent().removeClass("has-success has-error");
+    node.parent().addClass((isSuccess) ? "has-success" : "has-error");
+    
+    var spanIcon = $("span", node.parent())[0];
+    if (typeof spanIcon !== "undefined") {
+      spanIcon = $(spanIcon);
+    } else {
+      spanIcon = $("<span class=\"glyphicon form-control-feedback\"></span>");
+      node.parent().append(spanIcon);          
+    }
+    spanIcon.removeClass("glyphicon-ok glyphicon-remove");
+    spanIcon.addClass((isSuccess) ? "glyphicon-ok" : "glyphicon-remove");
+  }
+  
   function validateInput(input) {
     
     function validateRegexp(input) {
@@ -98,18 +150,7 @@
     
     var node = $(input);
     var validated = validateRegexp(node);
-    node.parent().removeClass("has-success").removeClass("has-error");
-    node.parent().addClass((validated) ? "has-success" : "has-error");
-    
-    var spanIcon = $("span", node.parent())[0];
-    if (typeof spanIcon !== "undefined") {
-      spanIcon = $(spanIcon);
-    } else {
-      spanIcon = $("<span class=\"glyphicon form-control-feedback\"></span>");
-      node.parent().append(spanIcon);          
-    }
-    spanIcon.removeClass("glyphicon-ok").removeClass("glyphicon-remove");
-    spanIcon.addClass((validated) ? "glyphicon-ok" : "glyphicon-remove");
+    setValidationStatus(node, validated);
     return validated;
   }
   
@@ -144,6 +185,7 @@
     $("button[type=submit]", form).click(function(event) {
       if (!validateForm(form)) {
         event.preventDefault();
+        showAlert("danger", "The batch provided contains some errors.");
       }
     });
   }
@@ -192,16 +234,21 @@
     attachFilterWorkflow();
   }
   
+  function filterAssetTR(tr, enabled) {
+    if (enabled) {
+      $(tr).show();
+    } else {
+      $("input[type=checkbox]", tr).prop("checked", false).change();      
+      $(tr).hide();
+    }
+  }
+  
   function attachFilterWorkflow() {
     var filterWorkflow = $("#filter-workflow");
     filterWorkflow.on("change", function() {
       var value = filterWorkflow.val();
       $("tr[data-psg-workflow]").each(function(pos, tr) {
-        if (($(tr).attr("data-psg-workflow")===value) || (value.length===0)) {
-          $(tr).show();
-        } else {
-          $(tr).hide();
-        }
+        filterAssetTR(tr, (($(tr).attr("data-psg-workflow")===value) || (value.length===0)));
       });
     });    
   }
@@ -226,12 +273,12 @@
         if (studyPos > 0) {
           $("tbody tr", table).each(function(pos, tr) {
             var fieldSelected = $($("td", tr)[studyPos]);
-            fieldSelected.html(fieldSelected.html().replace("<b>", "").replace("</b>", ""));              
-            if (fieldSelected.text().search(filterStudyRegExp)>=0) {
+            fieldSelected.html(fieldSelected.html().replace("<b>", "").replace("</b>", ""));
+            var isFiltered = (fieldSelected.text().search(filterStudyRegExp)>=0);
+            filterAssetTR(tr, isFiltered);
+            if (isFiltered) {
+              // Highligths matching text on study filtering
               fieldSelected.html(fieldSelected.html().replace(filterStudy.val(), "<b>" + filterStudy.val() + "</b>"));
-              $(tr).show();
-            } else {
-              $(tr).hide();
             }
           });
         }
@@ -269,6 +316,15 @@
     });    
   }
   
+  function attachBatchCreationHandlers() {
+    var workflowControl = $("#workflow_id");
+    workflowControl.on("change", function() {
+      var disable = $("option[value="+workflowControl.val()+"]", workflowControl).text().search(/Other/)<0;
+      $("#comment").prop("disabled", disable);      
+    });
+    workflowControl.change();
+  }
+  
   function resetBatch() {
     $("#batch-table").html("");
     $(".batch-view").addClass("hidden");    
@@ -278,6 +334,7 @@
   $(document).ready(function() {
     //attachFormMethodsSubmitHandlers();
     attachAssetsCreationHandlers();
+    attachBatchCreationHandlers();
     attachValidations();
     attachFilters();
     attachTabHandlers();
