@@ -25,9 +25,11 @@
   
 <% presenter.each_asset_type do |asset_type_name,asset_type_identifier,has_sample_count| %>
 <div class="asset-group-view row">
-<h3><%= asset_type_name %> <small><strong>Edit</strong></small> </h3>
+<h3><%= asset_type_name %> <small><strong>Edit</strong></small>  
+ </h3>
 
 <% if presenter.has_assets?(asset_type_name) %>
+   <small><span><a>Select all</a> | <a>Unselect</a></small>
 
   <table class="table table-striped table-bordered filter-table with-button-per-row table-condensed">
   <thead>
