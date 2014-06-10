@@ -341,7 +341,7 @@
       }
     }
     $(".asset-group-view").each(function(pos, div) {
-      var anchors = $("a", div);
+      var anchors = $("a.selectable", div);
       $(anchors[0]).on("click", buildCheckedAction(true, div));
       $(anchors[1]).on("click", buildCheckedAction(false, div));      
     })
