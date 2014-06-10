@@ -164,6 +164,7 @@
     });
     attachBatchValidation();
     attachBatchSelection();
+    attachSelectAllControls();
     attachComplete();
   }
   
@@ -329,6 +330,21 @@
     $("#batch-table").html("");
     $(".batch-view").addClass("hidden");    
     validateAssetId = buildAssetIdValidator([]);
+  }
+  
+  function attachSelectAllControls() {
+    function buildCheckedAction(enable, divContainer) {
+      return function(event) {
+        event.preventDefault();
+        var node = event.currentTarget;
+        $("input[type=checkbox]", divContainer).prop("checked", enable).change();
+      }
+    }
+    $(".asset-group-view").each(function(pos, div) {
+      var anchors = $("a.selectable", div);
+      $(anchors[0]).on("click", buildCheckedAction(true, div));
+      $(anchors[1]).on("click", buildCheckedAction(false, div));      
+    })
   }
   
   $(document).ready(function() {
