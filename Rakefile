@@ -28,8 +28,7 @@ namespace :build do
   end
 
   task :assets => ['assetpack:build'] do
-    `mkdir public/fonts`
-    `cp -r $(bundle show bootstrap-sass)/vendor/assets/fonts/ public/assets/stylesheets/`
+    `cp -r $(bundle show bootstrap-sass)/vendor/assets/fonts/bootstrap public/assets/stylesheets/`
   end
 end
 
