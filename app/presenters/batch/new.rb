@@ -22,6 +22,9 @@ class Presenter::BatchPresenter
     end
     def show_completed?
       false
-    end    
+    end
+    def num_assets
+      1
+    end
   end
 end
