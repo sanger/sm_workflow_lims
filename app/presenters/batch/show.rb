@@ -45,6 +45,10 @@ class Presenter::BatchPresenter
     def first_asset
       batch.assets.first
     end
+    
+    def num_assets
+      batch.assets.count
+    end
 
   end
 end
