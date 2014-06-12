@@ -13,20 +13,31 @@
     $("#alerts-box").append($("<div id='alert-shown' class='alert alert-" + type + "'>" + message + "</div>"));
   }
   
-  function buildAssetIdValidator(addedAssetIdsList) { 
-    return function(identifier) { 
-      if ($.inArray(identifier, addedAssetIdsList)<0) {
-        addedAssetIdsList.push(identifier);
+  /**
+   * Validator of asset IDs entered for current batch
+   */
+  var validatorAssetId = {
+    reset: function(list) {
+      this._list = list;
+      return this;
+    },
+    validate: function(identifier) {
+      if ($.inArray(identifier, this._list)<0) {
+        this._list.push(identifier);
         return true;
       }
-      return false;
-    } 
-  }  
-  
-  var validateAssetId = buildAssetIdValidator([]);
-  
+      return false;    
+    },
+    remove: function(identifier) {
+      var idx = $.inArray(identifier, this._list);
+      if (idx >= 0) {
+        this._list.splice(idx,1);
+      }
+    }
+  }.reset([]);
+    
   function addAsset(asset) {
-    if (!validateAssetId(asset.identifier)) {
+    if (!validatorAssetId.validate(asset.identifier)) {
       return null;
     }
     var fieldTemplate = "<td>#{value}<input type=\"hidden\" value=\"#{value}\" name=\"assets[#{position}][#{name}]\" /></td>";
@@ -50,31 +61,64 @@
     removeButton.on("click", function(event) {
       event.preventDefault();
       $(row).remove();
+      validatorAssetId.remove(asset.identifier);
+      updateBadgeCount();
     });
     row.data("position", position);    
     row.append(removeButton);
     table.append(row);
+    updateBadgeCount();    
     $(".batch-view").removeClass("hidden");
     return asset;
+  }
+  
+  function updateBadgeCount() {
+    $(".batch-view .badge").html($(".batch-view tbody tr").length);
   }
 
   function processFormAssetCreation(form) {
     if (validateForm(form)) {
       var inputs = $("input", form);
-      var asset = {};
+      var assets = [];
       inputs.each(function(pos, input) {
-        var obj = {};
-        obj[input.name] = input.value;
-        if ($(input).prop("type")!=="hidden") {
-          input.value = ""; 
+        var tokenizer = $(input).attr("data-psg-tokenizer");
+        var processValues;
+        // If it is using the token separator in the input
+        if ((typeof tokenizer !== "undefined") && (input.value.search(tokenizer)>=0)) {
+          processValues = input.value.split(tokenizer);
+        } else {
+          // In other case, we'll create as many inputs as assets previously generated. At least
+          // one in case this is the first asset generated
+          processValues = [];
+          for (var i=0; i<Math.max(1, assets.length); i++) {
+            processValues.push(input.value);
+          }
         }
-        asset = $.extend(asset, obj);
+        // Resets the value after reading it
+        if ($(input).prop("type")!=="hidden") {
+          input.value = "";
+        }
+        
+        $.each(processValues, function(pos, processValue) {
+          var obj = {};
+          obj[input.name] = processValue;
+          if (typeof assets[pos] === "undefined") {
+            assets[pos] = Object.create({});
+            if (pos>0) {
+              assets[pos] = $.extend(assets[pos], assets[pos-1]);
+            }
+          }
+          assets[pos] = $.extend(assets[pos], obj);
+        });
+        
       });
-      if (addAsset(asset)===null) {
-        showAlert("danger", "The asset identifier must be unique inside the batch");
-      } else {
-        showAlert("success", "Asset added to the batch");
-      }
+      $.each(assets, function(pos, asset) {
+        if (addAsset(asset)===null) {
+          showAlert("danger", "The asset identifier must be unique inside the batch");
+        } else {
+          showAlert("success", "Asset added to the batch");
+        }        
+      });
     } else {
       showAlert("danger", "The entry can't be created as the form contains some errors.");
     }    
@@ -114,16 +158,20 @@
     });    
   };
   
-  function validateForm(form) {
-    var inputs = $("[data-psg-regexp]", form);
-    var validations = $.map(inputs, validateInput);
+  function all(list, checkMethod) {
+    var validations = $.map(list, checkMethod);
     var i=0;
     var value = true;
     while (i<validations.length && value) {
       value = value && validations[i];
       i += 1;
     }
-    return value;
+    return value;    
+  }
+  
+  function validateForm(form) {
+    var inputs = $("[data-psg-regexp]", form);
+    return all(inputs, validateInput);
   }
   
   function setValidationStatus(node, isSuccess) {
@@ -141,15 +189,31 @@
     spanIcon.addClass((isSuccess) ? "glyphicon-ok" : "glyphicon-remove");
   }
   
+  function partial() {
+    var _function = arguments[0];
+    var _arguments = Array.prototype.slice.call(arguments, 1);
+    var _ctx = this;
+    return function() {
+      return _function.apply(_ctx, _arguments.concat(Array.prototype.slice.call(arguments, 0)));
+    };
+  }
+  
   function validateInput(input) {
-    
-    function validateRegexp(input) {
-      var regexp = new RegExp(input.attr("data-psg-regexp"))
-      return input.val().search(regexp)>=0;
+    function validateRegexp(regexp, str) {
+      var regexp = new RegExp(regexp);
+      return str.search(regexp)>=0;
     }
     
     var node = $(input);
-    var validated = validateRegexp(node);
+    var partialedValidation = partial(validateRegexp, node.attr("data-psg-regexp"));
+    
+    var validated;
+    var tokenizer = node.attr("data-psg-tokenizer");
+    if (typeof tokenizer !== "undefined") {
+      validated = all(node.val().split(tokenizer), partialedValidation);
+    } else {
+      validated = partialedValidation(node.val());
+    }
     setValidationStatus(node, validated);
     return validated;
   }
@@ -329,7 +393,7 @@
   function resetBatch() {
     $("#batch-table").html("");
     $(".batch-view").addClass("hidden");    
-    validateAssetId = buildAssetIdValidator([]);
+    validatorAssetId.reset([]);
   }
   
   function attachSelectAllControls() {
@@ -337,14 +401,15 @@
       return function(event) {
         event.preventDefault();
         var node = event.currentTarget;
-        $("input[type=checkbox]", divContainer).prop("checked", enable).change();
+        var inputs = $("input[type=checkbox]" + (enable ? ":visible" : ""), divContainer);
+        inputs.prop("checked", enable).change();
       }
     }
     $(".asset-group-view").each(function(pos, div) {
       var anchors = $("a.selectable", div);
       $(anchors[0]).on("click", buildCheckedAction(true, div));
       $(anchors[1]).on("click", buildCheckedAction(false, div));      
-    })
+    });
   }
   
   $(document).ready(function() {

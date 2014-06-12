@@ -20,6 +20,10 @@ module Presenter::AssetPresenter
       return assets[type].length > 0
     end
     
+    def num_assets(type)
+      return assets[type].length
+    end    
+    
     def each_asset(type)
       if assets[type].nil?
         return
@@ -36,7 +40,7 @@ module Presenter::AssetPresenter
     def is_search?
       search.present?
     end
-
+    
     def workflow
       'None'
     end
