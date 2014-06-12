@@ -107,10 +107,9 @@ class SmWorkflowLims < Sinatra::Base
   end
 
   def render_messages
-    if !session.nil?
-      message = session[:flash] #tmp get the value
+    if session[:flash].present?
+      yield(*session[:flash])
       session[:flash] = nil # unset the value
-      yield(*message)
     end
   end
 
