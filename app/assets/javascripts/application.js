@@ -253,6 +253,12 @@
         showAlert("danger", "The batch provided contains some errors.");
       }
     });
+    $("button[data-psg-action-type=acceptance-delete]", form).click(function(event) {
+      event.preventDefault();
+    });
+    $("button[data-psg-action-type=delete]", form).click(function(event) {
+      event.preventDefault();
+    });
   }
   // in_progress inbox
   function attachBatchSelection() {
