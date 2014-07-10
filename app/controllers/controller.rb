@@ -78,6 +78,12 @@ class Controller
     valid_parameters_for!(:update)
     update
   end
+  
+  def delete
+    valid_parameters_for!(:remove)
+    remove
+  end
+  
 
   private
 

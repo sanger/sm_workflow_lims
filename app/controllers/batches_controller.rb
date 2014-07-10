@@ -13,6 +13,8 @@ class BatchesController < Controller
 
   required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
   required_parameters_for :update, [:batch_id], 'You must specify a batch.'
+    
+  required_parameters_for :remove, [:batch_id], 'You must specify a batch.'
 
   required_parameters_for :show, [:batch_id], 'You must specify a batch.'
 
@@ -32,6 +34,10 @@ class BatchesController < Controller
       comment: params[:comment]
       )
     Presenter::BatchPresenter::Show.new(updated_batch)
+  end
+  
+  def remove
+    batch.destroy!
   end
 
   def create
