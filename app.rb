@@ -79,6 +79,13 @@ class SmWorkflowLims < Sinatra::Base
     session[:flash] = ['success',"The batch was updated."]
     redirect to("/batches/#{params[:batch_id]}")
   end
+  
+  delete '/batches/:batch_id' do
+    presenter = BatchesController.new(params).delete
+    # Updates a batch workflow
+    session[:flash] = ['success',"The batch was removed."]
+    redirect to("/batches/new")
+  end  
 
   post '/batches' do
     presenter = BatchesController.new(params).post

@@ -42,13 +42,14 @@
   <thead>
   <tr><th>Type</th><th>Id</th><th>Study</th><th>Batch</th>
   <% if has_sample_count %><th>Num. Samples</th><% end %>
+  <th>Workflow</th>
   <th>Created at</th>
   <th>Completed?</th>
   </tr>
   </thead>
   <tbody>
   <%= erb(:"assets/_asset_group", :layout => false, :locals => {:presenter => presenter, :asset_group_name => asset_type_name, :has_sample_count => has_sample_count,
-          :asset_fields => [:identifier_type, :identifier, :study, :batch_id, :sample_count, :created_at, :completed_at] }) %>
+          :asset_fields => [:identifier_type, :identifier, :study, :batch_id, :sample_count, :workflow, :created_at, :completed_at] }) %>
   </tbody>
   </table>
   
