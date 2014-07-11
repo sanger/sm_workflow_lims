@@ -9,5 +9,15 @@ describe Batch do
     batch.assets.size.should eq(1)
     batch.assets.first.identifier.should eq('test')
   end
+  
+  it 'destroy assets when destroyed' do
+    batch = Batch.new
+    batch.assets.new(:identifier=>'test')
+    batch.assets.new(:identifier=>'test2')
+    assets = batch.assets
+    
+    batch.destroy!
+    assets.map(&:destroyed?).all?.should eq(true)
+  end
 
 end

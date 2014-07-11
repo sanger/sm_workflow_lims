@@ -98,7 +98,11 @@ class Controller
   def update
     raise NotImplimented
   end
-
+  
+  def remove
+    raise NotImplimented
+  end
+  
   def new
     raise NotImplimented
   end
@@ -112,7 +116,7 @@ class Controller
   end
 
   def user_error(message)
-    raise Controller::ParameterError, @message
+    raise Controller::ParameterError, message
   end
 
 end

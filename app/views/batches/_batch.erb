@@ -68,8 +68,12 @@
       </div>
       <div class="modal-body">
         <div class="input-group">
-          <span class="input-group-addon">Assets</span>
-          <span class="form-control"><%= presenter.num_assets %></span>
+          <span class="input-group-addon">Batch Id</span>
+          <span class="form-control"><%= presenter.id %></span>
+        </div>      
+        <div class="input-group">
+          <span class="input-group-addon">Size</span>
+          <span class="form-control"><%= presenter.num_assets %> <%= presenter.num_assets==1?"asset":"assets"%></span>
         </div>
         <div class="input-group">
           <span class="input-group-addon">Study</span>
@@ -79,6 +83,12 @@
           <span class="input-group-addon">Workflow</span>
           <span class="form-control"><%= presenter.workflow %></span>
         </div>
+        <% unless presenter.comment.length == 0 %>
+        <div class="input-group">
+          <span class="input-group-addon">Comments</span>
+          <span class="form-control"><%= presenter.comment %></span>
+        </div>
+        <% end %>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-default" data-dismiss="modal" data-psg-action-type="delete">Accept</button>
