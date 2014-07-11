@@ -27,7 +27,7 @@ table.with-button-per-row {
 }
 
 .form-control-feedback {
-	right: 1em;
+	right: -1em;
 	top: 0;
 }
 
@@ -38,6 +38,3 @@ a:hover { color: #777777; }
 	.input-group { margin-bottom: 1em; width: 100%; }
 	span.form-control { background-color: white; width: 100%; }
 }
-
-
-	
