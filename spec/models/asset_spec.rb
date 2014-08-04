@@ -92,5 +92,30 @@ describe Asset do
     end
 
   end
+  
+  context 'removal of an asset' do
+    let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let(:identifier) { 'name' }
+    let(:batch) { Batch.new }
+    let(:workflow) { Workflow.new }
+
+    it 'keeps comment if there are more assets using the same comment' do
+      comment = Comment.new
+      comment.assets.new(:identifier=>'test1')
+      comment.assets.new(:identifier=>'test2')
+      comment.assets.size.should eq(2)
+      comment.assets.first.destroy!
+      comment.destroyed?.should eq(false)
+    end
+          
+    it 'destroys comment if there are no more assets using it' do
+      comment = Comment.new
+      comment.assets.new(:identifier=>'test1')
+      comment.assets.new(:identifier=>'test2')
+      comment.assets.size.should eq(2)
+      comment.assets.each(&:destroy!)
+      comment.destroyed?.should eq(true)
+    end
+  end
 
 end

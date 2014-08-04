@@ -78,6 +78,12 @@ class Controller
     valid_parameters_for!(:update)
     update
   end
+  
+  def delete
+    valid_parameters_for!(:remove)
+    remove
+  end
+  
 
   private
 
@@ -92,7 +98,11 @@ class Controller
   def update
     raise NotImplimented
   end
-
+  
+  def remove
+    raise NotImplimented
+  end
+  
   def new
     raise NotImplimented
   end
@@ -106,7 +116,7 @@ class Controller
   end
 
   def user_error(message)
-    raise Controller::ParameterError, @message
+    raise Controller::ParameterError, message
   end
 
 end

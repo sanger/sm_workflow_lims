@@ -168,6 +168,26 @@ describe BatchesController do
       end
     end
   end
+  
+  context "remove" do
+
+    let(:request) { BatchesController.new(params).delete }
+
+    context "with full parameters" do
+      let(:params)  { {:batch_id=>3 } }
+      it "should pass the options to a batch destroy" do
+        mocked_lookups
+        Batch.stub(:destroy!).and_return('bat')        
+      end
+    end
+
+    context "with missing batch id" do
+      let(:params)  { {}}
+      it "should require a batch_id" do
+        expect { request }.to raise_error(Controller::ParameterError,'You must specify a batch.')
+      end
+    end
+  end
 
   context "index" do
     it "should raise an exception" do

@@ -26,7 +26,15 @@ table.with-button-per-row {
 	height: 2em;
 }
 
-#creation-templates .form-control-feedback {
-	right: 1em;
+.form-control-feedback {
+	right: -1em;
 	top: 0;
+}
+
+a {	color: #999999; }
+a:hover { color: #777777; }
+#remove-batch-acceptance {
+	.input-group-addon {width: 8em;}
+	.input-group { margin-bottom: 1em; width: 100%; }
+	span.form-control { background-color: white; width: 100%; }
 }
