@@ -85,6 +85,25 @@ describe Asset do
       Asset.in_progress.should_not include(complete)
     end
 
+    it 'should scope all' do
+      Asset.in_state('all').should eq(Asset.all)
+    end
+
+    it 'should scope report_required' do
+      Asset.should_receive(:report_required).and_return('valid')
+      Asset.in_state('report_required').should eq('valid')
+    end
+
+    it 'should scope in_progress' do
+      Asset.should_receive(:in_progress).and_return('valid')
+      Asset.in_state('in_progress').should eq('valid')
+    end
+
+    it 'should scope invalid_states' do
+      Asset.should_receive(:none).and_return('nothing')
+      Asset.in_state('invalid_state').should eq('nothing')
+    end
+
     it 'reporting_required lists appropriate assets' do
 
       #TODO: Should look into testing this without needing database writes
