@@ -7,16 +7,10 @@ class Asset < ActiveRecord::Base
   belongs_to :batch
   belongs_to :comment
 
-  before_destroy :remove_comment
+  after_destroy :remove_comment, :if => :comment
 
   def remove_comment
-    unless self.comment.nil?
-      if ((self.comment.assets.select {|asset| !asset.destroyed?}.size) <= 1)
-        ActiveRecord::Base.transaction do
-          self.comment.destroy!
-        end
-      end
-    end
+    comment.destroy
   end
 
   validates_presence_of :workflow, :batch, :identifier, :asset_type
