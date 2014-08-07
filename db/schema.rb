@@ -11,14 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807112559) do
+ActiveRecord::Schema.define(version: 20140807152448) do
 
   create_table "asset_types", force: true do |t|
-    t.string   "name",                             null: false
-    t.string   "identifier_type",                  null: false
-    t.boolean  "has_sample_count", default: false, null: false
+    t.string   "name",                                          null: false
+    t.string   "identifier_type",                               null: false
+    t.boolean  "has_sample_count",     default: false,          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "identifier_data_type", default: "alphanumeric", null: false
   end
 
   create_table "assets", force: true do |t|
