@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807110338) do
+ActiveRecord::Schema.define(version: 20140807112559) do
 
   create_table "asset_types", force: true do |t|
     t.string   "name",                             null: false
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20140807110338) do
     t.boolean  "has_comment", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "reportable",  default: false, null: false
   end
 
 end
