@@ -61,10 +61,18 @@ describe Asset do
 
   context 'scopes' do
 
+    let(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true ) }
+    let(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false) }
+
     let(:basics) { {identifier:'one',asset_type_id:1,batch_id:1,workflow_id:1} }
     let(:completed) { basics.merge(completed_at:Time.now) }
     let(:created_last) { basics.merge(created_at:Time.at(1000)) }
     let(:created_first) { basics.merge(created_at:Time.at(10)) }
+
+    let(:incomplete_reportable)    { basics.merge(workflow_id:reportable_workflow.id) }
+    let(:complete_reportable)      { completed.merge(workflow_id:reportable_workflow.id) }
+    let(:complete_nonreportable)   { completed.merge(workflow_id:nonreportable_workflow.id) }
+    let(:reported_reportable)      { completed.merge(workflow_id:reportable_workflow.id,reported_at:Time.now ) }
 
     it 'in_progress filters on completed_at' do
       incomplete = Asset.new(basics)
@@ -75,6 +83,31 @@ describe Asset do
 
       Asset.in_progress.should include(incomplete)
       Asset.in_progress.should_not include(complete)
+    end
+
+    it 'reporting_required lists appropriate assets' do
+
+      #TODO: Should look into testing this without needing database writes
+
+      asset_incomplete_reportable = Asset.new(incomplete_reportable)
+      asset_complete_reportable = Asset.new(complete_reportable)
+      asset_complete_nonreportable = Asset.new(complete_nonreportable)
+      asset_reported_reportable = Asset.new(reported_reportable)
+
+      asset_incomplete_reportable.save(validate: false)
+      asset_complete_reportable.save(validate: false)
+      asset_complete_nonreportable.save(validate: false)
+      asset_reported_reportable.save(validate: false)
+
+      Asset.reportable.should     include(asset_complete_reportable)
+      Asset.reportable.should     include(asset_incomplete_reportable)
+      Asset.reportable.should_not include(asset_complete_nonreportable)
+      Asset.reportable.should     include(asset_reported_reportable)
+
+      Asset.report_required.should     include(asset_complete_reportable)
+      Asset.report_required.should_not include(asset_incomplete_reportable)
+      Asset.report_required.should_not include(asset_complete_nonreportable)
+      Asset.report_required.should_not include(asset_reported_reportable)
     end
 
     it 'latest_first orders by created_at' do
@@ -92,7 +125,7 @@ describe Asset do
     end
 
   end
-  
+
   context 'removal of an asset' do
     let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
     let(:identifier) { 'name' }
@@ -107,7 +140,7 @@ describe Asset do
       comment.assets.first.destroy!
       comment.destroyed?.should eq(false)
     end
-          
+
     it 'destroys comment if there are no more assets using it' do
       comment = Comment.new
       comment.assets.new(:identifier=>'test1')

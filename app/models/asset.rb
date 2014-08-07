@@ -6,9 +6,9 @@ class Asset < ActiveRecord::Base
   belongs_to :workflow
   belongs_to :batch
   belongs_to :comment
-  
+
   before_destroy :remove_comment
-  
+
   def remove_comment
     unless self.comment.nil?
       if ((self.comment.assets.select {|asset| !asset.destroyed?}.size) <= 1)
@@ -23,8 +23,11 @@ class Asset < ActiveRecord::Base
 
   delegate :identifier_type, :to => :asset_type
 
-  scope :in_progress, -> { where(completed_at: nil) }
-  scope :latest_first, -> { order('created_at DESC') }
+  scope :in_progress,     -> { where(completed_at: nil) }
+  scope :completed,       -> { where.not(completed_at: nil) }
+  scope :reportable,      -> { where(workflows:{reportable:true}) }
+  scope :report_required, -> { reportable.completed.where(reported_at:nil) }
+  scope :latest_first,    -> { order('created_at DESC') }
 
   default_scope { includes(:workflow,:asset_type,:comment,:batch) }
 
