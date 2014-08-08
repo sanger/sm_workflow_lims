@@ -2,15 +2,9 @@
 @import "bootstrap";
 
 /* Put custom stylesheet stuff here */
-td.with-button {
-	border: 0 !important;
-	background-color: white !important;
-	padding-left: 1em !important;
-}
 
-table.with-button-per-row {
-	border-right: 0px !important;
-	border-bottom: 0px !important;
+button.table_button {
+	width: 9em;
 }
 
 .asset-group-view a:hover {
