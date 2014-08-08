@@ -26,7 +26,7 @@ describe AssetsController do
 
     it "should pass a nil search parameter and assets to the presenter" do
       Asset.stub(:in_progress).and_return(searchless)
-      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],nil)
+      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],nil,'in_progress')
       request
     end
 
@@ -52,7 +52,7 @@ describe AssetsController do
 
     it "should pass a search parameter and assets to the presenter" do
       Asset.stub(:with_identifier).and_return([mock_asset])
-      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],"identifier matches 'Test'")
+      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],"identifier matches 'Test'",'all')
       request
     end
 
@@ -78,7 +78,7 @@ describe AssetsController do
 
     it "should pass a nil search parameter and assets to the presenter" do
       Asset.stub(:in_state).and_return(searchless)
-      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],nil)
+      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],nil,'report_required')
       request
     end
 
@@ -117,7 +117,7 @@ describe AssetsController do
       it "should return an asset index presenter containing completed assets" do
         Asset.should_receive(:find).with([1,2,3]).and_return([mock_asset])
         Asset::Completer.stub(:create!)
-        Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],'were updated').and_return('Pres')
+        Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],'were updated',nil).and_return('Pres')
         request.should eq('Pres')
       end
     end

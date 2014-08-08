@@ -6,12 +6,12 @@ class AssetsController < Controller
 
   def update
     Asset::Completer.create!(assets:assets,time:DateTime.now)
-    Presenter::AssetPresenter::Index.new(assets,'were updated')
+    Presenter::AssetPresenter::Index.new(assets,'were updated',nil)
   end
 
   def index
     assets = Asset.in_state(state).with_identifier(params[:identifier])
-    Presenter::AssetPresenter::Index.new(assets,search)
+    Presenter::AssetPresenter::Index.new(assets,search,state)
   end
 
   private

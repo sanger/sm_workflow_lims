@@ -40,5 +40,10 @@ module Presenter::AssetTypePresenter
       }[asset_type.identifier_data_type]
     end
 
+    def asset_fields
+      sample_count = asset_type.has_sample_count ? :sample_count : nil
+      [:identifier, :study, :batch_id, sample_count, :workflow, :created_at, :completed_at].compact
+    end
+
   end
 end
