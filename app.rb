@@ -57,7 +57,7 @@ class SmWorkflowLims < Sinatra::Base
     presenter = AssetsController.new(params).put
     # Propose that 'complete' is set as an array of asset ids to complete
     identifiers = presenter.asset_identifiers
-    session[:flash] = ['success',"#{identifiers.to_sentence} were marked as completed."]
+    session[:flash] = ['success',"#{identifiers.to_sentence} #{identifiers.many? ? 'were' : 'was'} marked as completed."]
     redirect to('/assets')
   end
 
@@ -79,13 +79,13 @@ class SmWorkflowLims < Sinatra::Base
     session[:flash] = ['success',"The batch was updated."]
     redirect to("/batches/#{params[:batch_id]}")
   end
-  
+
   delete '/batches/:batch_id' do
     presenter = BatchesController.new(params).delete
     # Updates a batch workflow
     session[:flash] = ['success',"The batch was removed."]
     redirect to("/batches/new")
-  end  
+  end
 
   post '/batches' do
     presenter = BatchesController.new(params).post
