@@ -6,7 +6,7 @@
       <% if (asset_field == :completed_at) %>
         <% presenter.action do |action|%>
           <span style="float: right;">
-            <input name="<%= action %>[<%= asset.id %>]" type="checkbox" <%= (asset.completed?) ? "checked='checked'":"" %> />
+            <input name="<%= action %>[<%= asset.id %>]" type="checkbox"/>
           </span>
         <% end %>
       <% end %>

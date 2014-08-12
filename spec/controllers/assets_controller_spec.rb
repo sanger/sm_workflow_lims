@@ -93,11 +93,11 @@ describe AssetsController do
       let(:params)  { {} }
 
       it "should require an array of assets" do
-        expect { request }.to raise_error(Controller::ParameterError,'No assets selected to complete')
+        expect { request }.to raise_error(Controller::ParameterError,'No assets selected')
       end
     end
 
-    context "with parameters" do
+    context "with complete" do
       let(:params)  { {:complete=>{1=>1,2=>1,3=>1}} }
       let(:time) { DateTime.parse('01-02-2012 13:15') }
       let(:mock_asset) {
@@ -114,11 +114,51 @@ describe AssetsController do
         )
         request
       end
-      it "should return an asset index presenter containing completed assets" do
+      it "should return a result object with accurate information" do
         Asset.should_receive(:find).with([1,2,3]).and_return([mock_asset])
-        Asset::Completer.stub(:create!)
-        Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],'were updated',nil).and_return('Pres')
-        request.should eq('Pres')
+        Asset::Completer.stub(:create!).and_return(double('mock_completer',state:'success',message:'Your stuff worked'))
+        result = request
+        result.state.should eq('success')
+        result.message.should eq('Your stuff worked')
+      end
+    end
+
+    context "with report" do
+      let(:params)  { {:report=>{1=>1,2=>1,3=>1}} }
+      let(:time) { DateTime.parse('01-02-2012 13:15') }
+      let(:mock_asset) {
+        double('asset',identifier:'fake',asset_type:double('asset_type',name:'type'))
+      }
+
+      it "should pass the assets and the current time to the asset reporter" do
+        DateTime.stub(:now).and_return { time }
+
+        Asset.should_receive(:find).with([1,2,3]).and_return([mock_asset])
+        Asset::Reporter.should_receive(:create!).with(
+          assets: [mock_asset],
+          time: time
+        )
+        request
+      end
+      it "should return a result object with accurate information" do
+        Asset.should_receive(:find).with([1,2,3]).and_return([mock_asset])
+        Asset::Reporter.stub(:create!).and_return(double('mock_completer',state:'success',message:'Your stuff worked'))
+        result = request
+        result.state.should eq('success')
+        result.message.should eq('Your stuff worked')
+      end
+    end
+
+    context "with both" do
+      let(:params)  { {:report=>{1=>1,2=>1},:complete=>{3=>1}} }
+      let(:time) { DateTime.parse('01-02-2012 13:15') }
+      let(:mock_asset) {
+        double('asset',identifier:'fake',asset_type:double('asset_type',name:'type'))
+      }
+
+      it "should reject the request" do
+        # We shouldn't actually have anyone trying to do this through the interface
+        expect { request }.to raise_error(Controller::ParameterError,'You cannot complete and report assets at the same time')
       end
     end
   end
