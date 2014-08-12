@@ -1,12 +1,10 @@
   <div id="creation-templates" class="tab-content">
+
     <!--  EMPTY -->
     <div id="empty-template" class="tab-pane fade active"></div>
-    <!--  PLATE ID -->
-    <%= erb(:"creation_templates/_plate_template", :layout => false) %>
-    <!--  PLATE NAME -->
-    <%= erb(:"creation_templates/_plate_name_template", :layout => false) %>
-    <!--  Tube -->
-    <%= erb(:"creation_templates/_tube_template", :layout => false) %>
-    <!--  Sample -->
-    <%= erb(:"creation_templates/_sample_template", :layout => false) %>
+
+    <% presenter.with_each_asset_type do |asset_type_presenter| %>
+        <%= erb(:"creation_templates/_generic_template", :layout => false, :locals=>{:presenter=>asset_type_presenter}) %>
+    <% end %>
+
   </div>

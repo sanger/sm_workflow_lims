@@ -11,14 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603152601) do
+ActiveRecord::Schema.define(version: 20140807152448) do
 
   create_table "asset_types", force: true do |t|
-    t.string   "name",                             null: false
-    t.string   "identifier_type",                  null: false
-    t.boolean  "has_sample_count", default: false, null: false
+    t.string   "name",                                          null: false
+    t.string   "identifier_type",                               null: false
+    t.boolean  "has_sample_count",     default: false,          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "identifier_data_type", default: "alphanumeric", null: false
   end
 
   create_table "assets", force: true do |t|
@@ -32,6 +33,7 @@ ActiveRecord::Schema.define(version: 20140603152601) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
+    t.datetime "reported_at"
   end
 
   add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
@@ -57,6 +59,7 @@ ActiveRecord::Schema.define(version: 20140603152601) do
     t.boolean  "has_comment", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "reportable",  default: false, null: false
   end
 
 end

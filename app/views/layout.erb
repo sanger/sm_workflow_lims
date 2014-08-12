@@ -5,8 +5,8 @@
     <%= js :application %>
   </head>
 <body>
-    
- <%= erb(:_menu, :layout => false) %>
+
+ <%= erb(:_menu, :layout => false, :locals=>{:presenter=>presenter}) %>
 
 <div class="container" id="body">
     <div id="alerts-box">
@@ -20,9 +20,8 @@
 
 </div>
 <div class="container" id="footer">
+  <p class="muted"><%= presenter.version_information %></p>
 </div>
-<p class="navbar-fixed-bottom muted"><%= presenter.version_information %></p>
-  
-  
+
 </body>
 </html>
