@@ -22,13 +22,20 @@ class Presenter
 
     require './app/models/asset_type'
     require './app/models/workflow'
+    require './app/presenters/asset_type/asset_type'
 
     def each_asset_type
       AssetType.all.each do |asset_type|
         yield(asset_type.name,asset_type.identifier_type,asset_type.has_sample_count,asset_type.id)
       end
     end
-    
+
+    def with_each_asset_type
+      AssetType.all.each do |asset_type|
+        yield(Presenter::AssetTypePresenter::AssetType.new(asset_type))
+      end
+    end
+
     def each_workflow
       Workflow.all.each do |workflow|
         yield(workflow.name,workflow.has_comment,workflow.id)

@@ -25,15 +25,16 @@
                   class="dropdown-toggle" data-toggle="dropdown">New Batch <b class="caret"></b>
                 </a>
                   <ul class="dropdown-menu">
-                    <li><a data-toggle="tab" href="/batches/new#plate-template">Plates with Id</a></li>
-                    <li><a data-toggle="tab" href="/batches/new#plate_name-template">Plates with Name</a></li>
-                    <li><a data-toggle="tab" href="/batches/new#tube-template">Tubes</a></li>
-                    <li><a data-toggle="tab" href="/batches/new#sample-template">Samples</a></li>
+                    <% presenter.with_each_asset_type do |asset_type| %>
+                      <li><a data-toggle="tab" href="/batches/new#<%= asset_type.template_name %>-template"><%= asset_type.name %></a></li>
+                    <% end %>
                   </ul></li>
                 <li><a href="/assets">In Progress</a></li>
+                <li><a href="/assets?state=report_required">Report Required</a></li>
                 <li>
                   <form class="navbar-form navbar-right" role="search" method="GET" action="/assets">
                     <div class="form-group">
+                      <input type="hidden" name="state" id="state-box" value="all">
                       <input type="text" name="identifier" id="search-box" class="form-control"
                         placeholder="Search">
                     </div>
