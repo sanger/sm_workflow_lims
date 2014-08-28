@@ -10,7 +10,7 @@ module WorkflowFactory
       {:name=>'FP lysis',                         :has_comment=>false, :reportable=>false},
       {:name=>'Human DNA QC',                     :has_comment=>false, :reportable=>true},
       {:name=>'Model DNA QC',                     :has_comment=>false, :reportable=>true},
-      {:name=>'Viral/Bacterial DNA QC',           :has_comment=>false, :reportable=>false},
+      {:name=>'Viral/Bacterial DNA QC',           :has_comment=>false, :reportable=>true},
       {:name=>'RNA QC',                           :has_comment=>false, :reportable=>true},
       {:name=>'Formatting',                       :has_comment=>false, :reportable=>false},
       {:name=>'Formatting and 2ndry std QC',      :has_comment=>false, :reportable=>false},
