@@ -4,7 +4,18 @@ require "sinatra/activerecord/rake"
 APP_FILE  = './app.rb'
 APP_CLASS = 'SmWorkflowLims'
 
+begin
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new(:spec)
+  task :spec => %w[db:create db:test:prepare]
+rescue LoadError
+end
+
 require 'sinatra/assetpack/rake'
+
+task :default => :test
+
+task :test => :spec
 
 namespace :db do
   task :load_config do
