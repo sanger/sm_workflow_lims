@@ -1,0 +1,4 @@
+language: ruby
+# We don't specify a list of ruby versions, as Travis will fall back to .ruby-version
+# This is the behaviour we want, so no sense in overriding it
+bundler_args: --without deployment
