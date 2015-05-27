@@ -35,3 +35,15 @@ a:hover { color: #777777; }
 }
 
 .muted { color: #999999 }
+
+.admin-view {
+  .panel-heading {
+  .title { float: left;}
+  }
+.admin-task-actions {
+  margin-left: 8em;
+  a {
+    cursor: pointer;
+  }
+}
+}
