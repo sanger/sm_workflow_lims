@@ -28,6 +28,11 @@ describe Batch::Creator do
 
   let(:comment) { 'Example comment' }
 
+  let(:pipeline_destination) {
+    {name:'Example Pipeline Destination'}
+  }
+
+
   let(:mock_batch) {
     mb = double('mock_batch')
     mb.stub(:assets).and_return { asset_association }
@@ -47,14 +52,15 @@ describe Batch::Creator do
       Comment.should_receive(:create!).with(comment:comment).once.and_return(mock_comment)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow},
-        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow}
+        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil},
+        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil}
       ])
 
       mock_batch.should_receive(:save!).once
       Batch::Creator.create!(
         study:study,
         workflow:workflow,
+        pipeline_destination:nil,
         asset_type:asset_type,
         assets:[
           {identifier:'a',sample_count:1},
@@ -77,14 +83,15 @@ describe Batch::Creator do
       Batch.should_receive(:new).once.and_return(mock_batch)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,comment:nil},
-        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,comment:nil}
+        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,comment:nil},
+        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,comment:nil}
       ])
 
       mock_batch.should_receive(:save!).once
       Batch::Creator.create!(
         study:study,
         workflow:workflow,
+        pipeline_destination:nil,
         asset_type:asset_type,
         assets:[
           {identifier:'a',sample_count:1},
