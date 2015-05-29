@@ -94,6 +94,18 @@ class SmWorkflowLims < Sinatra::Base
     redirect to("/batches/#{presenter.id}")
   end
 
+  get '/admin' do
+    presenter = AdminController.new(params).get_index
+
+    erb :'admin/index', :locals => { :presenter =>  presenter }
+  end
+
+  post '/admin/workflows' do
+    presenter = WorkflowsController.new(params).post
+    session[:flash] = ['success',"The workflow was created."]
+    redirect to("/admin")
+  end
+
   error Controller::ParameterError do
     session[:flash] = ['danger', env['sinatra.error'].message ]
     redirect back

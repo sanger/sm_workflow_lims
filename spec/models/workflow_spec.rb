@@ -33,7 +33,12 @@ describe Workflow do
       workflow.valid?.should eq(false)
     end
 
+    it 'requires a unique name' do
+      workflow = Workflow.create!(:name=>'test1')
+      workflow = Workflow.create(:name=>'test1')
+      expect(workflow).to have(1).errors_on(:name)
+      workflow.valid?.should eq(false)
+    end
   end
-
 
 end
