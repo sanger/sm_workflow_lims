@@ -10,5 +10,4 @@ class Comment < ActiveRecord::Base
     assets.empty? || assets.all? {|a| a.destroyed? }
   end
 
-
 end

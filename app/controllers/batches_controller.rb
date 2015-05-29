@@ -13,7 +13,7 @@ class BatchesController < Controller
 
   required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
   required_parameters_for :update, [:batch_id], 'You must specify a batch.'
-    
+
   required_parameters_for :remove, [:batch_id], 'You must specify a batch.'
 
   required_parameters_for :show, [:batch_id], 'You must specify a batch.'
@@ -31,11 +31,12 @@ class BatchesController < Controller
       batch: batch,
       study: params[:study],
       workflow: workflow,
+      pipeline_destination: pipeline_destination,
       comment: params[:comment]
       )
     Presenter::BatchPresenter::Show.new(updated_batch)
   end
-  
+
   def remove
     batch.destroy!
   end
@@ -44,6 +45,7 @@ class BatchesController < Controller
     updated_batch = Batch::Creator.create!(
       study: params[:study],
       workflow: workflow,
+      pipeline_destination: pipeline_destination,
       asset_type: asset_type,
       assets: params[:assets].values,
       comment: params[:comment]
@@ -55,6 +57,10 @@ class BatchesController < Controller
 
   def workflow
     Workflow.find_by_id(params[:workflow_id])||user_error("There is no workflow with the id #{params[:workflow_id]}.")
+  end
+
+  def pipeline_destination
+    PipelineDestination.find_by_id(params[:pipeline_destination_id])
   end
 
   def asset_type

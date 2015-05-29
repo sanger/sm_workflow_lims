@@ -4,9 +4,9 @@ class Presenter::BatchPresenter
   class New < Presenter
 
     def each_asset
-      
+
     end
-    
+
     def study
       ''
     end
@@ -14,6 +14,11 @@ class Presenter::BatchPresenter
     def workflow
       'None'
     end
+
+    def pipeline_destination
+      'None'
+    end
+
     def action
       "/batches"
     end

@@ -42,7 +42,7 @@ module Presenter::AssetTypePresenter
 
     def asset_fields
       sample_count = asset_type.has_sample_count ? :sample_count : nil
-      [:identifier, :study, :batch_id, sample_count, :workflow, :created_at, :completed_at].compact
+      [:identifier, :study, :batch_id, sample_count, :workflow, :pipeline_destination, :created_at, :completed_at].compact
     end
 
   end

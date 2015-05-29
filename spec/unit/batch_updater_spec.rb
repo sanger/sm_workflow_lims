@@ -40,12 +40,13 @@ describe Batch::Updater do
       Comment.should_receive(:create!).with(:comment=>comment).once.and_return(mock_comment)
       old_comment.should_receive(:destroy).and_return(true)
 
-      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,comment_id:mock_comment)
+      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,comment_id:mock_comment)
 
       Batch::Updater.create!(
         batch:mock_batch,
         study:study,
         workflow:workflow,
+        pipeline_destination:nil,
         comment:comment
       ).should eq(mock_batch)
     end
@@ -64,12 +65,13 @@ describe Batch::Updater do
       Comment.should_not_receive(:create!)
       old_comment.should_receive(:destroy).and_return(true)
 
-      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,comment_id:nil)
+      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,comment_id:nil)
 
       Batch::Updater.create!(
         batch:mock_batch,
         study:study,
         workflow:workflow,
+        pipeline_destination:nil,
         comment:comment
       ).should eq(mock_batch)
     end

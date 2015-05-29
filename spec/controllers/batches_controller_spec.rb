@@ -79,6 +79,7 @@ describe BatchesController do
           with(
             study:'test',
             workflow:'wf',
+            pipeline_destination: nil,
             asset_type:'at',
             assets:[
               {identifier:'a',sample_count:1},
@@ -141,6 +142,7 @@ describe BatchesController do
         Batch::Updater.should_receive(:create!).with(
           batch:'bat',
           workflow:'wf',
+          pipeline_destination: nil,
           study: 'test',
           comment:'comment'
         )
@@ -168,7 +170,7 @@ describe BatchesController do
       end
     end
   end
-  
+
   context "remove" do
 
     let(:request) { BatchesController.new(params).delete }
@@ -177,7 +179,7 @@ describe BatchesController do
       let(:params)  { {:batch_id=>3 } }
       it "should pass the options to a batch destroy" do
         mocked_lookups
-        Batch.stub(:destroy!).and_return('bat')        
+        Batch.stub(:destroy!).and_return('bat')
       end
     end
 

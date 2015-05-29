@@ -42,6 +42,12 @@ class Presenter
       end
     end
 
+    def each_pipeline_destination
+      PipelineDestination.all.each do |pipeline_destination|
+        yield pipeline_destination.name, pipeline_destination.id
+      end
+    end
+
   end
   include SharedBehaviour
 
