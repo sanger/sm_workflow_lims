@@ -12,7 +12,7 @@ class Presenter::BatchPresenter
     def id
       batch.id
     end
-    
+
     def action
       "/batches/#{id}"
     end
@@ -33,6 +33,11 @@ class Presenter::BatchPresenter
       'None'
     end
 
+    def pipeline_destination
+      return first_asset.pipeline_destination.name if first_asset && !first_asset.pipeline_destination.nil?
+      'None'
+    end
+
     def comment
       return first_asset.comment.comment if first_asset && first_asset.comment
       ''
@@ -41,11 +46,11 @@ class Presenter::BatchPresenter
     def show_completed?
       true
     end
-    
+
     def first_asset
       batch.assets.first
     end
-    
+
     def num_assets
       batch.assets.count
     end
