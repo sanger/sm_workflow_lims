@@ -106,6 +106,12 @@ class SmWorkflowLims < Sinatra::Base
     redirect to("/admin")
   end
 
+  post '/admin/pipeline_destinations' do
+    presenter = PipelineDestinationsController.new(params).post
+    session[:flash] = ['success',"The pipeline destination was created."]
+    redirect to("/admin")
+  end
+
   error Controller::ParameterError do
     session[:flash] = ['danger', env['sinatra.error'].message ]
     redirect back
