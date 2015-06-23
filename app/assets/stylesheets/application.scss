@@ -35,3 +35,18 @@ a:hover { color: #777777; }
 }
 
 .muted { color: #999999 }
+
+.admin-view {
+  .green-glyph { background-color: rgb(223, 240, 216); }
+
+  .panel-heading {
+  .title { float: left;}
+  }
+
+.admin-task-actions {
+float: right;
+  a {
+    cursor: pointer;
+  }
+  }
+}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807152448) do
+ActiveRecord::Schema.define(version: 20150528085213) do
 
   create_table "asset_types", force: true do |t|
     t.string   "name",                                          null: false
@@ -23,17 +23,18 @@ ActiveRecord::Schema.define(version: 20140807152448) do
   end
 
   create_table "assets", force: true do |t|
-    t.string   "identifier",                null: false
-    t.integer  "asset_type_id",             null: false
-    t.integer  "workflow_id",               null: false
+    t.string   "identifier",                          null: false
+    t.integer  "asset_type_id",                       null: false
+    t.integer  "workflow_id",                         null: false
     t.integer  "comment_id"
-    t.integer  "batch_id",                  null: false
+    t.integer  "batch_id",                            null: false
     t.string   "study"
-    t.integer  "sample_count",  default: 1, null: false
+    t.integer  "sample_count",            default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
     t.datetime "reported_at"
+    t.integer  "pipeline_destination_id"
   end
 
   add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
@@ -52,6 +53,10 @@ ActiveRecord::Schema.define(version: 20140807152448) do
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "pipeline_destinations", force: true do |t|
+    t.string "name"
   end
 
   create_table "workflows", force: true do |t|

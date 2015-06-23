@@ -33,6 +33,10 @@ module Presenter::AssetPresenter
       asset.workflow.name
     end
 
+    def pipeline_destination
+      asset.pipeline_destination.nil? ? 'None' : asset.pipeline_destination.name
+    end
+
     def created_at
       asset.created_at.strftime('%d/%m/%Y')
     end
