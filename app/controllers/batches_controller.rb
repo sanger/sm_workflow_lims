@@ -10,6 +10,7 @@ class BatchesController < Controller
   required_parameters_for :create, [:study], 'You must specify a study.'
 
   validate_parameters_for :create, :assets_provided, 'You must register at least one asset.'
+  validate_parameters_for :create, :valid_date_provided, 'Dates must be in the format DD/MM/YYYY and cannot be in the future.'
 
   required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
   required_parameters_for :update, [:batch_id], 'You must specify a batch.'
@@ -46,7 +47,7 @@ class BatchesController < Controller
       study: params[:study],
       workflow: workflow,
       pipeline_destination: pipeline_destination,
-      begun_at: params[:begun_at],
+      begun_at: @date,
       asset_type: asset_type,
       assets: params[:assets].values,
       comment: params[:comment]
@@ -74,6 +75,16 @@ class BatchesController < Controller
 
   def assets_provided
     params[:assets] && params[:assets].keys.size > 0
+  end
+
+  def valid_date_provided
+    return true if params[:begun_at].nil?
+    begin
+      @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y')
+      @date < DateTime.now
+    rescue
+      false
+    end
   end
 
 
