@@ -46,6 +46,7 @@ class BatchesController < Controller
       study: params[:study],
       workflow: workflow,
       pipeline_destination: pipeline_destination,
+      begun_at: params[:begun_at],
       asset_type: asset_type,
       assets: params[:assets].values,
       comment: params[:comment]
