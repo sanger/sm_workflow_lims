@@ -90,8 +90,8 @@ describe Asset do
 
     let(:basics) { {identifier:'one',asset_type_id:1,batch_id:1,workflow_id:1} }
     let(:completed) { basics.merge(completed_at:Time.now) }
-    let(:created_last) { basics.merge(created_at:Time.at(1000)) }
-    let(:created_first) { basics.merge(created_at:Time.at(10)) }
+    let(:created_last) { basics.merge(begun_at:Time.at(1000)) }
+    let(:created_first) { basics.merge(begun_at:Time.at(10)) }
 
     let(:incomplete_reportable)    { basics.merge(workflow_id:reportable_workflow.id) }
     let(:complete_reportable)      { completed.merge(workflow_id:reportable_workflow.id) }

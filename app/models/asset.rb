@@ -40,7 +40,7 @@ class Asset < ActiveRecord::Base
   scope :completed,       -> { where.not(completed_at: nil) }
   scope :reportable,      -> { where(workflows:{reportable:true}) }
   scope :report_required, -> { reportable.completed.where(reported_at:nil) }
-  scope :latest_first,    -> { order('created_at DESC') }
+  scope :latest_first,    -> { order('begun_at DESC') }
 
   add_state('all',             :all)
   add_state('in_progress',     :in_progress)
