@@ -25,12 +25,10 @@ class Asset < ActiveRecord::Base
     scope_for(state)
   end
 
-  before_save :set_begun_at
+  before_create :set_begun_at
 
-  # Unfortunately with the current version of rails created_at gets assigned
-  # at the very last moment. We can't even use around save!
   def set_begun_at
-    self.begun_at = self.created_at || Time.now if self.begun_at.nil?
+    self.begun_at ||= self.created_at
   end
   private :set_begun_at
 
