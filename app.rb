@@ -33,7 +33,8 @@ class SmWorkflowLims < Sinatra::Base
     js :application, '/assets/javascripts/app.js', [
       '/assets/javascripts/jquery.min.js',
       '/assets/javascripts/bootstrap.min.js',
-      '/assets/javascripts/application.js'
+      '/assets/javascripts/application.js',
+      '/assets/javascripts/datepicker.js'
     ]
 
 
