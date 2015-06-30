@@ -12,7 +12,7 @@
     $("#alert-shown").remove();
     $("#alerts-box").append($("<div id='alert-shown' class='alert alert-" + type + "'>" + message + "</div>"));
   }
-  
+
   /**
    * Validator of asset IDs entered for current batch
    */
@@ -26,7 +26,7 @@
         this._list.push(identifier);
         return true;
       }
-      return false;    
+      return false;
     },
     remove: function(identifier) {
       var idx = $.inArray(identifier, this._list);
@@ -35,7 +35,7 @@
       }
     }
   }.reset([]);
-    
+
   function addAsset(asset) {
     if (!validatorAssetId.validate(asset.identifier)) {
       return null;
@@ -64,14 +64,14 @@
       validatorAssetId.remove(asset.identifier);
       updateBadgeCount();
     });
-    row.data("position", position);    
+    row.data("position", position);
     row.append(removeButton);
     table.append(row);
-    updateBadgeCount();    
+    updateBadgeCount();
     $(".batch-view").removeClass("hidden");
     return asset;
   }
-  
+
   function updateBadgeCount() {
     $(".batch-view .badge").html($(".batch-view tbody tr").length);
   }
@@ -98,7 +98,7 @@
         if ($(input).prop("type")!=="hidden") {
           input.value = "";
         }
-        
+
         $.each(processValues, function(pos, processValue) {
           var obj = {};
           obj[input.name] = processValue;
@@ -110,20 +110,20 @@
           }
           assets[pos] = $.extend(assets[pos], obj);
         });
-        
+
       });
       $.each(assets, function(pos, asset) {
         if (addAsset(asset)===null) {
           showAlert("danger", "The asset identifier must be unique inside the batch");
         } else {
           showAlert("success", "Asset added to the batch");
-        }        
+        }
       });
     } else {
       showAlert("danger", "The entry can't be created as the form contains some errors.");
-    }    
+    }
   }
-  
+
   function attachAssetsCreationHandlers() {
     $("#creation-templates form").each(function(pos, form) {
       $("input[type!=hidden]:first", form).on("focus", function(event) {
@@ -131,7 +131,7 @@
           setValidationStatus($(node), true);
         });
       });
-      
+
       var inputs = $("input[type!=hidden]", form);
       inputs.not(":last").on("keydown", function(event) {
         var input = event.target;
@@ -145,19 +145,19 @@
         case 9:
         case 13:
           $("input[type!=hidden]:first", form).focus();
-          processFormAssetCreation(form);          
+          processFormAssetCreation(form);
           event.preventDefault();
           break;
         }
       });
-      
-      $("button", form).click(function(event) {  
+
+      $("button", form).click(function(event) {
         event.preventDefault();
         processFormAssetCreation(form);
       });
-    });    
+    });
   };
-  
+
   function all(list, checkMethod) {
     var validations = $.map(list, checkMethod);
     var i=0;
@@ -166,29 +166,29 @@
       value = value && validations[i];
       i += 1;
     }
-    return value;    
+    return value;
   }
-  
+
   function validateForm(form) {
     var inputs = $("[data-psg-regexp]", form);
     return all(inputs, validateInput);
   }
-  
+
   function setValidationStatus(node, isSuccess) {
     node.parent().removeClass("has-success has-error");
     node.parent().addClass((isSuccess) ? "has-success" : "has-error");
-    
+
     var spanIcon = $("span", node.parent())[0];
     if (typeof spanIcon !== "undefined") {
       spanIcon = $(spanIcon);
     } else {
       spanIcon = $("<span class=\"glyphicon form-control-feedback\"></span>");
-      node.parent().append(spanIcon);          
+      node.parent().append(spanIcon);
     }
     spanIcon.removeClass("glyphicon-ok glyphicon-remove");
     spanIcon.addClass((isSuccess) ? "glyphicon-ok" : "glyphicon-remove");
   }
-  
+
   function partial() {
     var _function = arguments[0];
     var _arguments = Array.prototype.slice.call(arguments, 1);
@@ -197,16 +197,16 @@
       return _function.apply(_ctx, _arguments.concat(Array.prototype.slice.call(arguments, 0)));
     };
   }
-  
+
   function validateInput(input) {
     function validateRegexp(regexp, str) {
       var regexp = new RegExp(regexp);
       return str.search(regexp)>=0;
     }
-    
+
     var node = $(input);
     var partialedValidation = partial(validateRegexp, node.attr("data-psg-regexp"));
-    
+
     var validated;
     var tokenizer = node.attr("data-psg-tokenizer");
     if (typeof tokenizer !== "undefined") {
@@ -217,11 +217,11 @@
     setValidationStatus(node, validated);
     return validated;
   }
-  
-  
+
+
   function attachValidations() {
     $("[data-psg-regexp]").each(function(pos, input) {
-      var node = $(input);      
+      var node = $(input);
       node.on("blur", function() {
         validateInput(input);
       });
@@ -231,7 +231,7 @@
     attachSelectAllControls();
     attachComplete();
   }
-  
+
   function attachComplete() {
     $("input[type=checkbox]").on("change", function(event) {
       var node = event.currentTarget;
@@ -242,9 +242,9 @@
         $(button).html(value ? "Unselect batch" : "Select batch");
       });
     });
-    
+
   }
-  
+
   function attachBatchValidation() {
     var form = $("#form-batch");
     $("button[type=submit]", form).click(function(event) {
@@ -257,7 +257,7 @@
       event.preventDefault();
     });
     $("button[data-psg-action-type=delete]", form).click(function(event) {
-      // Batch removal functionality      
+      // Batch removal functionality
       event.preventDefault();
       $("input[name=_method]", form).val("DELETE");
       form.submit();
@@ -268,12 +268,12 @@
     function checkboxForNode(node) {
       return $("input[type=checkbox]", $(node).parent().parent());
     }
-    
+
     var batchSelectButtons = $("[data-psg-batch-id]");
     batchSelectButtons.each(function(pos, node) {
       var batchId = $(node).attr("data-psg-batch-id");
       $(node).click(function(event) {
-        var value = !checkboxForNode(node).prop("checked");        
+        var value = !checkboxForNode(node).prop("checked");
         $(batchSelectButtons.filter(function(pos, evaluatedNode) {
           return ($(evaluatedNode).attr("data-psg-batch-id") === batchId);
         })).each(function(pos, selectedNode) {
@@ -282,7 +282,7 @@
       });
     });
   }
-  
+
   function attachFormMethodsSubmitHandlers() {
     var forms = $("form[data-psg-form-method]");
     forms.each(function(pos, form) {
@@ -291,32 +291,32 @@
         event.preventDefault();
         $.ajax(form.attr("action"), {
           type: form.attr("data-psg-form-method"),
-          data: form.serialize(), 
+          data: form.serialize(),
           success: function() {
-            
+
           },
           error: function() {
-            
+
           }
         });
       });
     });
   }
-  
+
   function attachFilters() {
     attachFilterStudy();
     attachFilterWorkflow();
   }
-  
+
   function filterAssetTR(tr, enabled) {
     if (enabled) {
       $(tr).show();
     } else {
-      $("input[type=checkbox]", tr).prop("checked", false).change();      
+      $("input[type=checkbox]", tr).prop("checked", false).change();
       $(tr).hide();
     }
   }
-  
+
   function attachFilterWorkflow() {
     var filterWorkflow = $("#filter-workflow");
     filterWorkflow.on("change", function() {
@@ -324,16 +324,16 @@
       $("tr[data-psg-workflow]").each(function(pos, tr) {
         filterAssetTR(tr, (($(tr).attr("data-psg-workflow")===value) || (value.length===0)));
       });
-    });    
+    });
   }
-  
+
   function attachFilterStudy() {
     var filterStudy = $("#filter-study");
     filterStudy.on("keydown", function(event) {
       if(event.keyCode == 13) {
         event.preventDefault();
         return false;
-      }      
+      }
     });
     filterStudy.on("keyup", function(event) {
       var filterStudyRegExp = new RegExp(filterStudy.val());
@@ -359,7 +359,7 @@
       });
     });
   }
-  
+
   function getFragmentId(url) {
     var list = url.split("#");
     if (list.length === 2) {
@@ -367,7 +367,7 @@
     }
     return null;
   }
-  
+
   function attachTabHandlers() {
     var tabId = getFragmentId(window.location.href);
     $("[data-toggle=tab]").each(function(pos, node) {
@@ -377,7 +377,7 @@
       } else {
         // Select tab from URL using the fragment identifier
         if (getFragmentId($(node).attr("href")) === tabId) {
-          $(node).tab("show");        
+          $(node).tab("show");
         }
       }
       // Resets the batch every time a new template is selected
@@ -387,9 +387,9 @@
       $(node).on("click", function(event) {
         $(node).tab("show");
       });
-    });    
+    });
   }
-  
+
   function attachBatchCreationHandlers() {
     var workflowControl = $("#workflow_id");
     workflowControl.on("change", function() {
@@ -398,13 +398,13 @@
     });
     workflowControl.change();
   }
-  
+
   function resetBatch() {
     $("#batch-table").html("");
-    $(".batch-view").addClass("hidden");    
+    $(".batch-view").addClass("hidden");
     validatorAssetId.reset([]);
   }
-  
+
   function attachSelectAllControls() {
     function buildCheckedAction(enable, divContainer) {
       return function(event) {
@@ -417,10 +417,10 @@
     $(".asset-group-view").each(function(pos, div) {
       var anchors = $("a.selectable", div);
       $(anchors[0]).on("click", buildCheckedAction(true, div));
-      $(anchors[1]).on("click", buildCheckedAction(false, div));      
+      $(anchors[1]).on("click", buildCheckedAction(false, div));
     });
   }
-  
+
   $(document).ready(function() {
     //attachFormMethodsSubmitHandlers();
     attachAssetsCreationHandlers();
