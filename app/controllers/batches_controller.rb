@@ -62,7 +62,8 @@ class BatchesController < Controller
   end
 
   def pipeline_destination
-    PipelineDestination.find_by_id(params[:pipeline_destination_id])
+    return nil if params[:pipeline_destination_id].blank?
+    PipelineDestination.find_by_id(params[:pipeline_destination_id])||user_error("There is no pipeline destination with the id #{params[:pipeline_destination_id]}.")
   end
 
   def asset_type
@@ -78,7 +79,8 @@ class BatchesController < Controller
   end
 
   def valid_date_provided
-    return true if params[:begun_at].nil?
+    @date = nil
+    return true if params[:begun_at].blank?
     begin
       @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y')
       @date < DateTime.now
