@@ -10,8 +10,11 @@ class WorkflowsController < Controller
   end
 
   def create
-    updated_batch = Workflow::Creator.create!(params[:name], params[:hasComment], params[:reportable])
-    #Presenter::BatchPresenter::Show.new(updated_batch)
+    Workflow::Creator.create!(
+      :name        => params[:name],
+      :has_comment => params[:hasComment] || false,
+      :reportable  => params[:reportable] || false
+    )
   end
 
 end
