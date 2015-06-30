@@ -11,31 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624152719) do
+ActiveRecord::Schema.define(version: 20150630102003) do
 
-  create_table "asset_types", force: true do |t|
-    t.string   "name",                                          null: false
-    t.string   "identifier_type",                               null: false
-    t.boolean  "has_sample_count",     default: false,          null: false
+  create_table "asset_types", force: :cascade do |t|
+    t.string   "name",                 limit: 255,                          null: false
+    t.string   "identifier_type",      limit: 255,                          null: false
+    t.boolean  "has_sample_count",     limit: 1,   default: false,          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "identifier_data_type", default: "alphanumeric", null: false
+    t.string   "identifier_data_type", limit: 255, default: "alphanumeric", null: false
   end
 
-  create_table "assets", force: true do |t|
-    t.string   "identifier",                          null: false
-    t.integer  "asset_type_id",                       null: false
-    t.integer  "workflow_id",                         null: false
-    t.integer  "comment_id"
-    t.integer  "batch_id",                            null: false
-    t.string   "study"
-    t.integer  "sample_count",            default: 1, null: false
+  create_table "assets", force: :cascade do |t|
+    t.string   "identifier",              limit: 255,             null: false
+    t.integer  "asset_type_id",           limit: 4,               null: false
+    t.integer  "workflow_id",             limit: 4,               null: false
+    t.integer  "comment_id",              limit: 4
+    t.integer  "batch_id",                limit: 4,               null: false
+    t.string   "study",                   limit: 255
+    t.integer  "sample_count",            limit: 4,   default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
     t.datetime "reported_at"
-    t.integer  "pipeline_destination_id"
-    t.datetime "begun_at",                            null: false
+    t.integer  "pipeline_destination_id", limit: 4
+    t.datetime "begun_at",                                        null: false
   end
 
   add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
@@ -45,27 +45,28 @@ ActiveRecord::Schema.define(version: 20150624152719) do
   add_index "assets", ["identifier"], name: "index_assets_on_identifier", using: :btree
   add_index "assets", ["workflow_id"], name: "fk_assets_to_workflows", using: :btree
 
-  create_table "batches", force: true do |t|
+  create_table "batches", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "comments", force: true do |t|
-    t.text     "comment"
+  create_table "comments", force: :cascade do |t|
+    t.text     "comment",    limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "pipeline_destinations", force: true do |t|
-    t.string "name"
+  create_table "pipeline_destinations", force: :cascade do |t|
+    t.string "name", limit: 255
   end
 
-  create_table "workflows", force: true do |t|
-    t.string   "name",                        null: false
-    t.boolean  "has_comment", default: false, null: false
+  create_table "workflows", force: :cascade do |t|
+    t.string   "name",             limit: 255,                 null: false
+    t.boolean  "has_comment",      limit: 1,   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "reportable",  default: false, null: false
+    t.boolean  "reportable",       limit: 1,   default: false, null: false
+    t.integer  "turn_around_days", limit: 4
   end
 
 end

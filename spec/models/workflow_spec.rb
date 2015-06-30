@@ -8,10 +8,11 @@ describe Workflow do
     let(:has_comment) { true }
 
     it 'can be created' do
-      workflow = Workflow.new(:name=>test_name,:has_comment=>has_comment)
+      workflow = Workflow.new(:name=>test_name,:has_comment=>has_comment,:turn_around_days=>2)
       workflow.valid?.should eq(true)
       expect(workflow).to have(0).errors_on(:name)
       expect(workflow).to have(0).errors_on(:has_comment)
+      expect(workflow).to have(0).errors_on(:turn_around_days)
       workflow.name.should eq(test_name)
       workflow.has_comment?.should eq(has_comment)
     end
@@ -39,6 +40,7 @@ describe Workflow do
       expect(workflow).to have(1).errors_on(:name)
       workflow.valid?.should eq(false)
     end
+
   end
 
 end
