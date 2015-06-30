@@ -393,8 +393,8 @@
   function attachBatchCreationHandlers() {
     var workflowControl = $("#workflow_id");
     workflowControl.on("change", function() {
-      var disable = $("option[value="+workflowControl.val()+"]", workflowControl).text().search(/Other/)<0;
-      $("#comment").prop("disabled", disable);      
+      var disable = workflowControl[0].selectedOptions[0].dataset['workflowHasComment']!=="1"
+      $("#comment").prop("disabled", disable);
     });
     workflowControl.change();
   }

@@ -33,10 +33,10 @@
   <div class="form-group">
     <label for="workflow_id" class="col-sm-2 control-label">Workflow</label>
     <div class="col-sm-10">
-      <select id="workflow_id" name="workflow_id" data-psg-regexp="^(?!None).+$" class="form-control">
+      <select id="workflow_id" name="workflow_id" data-psg-regexp="^(?!None).+$" class="form-control" autocomplete="off">
         <option value="None" default>Select a workflow</option>
       <% presenter.each_workflow do |name, comment, id| %>
-        <option value="<%= id %>" <%= (presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
+        <option value="<%= id %>" <%= (presenter.workflow==name) ? 'selected' : '' %> data-workflow-has-comment="<%= comment ? 1 : 0 %>"><%= name %></option>
       <% end %>
       </select>
     </div>
