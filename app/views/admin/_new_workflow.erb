@@ -12,12 +12,16 @@
               <input type="textbox" name="name" id="name" value="" class="form-control"  placeholder="Enter a workflow name" required />
             </div>
             <div class="form-group">
-              <label class="control-label" for="hasComment">Has comment?</label>
-              <input type="checkbox" name="hasComment" id="hasComment" class="form-control" />
             </div>
-            <div class="form-group">
-              <label class="control-label" for="reportable">Reportable?</label>
-              <input type="checkbox" name="reportable" id="reportable" class="form-control" />
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-primary" for="hasComment">
+                <input type="checkbox" autocomplete="off" name="hasComment" id="hasComment"> Has comment?
+                <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+              </label>
+              <label class="btn btn-primary" for="reportable">
+                <input type="checkbox" autocomplete="off" name="reportable" id="reportable"> Reportable
+                <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+              </label>
             </div>
 
         </div>
