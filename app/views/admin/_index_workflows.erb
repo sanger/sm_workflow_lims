@@ -6,16 +6,22 @@
   </div>
   <table class="table table-striped table-hover">
     <thead>
-      <th>Name</th><th class="text-center">Has comments?</th><th class="text-center">Is reportable?</th>
+      <th>Name</th>
+      <th class="text-center">Has comments?</th>
+      <th class="text-center">Is reportable?</th>
+      <th class="text-center">Turn around time</th>
     </thead>
     <tbody>
-      <% presenter.each_workflow do |name,has_comment, id, reportable| %>
+      <% presenter.each_workflow do |name,has_comment, id, reportable, turn_around| %>
         <tr><td><%= name %></td>
           <td class="text-center">
               <span class="glyphicon <%= has_comment ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
             <span class="glyphicon <%= reportable ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
+          </td>
+          <td class="text-center">
+            <%= turn_around ? "#{turn_around} #{'day'.pluralize(turn_around)}" : 'None' %>
           </td>
         </tr>
       <% end %>
