@@ -15,19 +15,20 @@ class Batch < ActiveRecord::Base
 
   class Creator
 
-    attr_reader :comment, :assets, :study, :workflow, :asset_type, :pipeline_destination
+    attr_reader :comment, :assets, :study, :workflow, :asset_type, :pipeline_destination, :begun_at
 
     def self.create!(*args)
       self.new(*args).do!
     end
 
-    def initialize(study:,assets:,asset_type:,workflow:,pipeline_destination:,comment:nil)
+    def initialize(study:,assets:,asset_type:,workflow:,pipeline_destination:,comment:nil,begun_at:nil)
       @study = study
       @assets = assets
       @asset_type = asset_type
       @workflow = workflow
       @pipeline_destination = pipeline_destination
       @comment = comment
+      @begun_at = begun_at
     end
 
     def do!
@@ -52,6 +53,7 @@ class Batch < ActiveRecord::Base
           asset_type:    asset_type,
           study:         study,
           workflow:      workflow,
+          begun_at:      begun_at,
           pipeline_destination: pipeline_destination,
           comment:       comment_object
         }

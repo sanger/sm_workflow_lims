@@ -81,6 +81,47 @@ describe BatchesController do
             workflow:'wf',
             pipeline_destination: nil,
             asset_type:'at',
+            begun_at: nil,
+            assets:[
+              {identifier:'a',sample_count:1},
+              {identifier:'b',sample_count:1}
+            ],
+            comment: 'comment'
+          )
+
+        request
+      end
+
+      it "should return the show batch presenter for the new batch" do
+
+        mocked_lookups
+
+        Batch::Creator.stub(:create!).and_return('bat')
+        Presenter::BatchPresenter::Show.should_receive(:new).with('bat').and_return('Pres')
+        request.should eq('Pres')
+      end
+
+    end
+
+    context "with full parameters and a date" do
+
+      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test',:begun_at=>'25/06/2015',:assets=>{
+        1=>{identifier:'a',sample_count:1},
+        2=>{identifier:'b',sample_count:1}
+      }, :comment => 'comment' } }
+
+
+      it "should pass the options to a batch creator" do
+
+        mocked_lookups
+
+        Batch::Creator.should_receive(:create!).
+          with(
+            study:'test',
+            workflow:'wf',
+            pipeline_destination: nil,
+            asset_type:'at',
+            begun_at:DateTime.parse('25-06-2015 00:00'),
             assets:[
               {identifier:'a',sample_count:1},
               {identifier:'b',sample_count:1}

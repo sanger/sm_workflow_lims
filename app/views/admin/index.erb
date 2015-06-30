@@ -15,7 +15,7 @@
       <% presenter.each_workflow do |name,has_comment, id, reportable| %>
         <tr><td><%= name %></td>
           <td class="text-center">
-              <span class="glyphicon <%= has_comment ? 'glyphicon-ok green-glyph':'glyphicon-remove' %>" aria-hidden="true"></span>
+              <span class="glyphicon <%= has_comment ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
             <span class="glyphicon <%= reportable ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
