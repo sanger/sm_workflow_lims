@@ -1,0 +1,31 @@
+<div class="modal fade" id="add-workflow-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/admin/workflows">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Create a new Workflow</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+              <label class="control-label" for="name">Name</label>
+              <input type="textbox" name="name" id="name" value="" class="form-control"  placeholder="Enter a workflow name"/>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="hasComment">Has comment?</label>
+              <input type="checkbox" name="hasComment" id="hasComment" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="reportable">Reportable?</label>
+              <input type="checkbox" name="reportable" id="reportable" class="form-control" />
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-default">Create</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
