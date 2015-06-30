@@ -6,7 +6,7 @@ class Workflow < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
-  validates_numericality_of :turn_around_days, :greater_than_or_equal_to => 0, :allow_nil => true
+  validates_numericality_of :turn_around_days, :greater_than_or_equal_to => 0, :allow_nil => true, :only_integer => true
 
   class Creator
     def self.create!(*args)
