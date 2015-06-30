@@ -48,14 +48,14 @@ class Batch < ActiveRecord::Base
       assets.map do |asset_params|
         sample_count = asset_type.has_sample_count? ? asset_params[:sample_count] : 1
         {
-          identifier:    asset_params[:identifier],
-          sample_count:  sample_count,
-          asset_type:    asset_type,
-          study:         study,
-          workflow:      workflow,
-          begun_at:      begun_at,
+          identifier:           asset_params[:identifier],
+          sample_count:         sample_count,
+          asset_type:           asset_type,
+          study:                study,
+          workflow:             workflow,
+          begun_at:             begun_at,
           pipeline_destination: pipeline_destination,
-          comment:       comment_object
+          comment:              comment_object
         }
       end
     end
