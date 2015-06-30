@@ -10,8 +10,7 @@ class PipelineDestinationsController < Controller
   end
 
   def create
-    pipeline_dst = PipelineDestination::Creator.create!(params[:name])
-    #Presenter::BatchPresenter::Show.new(updated_batch)
+    PipelineDestination::Creator.create!(params[:name])
   end
 
 end
