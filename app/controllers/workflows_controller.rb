@@ -2,10 +2,11 @@ require './app/controllers/controller'
 
 class WorkflowsController < Controller
 
-  validate_parameters_for :create, :check_name,   'The name of a new workflow must be unique in the system'
+  required_parameters_for :create, [:name], 'You must provide a name for the new workflow'
+  validate_parameters_for :create, :check_name,   'The name of the new workflow must be unique'
 
   def check_name
-    !Workflow.all.map(&:name).include?(params[:name])
+    ! Workflow.where(name:params[:name]).exists?
   end
 
   def create
