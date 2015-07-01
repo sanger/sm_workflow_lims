@@ -64,6 +64,11 @@ describe Asset do
         )
 
         asset.begun_at.should eq(begun_at)
+
+        Timecop.freeze(begun_at+2.day) do
+          asset.age.should == 2
+        end
+
       end
 
     end

@@ -52,7 +52,23 @@ module Presenter::AssetPresenter
 
     def completed_at
       return asset.completed_at.strftime('%d/%m/%Y') if asset.completed_at
-      'in progress'
+      return 'Due today' if due_today?
+      return "Overdue (#{overdue_by} #{'day'.pluralize(overdue_by)})" if overdue?
+      'In progress'
+    end
+
+    def due_today?
+      return false if asset.workflow.turn_around_days.nil?
+      (0..1).include?(asset.age - asset.workflow.turn_around_days)
+    end
+
+    def overdue_by
+      return 0 if asset.workflow.turn_around_days.nil?
+      [(asset.age - asset.workflow.turn_around_days).floor,0].max
+    end
+
+    def overdue?
+      asset.completed_at.nil? && overdue_by > 0
     end
 
     def completed?
