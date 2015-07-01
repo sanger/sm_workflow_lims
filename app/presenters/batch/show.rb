@@ -1,7 +1,7 @@
 require './app/presenters/presenter'
 require './app/presenters/asset/asset'
 
-class Presenter::BatchPresenter
+module Presenter::BatchPresenter
   class Show < Presenter
     attr_reader :batch
 
@@ -53,6 +53,11 @@ class Presenter::BatchPresenter
 
     def num_assets
       batch.assets.count
+    end
+
+
+    def placeholder_date
+      first_asset.begun_at.strftime('%d/%m/%Y')
     end
 
   end

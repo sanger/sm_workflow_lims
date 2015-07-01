@@ -1,6 +1,6 @@
 require './app/presenters/presenter'
 
-class Presenter::BatchPresenter
+module Presenter::BatchPresenter
   class New < Presenter
 
     def each_asset
@@ -22,14 +22,22 @@ class Presenter::BatchPresenter
     def action
       "/batches"
     end
+
     def comment
       ''
     end
+
     def show_completed?
       false
     end
+
     def num_assets
       1
     end
+
+    def placeholder_date
+      'Today'
+    end
+
   end
 end
