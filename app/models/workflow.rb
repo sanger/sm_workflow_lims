@@ -29,4 +29,17 @@ class Workflow < ActiveRecord::Base
       end
     end
   end
+
+  class Updater
+
+    def self.create!(*args)
+      self.new(*args).do!
+    end
+
+    def initialize(*args)
+    end
+
+    def do!
+    end
+  end
 end

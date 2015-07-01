@@ -101,8 +101,13 @@ class SmWorkflowLims < Sinatra::Base
     erb :'admin/index', :locals => { :presenter =>  presenter }
   end
 
-  post '/admin/workflows' do
+  get '/admin/workflows/:workflow_id' do
     presenter = WorkflowsController.new(params).post
+    erb :'admin/workflows/show', :locals=>{:presenter=>presenter}
+  end
+
+  post '/admin/workflows' do
+    presenter = WorkflowsController.new(params).get
     session[:flash] = ['success',"The workflow was created."]
     redirect to("/admin")
   end
