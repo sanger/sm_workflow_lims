@@ -114,7 +114,7 @@ class SmWorkflowLims < Sinatra::Base
 
 
   post '/admin/workflows' do
-    presenter = WorkflowsController.new(params).get
+    presenter = WorkflowsController.new(params).post
     session[:flash] = ['success',"The workflow was created."]
     redirect to("/admin")
   end
