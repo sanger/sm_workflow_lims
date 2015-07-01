@@ -51,7 +51,7 @@ describe Asset do
 
     context "with a defined begun time" do
 
-      let(:begun_at) { DateTime.parse('01-02-2012 13:15') }
+      let(:begun_at) { DateTime.parse('01-02-2012 13:15').to_time }
 
       it 'requires an identifier, batch, asset type and workflow' do
         asset = Asset.new(
