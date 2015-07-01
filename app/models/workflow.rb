@@ -31,7 +31,7 @@ class Workflow < ActiveRecord::Base
 
   class Updater
 
-    attr_reader :name, :has_comment, :reportable, :turn_around_days, :workflow
+    attr_reader :name, :has_comment, :reportable, :turn_around_days, :workflow, :turn_around_days
 
     def self.create!(*args)
       self.new(*args).do!
@@ -42,11 +42,12 @@ class Workflow < ActiveRecord::Base
       @name = name
       @has_comment = has_comment
       @reportable = reportable
+      @turn_around_days = turn_around_days
     end
 
     def do!
       ActiveRecord::Base.transaction do
-        workflow.update_attributes!(:name => name, :has_comment => has_comment, :reportable => reportable)
+        workflow.update_attributes!(name:name, has_comment: has_comment, reportable: reportable, turn_around_days: turn_around_days)
       end
     end
   end

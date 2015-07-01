@@ -7,7 +7,8 @@ describe Workflow::Updater do
   #   workflow: 'wf',
   #   name: 'New Name',
   #   has_comment: true,
-  #   reportable: false
+  #   reportable: false,
+  #   turn_around_days: 30
   # )
 
   let(:new_name)        { 'New Name' }
@@ -21,7 +22,8 @@ describe Workflow::Updater do
       with(
         name: new_name,
         has_comment: new_has_comment,
-        reportable: new_reportable
+        reportable: new_reportable,
+        turn_around_days: new_turn_around
       )
 
     end
@@ -32,7 +34,8 @@ describe Workflow::Updater do
       workflow: mock_workflow,
       name: new_name,
       has_comment: new_has_comment,
-      reportable: new_reportable
+      reportable: new_reportable,
+      turn_around_days: new_turn_around
     )
   end
 
