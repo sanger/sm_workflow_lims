@@ -51,7 +51,7 @@ describe Asset do
 
     context "with a defined begun time" do
 
-      let(:begun_at) { DateTime.parse('01-02-2012 13:15') }
+      let(:begun_at) { DateTime.parse('01-02-2012 13:15').to_time }
 
       it 'requires an identifier, batch, asset type and workflow' do
         asset = Asset.new(
@@ -64,6 +64,11 @@ describe Asset do
         )
 
         asset.begun_at.should eq(begun_at)
+
+        Timecop.freeze(begun_at+2.day) do
+          asset.age.should == 2
+        end
+
       end
 
     end

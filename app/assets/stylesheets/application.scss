@@ -52,3 +52,7 @@ float: right;
   }
 }
 
+// Ensures that we can toggle checkbox glyphs on toggleable buttons
+.btn-primary.active .glyphicon-unchecked { display:none;}
+.btn-primary .glyphicon-check { display:none;}
+.btn-primary.active .glyphicon-check { display:inline;}

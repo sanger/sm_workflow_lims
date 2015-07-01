@@ -57,6 +57,11 @@ class Asset < ActiveRecord::Base
     completed_at.present?
   end
 
+  def age
+    # DateTime#-(DateTime) Returns the difference in days as a rational (in Ruby 2.2.2)
+    DateTime.now - begun_at.to_datetime
+  end
+
   class AssetAction
     attr_reader :time, :assets, :state
 

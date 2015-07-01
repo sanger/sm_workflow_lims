@@ -14,6 +14,7 @@ class BatchesController < Controller
 
   required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
   required_parameters_for :update, [:batch_id], 'You must specify a batch.'
+  validate_parameters_for :update, :valid_date_provided, 'Dates must be in the format DD/MM/YYYY and cannot be in the future.'
 
   required_parameters_for :remove, [:batch_id], 'You must specify a batch.'
 
@@ -34,6 +35,7 @@ class BatchesController < Controller
       workflow: workflow,
       cost_code: get_or_create_cost_code,
       pipeline_destination: pipeline_destination,
+      begun_at: @date,
       comment: params[:comment]
       )
     Presenter::BatchPresenter::Show.new(updated_batch)
@@ -64,7 +66,8 @@ class BatchesController < Controller
   end
 
   def pipeline_destination
-    PipelineDestination.find_by_id(params[:pipeline_destination_id])
+    return nil if params[:pipeline_destination_id].blank?
+    PipelineDestination.find_by_id(params[:pipeline_destination_id])||user_error("There is no pipeline destination with the id #{params[:pipeline_destination_id]}.")
   end
 
   def get_or_create_cost_code
@@ -84,11 +87,12 @@ class BatchesController < Controller
   end
 
   def valid_date_provided
-    return true if params[:begun_at].nil?
+    @date = nil
+    return true if params[:begun_at].blank?
     begin
-      @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y')
+      @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y') + 12.hours
       @date < DateTime.now
-    rescue
+    rescue ArgumentError
       false
     end
   end

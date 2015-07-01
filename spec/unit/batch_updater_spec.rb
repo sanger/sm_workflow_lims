@@ -7,10 +7,12 @@ describe Batch::Updater do
   #   batch:'bat',
   #   workflow:'wf',
   #   study: 'test',
-  #   comment:'comment'
+  #   comment:'comment',
+  #   begun_at:DateTime.parse('25-06-2015 00:00')
   # )
 
   let(:study) { 'example_study' }
+  let(:time)  { DateTime.parse('25-06-2015 00:00') }
 
   let(:comment) { 'Example comment' }
 
@@ -27,7 +29,7 @@ describe Batch::Updater do
   let(:asset2) { double('asset2',identifier:'b',sample_count:5) }
   let(:asset_association) { double('asset_association') }
 
-  context "With comments" do
+  context "With comments and date" do
 
     let(:workflow) {
       cw = double('mock_comment_workflow')
@@ -40,19 +42,20 @@ describe Batch::Updater do
       Comment.should_receive(:create!).with(:comment=>comment).once.and_return(mock_comment)
       old_comment.should_receive(:destroy).and_return(true)
 
-      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,comment_id:mock_comment)
+      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,comment_id:mock_comment,begun_at:time)
 
       Batch::Updater.create!(
         batch:mock_batch,
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
+        begun_at: time,
         comment:comment
       ).should eq(mock_batch)
     end
   end
 
-  context "Without comments" do
+  context "Without comments or time" do
 
     let(:workflow) {
       cw = double('mock_workflow')
@@ -72,7 +75,8 @@ describe Batch::Updater do
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
-        comment:comment
+        comment:comment,
+        begun_at: nil
       ).should eq(mock_batch)
     end
   end
