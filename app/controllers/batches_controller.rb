@@ -71,7 +71,8 @@ class BatchesController < Controller
   end
 
   def get_or_create_cost_code
-    CostCode.find_or_create_by(:name => params[:cost_code])
+    return CostCode.find_or_create_by(:name => params[:cost_code]) if params.keys.include?(:cost_code)
+    nil
   end
 
   def asset_type

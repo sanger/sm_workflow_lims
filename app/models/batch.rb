@@ -66,21 +66,13 @@ class Batch < ActiveRecord::Base
 
   class Updater
 
-<<<<<<< HEAD
-    attr_reader :batch, :new_comment, :study, :workflow, :pipeline_destination, :cost_code
-=======
-    attr_reader :batch, :new_comment, :study, :workflow, :pipeline_destination, :begun_at
->>>>>>> development
+    attr_reader :batch, :new_comment, :study, :workflow, :pipeline_destination, :cost_code, :begun_at
 
     def self.create!(*args)
       self.new(*args).do!
     end
 
-<<<<<<< HEAD
-    def initialize(study:,workflow:,pipeline_destination:,cost_code:,comment:,batch:)
-=======
-    def initialize(study:,workflow:,pipeline_destination:,comment:,batch:,begun_at:nil)
->>>>>>> development
+    def initialize(study:,workflow:,pipeline_destination:,cost_code:,comment:,batch:,begun_at:nil)
       @batch = batch
       @study = study
       @workflow = workflow
@@ -92,11 +84,7 @@ class Batch < ActiveRecord::Base
 
     def do!
       ActiveRecord::Base.transaction do
-<<<<<<< HEAD
-        batch.assets.update_all(study:study,workflow_id:workflow,pipeline_destination_id:pipeline_destination,cost_code_id:cost_code,comment_id:comment_object)
-=======
         batch.assets.update_all(asset_params)
->>>>>>> development
       end
       batch
     end
@@ -104,7 +92,7 @@ class Batch < ActiveRecord::Base
     private
 
     def asset_params
-      {study:study,workflow_id:workflow,pipeline_destination_id:pipeline_destination,comment_id:comment_object}.tap do |params|
+      {study:study,workflow_id:workflow,pipeline_destination_id:pipeline_destination,cost_code_id:cost_code,comment_id:comment_object}.tap do |params|
         # Only update begun at if its actually provided
         params.merge!(begun_at:begun_at) if begun_at
       end

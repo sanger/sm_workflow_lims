@@ -55,8 +55,8 @@ describe Batch::Creator do
       Comment.should_receive(:create!).with(comment:comment).once.and_return(mock_comment)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,begun_at:time},
-        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,begun_at:time}
+        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time},
+        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time}
       ])
 
       mock_batch.should_receive(:save!).once
@@ -64,6 +64,7 @@ describe Batch::Creator do
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
+        cost_code:nil,
         asset_type:asset_type,
         begun_at:time,
         assets:[
@@ -87,8 +88,8 @@ describe Batch::Creator do
       Batch.should_receive(:new).once.and_return(mock_batch)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,comment:nil,begun_at:nil},
-        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,comment:nil,begun_at:nil}
+        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil},
+        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil}
       ])
 
       mock_batch.should_receive(:save!).once
@@ -96,6 +97,7 @@ describe Batch::Creator do
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
+        cost_code:nil,
         asset_type:asset_type,
         assets:[
           {identifier:'a',sample_count:1},

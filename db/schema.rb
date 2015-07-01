@@ -35,10 +35,7 @@ ActiveRecord::Schema.define(version: 20150630102003) do
     t.datetime "completed_at"
     t.datetime "reported_at"
     t.integer  "pipeline_destination_id", limit: 4
-<<<<<<< HEAD
     t.integer  "cost_code_id",            limit: 4
-=======
->>>>>>> development
     t.datetime "begun_at",                                        null: false
   end
 
@@ -60,22 +57,10 @@ ActiveRecord::Schema.define(version: 20150630102003) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   create_table "cost_codes", force: :cascade do |t|
     t.string "name", limit: 255, null: false
   end
 
-  create_table "pipeline_destinations", force: :cascade do |t|
-    t.string "name", limit: 255
-  end
-
-  create_table "workflows", force: :cascade do |t|
-    t.string   "name",        limit: 255,                 null: false
-    t.boolean  "has_comment", limit: 1,   default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "reportable",  limit: 1,   default: false, null: false
-=======
   create_table "pipeline_destinations", force: :cascade do |t|
     t.string "name", limit: 255
   end
@@ -87,7 +72,6 @@ ActiveRecord::Schema.define(version: 20150630102003) do
     t.datetime "updated_at"
     t.boolean  "reportable",       limit: 1,   default: false, null: false
     t.integer  "turn_around_days", limit: 4
->>>>>>> development
   end
 
 end

@@ -80,6 +80,7 @@ describe BatchesController do
             study:'test',
             workflow:'wf',
             pipeline_destination: nil,
+            cost_code: nil,
             asset_type:'at',
             begun_at: nil,
             assets:[
@@ -120,6 +121,7 @@ describe BatchesController do
             study:'test',
             workflow:'wf',
             pipeline_destination: nil,
+            cost_code: nil,
             asset_type:'at',
             begun_at:DateTime.parse('25-06-2015 12:00'),
             assets:[
@@ -184,6 +186,7 @@ describe BatchesController do
           batch:'bat',
           workflow:'wf',
           pipeline_destination: nil,
+          cost_code: nil,
           begun_at:DateTime.parse('25-06-2015 12:00'),
           study: 'test',
           comment:'comment'
