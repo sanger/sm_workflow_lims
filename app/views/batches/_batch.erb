@@ -2,7 +2,6 @@
   action="<%= presenter.action %>">
 <% if defined?(presenter.batch) %>
   <input type="hidden" name="_method" value="PUT"/>
-  <input type="hidden" name="batch_id" value="<%= presenter.id %>" />
 <% end %>
   <input type="hidden" name="asset_type_id" value="1" />
   <table class="table table-striped table-bordered table-condensed <%= class_for_table %>">
