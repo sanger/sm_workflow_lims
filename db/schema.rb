@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624152719) do
+ActiveRecord::Schema.define(version: 20150629160352) do
 
   create_table "asset_types", force: true do |t|
     t.string   "name",                                          null: false
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20150624152719) do
     t.datetime "reported_at"
     t.integer  "pipeline_destination_id"
     t.datetime "begun_at",                            null: false
+    t.integer  "cost_code_id"
   end
 
   add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
@@ -54,6 +55,10 @@ ActiveRecord::Schema.define(version: 20150624152719) do
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "cost_codes", force: true do |t|
+    t.string "name", null: false
   end
 
   create_table "pipeline_destinations", force: true do |t|

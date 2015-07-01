@@ -8,6 +8,7 @@ class Asset < ActiveRecord::Base
   belongs_to :asset_type
   belongs_to :workflow
   belongs_to :pipeline_destination
+  belongs_to :cost_code
   belongs_to :batch
   belongs_to :comment
 
