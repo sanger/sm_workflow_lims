@@ -102,9 +102,16 @@ class SmWorkflowLims < Sinatra::Base
   end
 
   get '/admin/workflows/:workflow_id' do
-    presenter = WorkflowsController.new(params).post
+    presenter = WorkflowsController.new(params).get
     erb :'admin/workflows/show', :locals=>{:presenter=>presenter}
   end
+
+  put '/admin/workflows/:workflow_id' do
+    presenter = WorkflowsController.new(params).put
+    session[:flash] = ['success',"The workflow was updated."]
+    redirect to("/admin")
+  end
+
 
   post '/admin/workflows' do
     presenter = WorkflowsController.new(params).get
