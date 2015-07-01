@@ -1,6 +1,6 @@
 require './app/presenters/presenter'
 
-class Presenter::BatchPresenter
+module Presenter::BatchPresenter
   class New < Presenter
 
     def each_asset

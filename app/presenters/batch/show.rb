@@ -1,7 +1,7 @@
 require './app/presenters/presenter'
 require './app/presenters/asset/asset'
 
-class Presenter::BatchPresenter
+module Presenter::BatchPresenter
   class Show < Presenter
     attr_reader :batch
 
