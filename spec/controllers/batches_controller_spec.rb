@@ -121,7 +121,7 @@ describe BatchesController do
             workflow:'wf',
             pipeline_destination: nil,
             asset_type:'at',
-            begun_at:DateTime.parse('25-06-2015 00:00'),
+            begun_at:DateTime.parse('25-06-2015 12:00'),
             assets:[
               {identifier:'a',sample_count:1},
               {identifier:'b',sample_count:1}
@@ -184,7 +184,7 @@ describe BatchesController do
           batch:'bat',
           workflow:'wf',
           pipeline_destination: nil,
-          begun_at:DateTime.parse('25-06-2015 00:00'),
+          begun_at:DateTime.parse('25-06-2015 12:00'),
           study: 'test',
           comment:'comment'
         )

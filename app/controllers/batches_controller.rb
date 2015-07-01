@@ -84,7 +84,7 @@ class BatchesController < Controller
     @date = nil
     return true if params[:begun_at].blank?
     begin
-      @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y')
+      @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y') + 12.hours
       @date < DateTime.now
     rescue ArgumentError
       false
