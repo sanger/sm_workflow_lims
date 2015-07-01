@@ -14,6 +14,7 @@ class BatchesController < Controller
 
   required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
   required_parameters_for :update, [:batch_id], 'You must specify a batch.'
+  validate_parameters_for :update, :valid_date_provided, 'Dates must be in the format DD/MM/YYYY and cannot be in the future.'
 
   required_parameters_for :remove, [:batch_id], 'You must specify a batch.'
 
@@ -33,6 +34,7 @@ class BatchesController < Controller
       study: params[:study],
       workflow: workflow,
       pipeline_destination: pipeline_destination,
+      begun_at: @date,
       comment: params[:comment]
       )
     Presenter::BatchPresenter::Show.new(updated_batch)
@@ -84,7 +86,7 @@ class BatchesController < Controller
     begin
       @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y')
       @date < DateTime.now
-    rescue
+    rescue ArgumentError
       false
     end
   end

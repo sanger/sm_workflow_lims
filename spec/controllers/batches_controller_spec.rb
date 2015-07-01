@@ -176,7 +176,7 @@ describe BatchesController do
 
     context "with full parameters" do
 
-      let(:params)  { {:batch_id=>3,:workflow_id=>3,:study=>'test',comment:'comment' } }
+      let(:params)  { {:batch_id=>3,:workflow_id=>3,:study=>'test',:comment => 'comment',:begun_at=>'25/06/2015' } }
 
       it "should pass the options to a batch updater" do
         mocked_lookups
@@ -184,6 +184,7 @@ describe BatchesController do
           batch:'bat',
           workflow:'wf',
           pipeline_destination: nil,
+          begun_at:DateTime.parse('25-06-2015 00:00'),
           study: 'test',
           comment:'comment'
         )

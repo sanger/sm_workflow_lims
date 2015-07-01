@@ -55,5 +55,10 @@ module Presenter::BatchPresenter
       batch.assets.count
     end
 
+
+    def placeholder_date
+      first_asset.begun_at.strftime('%d/%m/%Y')
+    end
+
   end
 end

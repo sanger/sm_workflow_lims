@@ -22,14 +22,22 @@ module Presenter::BatchPresenter
     def action
       "/batches"
     end
+
     def comment
       ''
     end
+
     def show_completed?
       false
     end
+
     def num_assets
       1
     end
+
+    def placeholder_date
+      'Today'
+    end
+
   end
 end
