@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150630102003) do
     t.datetime "completed_at"
     t.datetime "reported_at"
     t.integer  "pipeline_destination_id", limit: 4
+    t.integer  "cost_code_id",            limit: 4
     t.datetime "begun_at",                                        null: false
   end
 
@@ -54,6 +55,10 @@ ActiveRecord::Schema.define(version: 20150630102003) do
     t.text     "comment",    limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "cost_codes", force: :cascade do |t|
+    t.string "name", limit: 255, null: false
   end
 
   create_table "pipeline_destinations", force: :cascade do |t|

@@ -38,6 +38,11 @@ module Presenter::BatchPresenter
       'None'
     end
 
+    def cost_code
+      return first_asset.cost_code.name if first_asset && !first_asset.cost_code.nil?
+      ''
+    end
+
     def comment
       return first_asset.comment.comment if first_asset && first_asset.comment
       ''

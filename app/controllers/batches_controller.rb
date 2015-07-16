@@ -33,6 +33,7 @@ class BatchesController < Controller
       batch: batch,
       study: params[:study],
       workflow: workflow,
+      cost_code: get_or_create_cost_code,
       pipeline_destination: pipeline_destination,
       begun_at: @date,
       comment: params[:comment]
@@ -50,6 +51,7 @@ class BatchesController < Controller
       workflow: workflow,
       pipeline_destination: pipeline_destination,
       begun_at: @date,
+      cost_code: get_or_create_cost_code,
       asset_type: asset_type,
       assets: params[:assets].values,
       comment: params[:comment]
@@ -66,6 +68,11 @@ class BatchesController < Controller
   def pipeline_destination
     return nil if params[:pipeline_destination_id].blank?
     PipelineDestination.find_by_id(params[:pipeline_destination_id])||user_error("There is no pipeline destination with the id #{params[:pipeline_destination_id]}.")
+  end
+
+  def get_or_create_cost_code
+    return CostCode.find_or_create_by(:name => params[:cost_code]) if params.keys.include?(:cost_code)
+    nil
   end
 
   def asset_type

@@ -19,6 +19,10 @@ module Presenter::BatchPresenter
       'None'
     end
 
+    def cost_code
+      ''
+    end
+
     def action
       "/batches"
     end

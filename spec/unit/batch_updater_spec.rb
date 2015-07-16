@@ -42,13 +42,14 @@ describe Batch::Updater do
       Comment.should_receive(:create!).with(:comment=>comment).once.and_return(mock_comment)
       old_comment.should_receive(:destroy).and_return(true)
 
-      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,comment_id:mock_comment,begun_at:time)
+      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,cost_code_id:nil,comment_id:mock_comment,begun_at:time)
 
       Batch::Updater.create!(
         batch:mock_batch,
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
+        cost_code:nil,
         begun_at: time,
         comment:comment
       ).should eq(mock_batch)
@@ -68,13 +69,14 @@ describe Batch::Updater do
       Comment.should_not_receive(:create!)
       old_comment.should_receive(:destroy).and_return(true)
 
-      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,comment_id:nil)
+      asset_association.should_receive(:update_all).with(study:study,workflow_id:workflow,pipeline_destination_id:nil,cost_code_id:nil,comment_id:nil)
 
       Batch::Updater.create!(
         batch:mock_batch,
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
+        cost_code:nil,
         comment:comment,
         begun_at: nil
       ).should eq(mock_batch)
