@@ -170,6 +170,7 @@ describe Asset do
     end
 
     after do
+      Workflow.destroy_all
       Asset.destroy_all
     end
 

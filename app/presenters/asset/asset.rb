@@ -63,12 +63,16 @@ module Presenter::AssetPresenter
 
     def due_today?
       return false if asset.workflow.turn_around_days.nil?
-      (0..1).include?(asset.age - asset.workflow.turn_around_days)
+      (0..1).include?(time_from_due_date)
+    end
+
+    def time_from_due_date
+      asset.age - asset.workflow.turn_around_days
     end
 
     def overdue_by
       return 0 if asset.workflow.turn_around_days.nil?
-      [(asset.age - asset.workflow.turn_around_days).floor,0].max
+      [(time_from_due_date).floor,0].max
     end
 
     def overdue?
@@ -81,6 +85,13 @@ module Presenter::AssetPresenter
 
     def batch_id
       asset.batch.id
+    end
+
+    def status_code
+      return 'success' if asset.completed_at
+      return 'warning' if due_today?
+      return 'danger' if overdue?
+      'default'
     end
   end
 end

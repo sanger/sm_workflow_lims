@@ -72,6 +72,10 @@ describe Presenter::AssetPresenter::Asset do
       it "should return 'in progress' for completed_at" do
         presenter.completed_at.should eq('In progress')
       end
+
+      it "should have no styling" do
+        expect(presenter.status_code).to eq('default')
+      end
     end
 
     context 'when due today' do
@@ -79,12 +83,18 @@ describe Presenter::AssetPresenter::Asset do
       it "should return 'Due today' for completed_at" do
         presenter.completed_at.should eq('Due today')
       end
+      it "should be warning" do
+        expect(presenter.status_code).to eq('warning')
+      end
     end
 
     context 'when overdue' do
       let(:age) { DateTime.parse('04-02-2012 15:15') - date }
       it "should return 'Overdue (1 day)' for completed_at" do
         presenter.completed_at.should eq('Overdue (1 day)')
+      end
+      it "should be danger" do
+        expect(presenter.status_code).to eq('danger')
       end
     end
   end
