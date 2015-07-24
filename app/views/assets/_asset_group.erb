@@ -1,5 +1,5 @@
 <% presenter.each_asset(asset_type.name) do |asset, pos| %>
-<tr data-psg-workflow="<%= asset.workflow %>">
+<tr data-psg-workflow="<%= asset.workflow %>" class="<%= asset.status_code %>">
   <% asset_type.asset_fields.each do |asset_field| %>
     <td>
       <%= asset.send(asset_field) %>

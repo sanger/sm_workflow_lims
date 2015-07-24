@@ -11,7 +11,7 @@
   </thead>
   <tbody id="batch-table">
    <% presenter.each_asset do |asset, pos| %>
-     <tr>
+     <tr class="<%= asset.status_code %>">
        <% [:identifier_type, :identifier, :sample_count, :created_at].each do |field| %>
           <td><%= asset.send(field) %></td>
        <% end %>
