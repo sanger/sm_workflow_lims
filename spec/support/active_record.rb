@@ -2,7 +2,7 @@ require 'active_record'
 require './app'
 
 ActiveRecord::Base.establish_connection(:test)
-ActiveRecord::Base.logger.level = 1
+ActiveRecord::Base.logger.level = 1 unless ActiveRecord::Base.logger.nil?
 
 # Via http://iain.nl/testing-activerecord-in-isolation
 # As we're not using the rest of rails, this provides us

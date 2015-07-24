@@ -1,7 +1,7 @@
 require './app/presenters/presenter'
 require './app/presenters/asset/asset'
 
-class Presenter::BatchPresenter
+module Presenter::BatchPresenter
   class Show < Presenter
     attr_reader :batch
 
@@ -38,6 +38,11 @@ class Presenter::BatchPresenter
       'None'
     end
 
+    def cost_code
+      return first_asset.cost_code.name if first_asset && !first_asset.cost_code.nil?
+      ''
+    end
+
     def comment
       return first_asset.comment.comment if first_asset && first_asset.comment
       ''
@@ -53,6 +58,11 @@ class Presenter::BatchPresenter
 
     def num_assets
       batch.assets.count
+    end
+
+
+    def placeholder_date
+      first_asset.begun_at.strftime('%d/%m/%Y')
     end
 
   end

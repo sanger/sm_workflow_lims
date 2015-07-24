@@ -33,7 +33,8 @@ class SmWorkflowLims < Sinatra::Base
     js :application, '/assets/javascripts/app.js', [
       '/assets/javascripts/jquery.min.js',
       '/assets/javascripts/bootstrap.min.js',
-      '/assets/javascripts/application.js'
+      '/assets/javascripts/application.js',
+      '/assets/javascripts/datepicker.js'
     ]
 
 
@@ -99,6 +100,18 @@ class SmWorkflowLims < Sinatra::Base
 
     erb :'admin/index', :locals => { :presenter =>  presenter }
   end
+
+  get '/admin/workflows/:workflow_id' do
+    presenter = WorkflowsController.new(params).get
+    erb :'admin/workflows/show', :locals=>{:presenter=>presenter}
+  end
+
+  put '/admin/workflows/:workflow_id' do
+    presenter = WorkflowsController.new(params).put
+    session[:flash] = ['success',"The workflow was updated."]
+    redirect to("/admin")
+  end
+
 
   post '/admin/workflows' do
     presenter = WorkflowsController.new(params).post
