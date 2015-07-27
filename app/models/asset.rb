@@ -8,6 +8,7 @@ class Asset < ActiveRecord::Base
   belongs_to :asset_type
   belongs_to :workflow
   belongs_to :pipeline_destination
+  belongs_to :cost_code
   belongs_to :batch
   belongs_to :comment
 
@@ -25,6 +26,13 @@ class Asset < ActiveRecord::Base
     scope_for(state)
   end
 
+  before_create :set_begun_at
+
+  def set_begun_at
+    self.begun_at ||= self.created_at
+  end
+  private :set_begun_at
+
   validates_presence_of :workflow, :batch, :identifier, :asset_type
 
   delegate :identifier_type, :to => :asset_type
@@ -33,7 +41,7 @@ class Asset < ActiveRecord::Base
   scope :completed,       -> { where.not(completed_at: nil) }
   scope :reportable,      -> { where(workflows:{reportable:true}) }
   scope :report_required, -> { reportable.completed.where(reported_at:nil) }
-  scope :latest_first,    -> { order('created_at DESC') }
+  scope :latest_first,    -> { order('begun_at DESC') }
 
   add_state('all',             :all)
   add_state('in_progress',     :in_progress)
@@ -47,6 +55,11 @@ class Asset < ActiveRecord::Base
 
   def completed?
     completed_at.present?
+  end
+
+  def age
+    # DateTime#-(DateTime) Returns the difference in days as a rational (in Ruby 2.2.2)
+    DateTime.now - begun_at.to_datetime
   end
 
   class AssetAction

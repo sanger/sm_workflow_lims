@@ -25,12 +25,16 @@ describe Asset do
       expect(asset).to have(0).errors_on(:comment)
       expect(asset).to have(0).errors_on(:asset_type)
 
+      expect(asset).to have(0).errors_on(:begun_at)
+
       asset.valid?.should eq(true)
 
       asset.identifier.should eq(identifier)
       asset.batch.should eq(batch)
       asset.asset_type.should eq(asset_type)
       asset.workflow.should eq(workflow)
+
+      asset.begun_at.should eq(asset.created_at)
     end
 
     it 'should delegate identifier_type to asset_type' do
@@ -42,6 +46,31 @@ describe Asset do
         :workflow=>workflow
       )
       asset.identifier_type.should eq('example')
+    end
+
+
+    context "with a defined begun time" do
+
+      let(:begun_at) { DateTime.parse('01-02-2012 13:15').to_time }
+
+      it 'requires an identifier, batch, asset type and workflow' do
+        asset = Asset.new(
+          :identifier => identifier,
+          :batch      => batch,
+          :asset_type => asset_type,
+          :workflow   => workflow,
+          :comment    => comment,
+          :begun_at   => begun_at
+        )
+
+        asset.begun_at.should eq(begun_at)
+
+        Timecop.freeze(begun_at+2.day) do
+          asset.age.should == 2
+        end
+
+      end
+
     end
 
   end
@@ -66,8 +95,8 @@ describe Asset do
 
     let(:basics) { {identifier:'one',asset_type_id:1,batch_id:1,workflow_id:1} }
     let(:completed) { basics.merge(completed_at:Time.now) }
-    let(:created_last) { basics.merge(created_at:Time.at(1000)) }
-    let(:created_first) { basics.merge(created_at:Time.at(10)) }
+    let(:created_last) { basics.merge(begun_at:Time.at(1000)) }
+    let(:created_first) { basics.merge(begun_at:Time.at(10)) }
 
     let(:incomplete_reportable)    { basics.merge(workflow_id:reportable_workflow.id) }
     let(:complete_reportable)      { completed.merge(workflow_id:reportable_workflow.id) }
@@ -78,8 +107,9 @@ describe Asset do
       incomplete = Asset.new(basics)
       complete = Asset.new(completed)
 
-      incomplete.save(validate: false)
-      complete.save(validate: false)
+
+      incomplete.save!(validate: false)
+      complete.save!(validate: false)
 
       Asset.in_progress.should include(incomplete)
       Asset.in_progress.should_not include(complete)
@@ -113,10 +143,10 @@ describe Asset do
       asset_complete_nonreportable = Asset.new(complete_nonreportable)
       asset_reported_reportable = Asset.new(reported_reportable)
 
-      asset_incomplete_reportable.save(validate: false)
-      asset_complete_reportable.save(validate: false)
-      asset_complete_nonreportable.save(validate: false)
-      asset_reported_reportable.save(validate: false)
+      asset_incomplete_reportable.save!(validate: false)
+      asset_complete_reportable.save!(validate: false)
+      asset_complete_nonreportable.save!(validate: false)
+      asset_reported_reportable.save!(validate: false)
 
       Asset.reportable.should     include(asset_complete_reportable)
       Asset.reportable.should     include(asset_incomplete_reportable)
@@ -133,13 +163,14 @@ describe Asset do
       earliest = Asset.new(created_first)
       latest   = Asset.new(created_last)
 
-      earliest.save(validate: false)
-      latest.save(validate: false)
+      earliest.save!(validate: false)
+      latest.save!(validate: false)
 
       Asset.latest_first.first.should eq(latest)
     end
 
     after do
+      Workflow.destroy_all
       Asset.destroy_all
     end
 

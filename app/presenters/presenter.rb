@@ -38,7 +38,7 @@ class Presenter
 
     def each_workflow
       Workflow.all.each do |workflow|
-        yield(workflow.name,workflow.has_comment,workflow.id,workflow.reportable)
+        yield(workflow.name,workflow.has_comment,workflow.id,workflow.reportable,workflow.turn_around_days)
       end
     end
 
@@ -46,6 +46,15 @@ class Presenter
       PipelineDestination.all.each do |pipeline_destination|
         yield pipeline_destination.name, pipeline_destination.id
       end
+    end
+
+    def each_cost_code
+      CostCode.all.each do |cost_code|
+        yield cost_code.name, cost_code.id
+      end
+      #[1,2,3].each do |val|
+      #  yield val, "cost_code#{val}"
+      #end
     end
 
   end

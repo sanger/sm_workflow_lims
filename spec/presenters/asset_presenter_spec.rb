@@ -1,11 +1,12 @@
 require 'spec_helper'
 require './app/presenters/asset/asset'
+require 'timecop'
 
 describe Presenter::AssetPresenter::Asset do
 
   shared_examples "shared behaviour" do
     let(:mock_type) { double('mock_type',name:'Type',identifier_type:'id',variable_samples:true)}
-    let(:mock_workflow)  { double('mock_wf',  name:'Work',has_comment:true)}
+    let(:mock_workflow)  { double('mock_wf',  name:'Work',has_comment:true,turn_around_days:2)}
     let(:date) { DateTime.parse('01-02-2012 13:15') }
     let(:comment) { double('comment',:comment=>'A comment')}
 
@@ -58,19 +59,51 @@ describe Presenter::AssetPresenter::Asset do
   end
 
   context "an unfinished asset" do
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,created_at:date,completed_at:nil) }
+
+    let(:age) { date - DateTime.parse('01-02-2012 15:15') }
+    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,created_at:date,completed_at:nil,age:age) }
 
     include_examples "shared behaviour"
-    it "should return 'in progress' for completed_at" do
-      presenter.completed_at.should eq('in progress')
+
+    context 'when not due for a while' do
+      # DateTime returns differences in rationals. However, to avoid making assumptions about the performance of the standard
+      # library, we just use it. That way, if its behaviour changes, out tests will fail.
+      let(:age) { DateTime.parse('01-02-2012 15:15') - date }
+      it "should return 'in progress' for completed_at" do
+        presenter.completed_at.should eq('In progress')
+      end
+
+      it "should have no styling" do
+        expect(presenter.status_code).to eq('default')
+      end
+    end
+
+    context 'when due today' do
+      let(:age) { DateTime.parse('03-02-2012 15:15') - date }
+      it "should return 'Due today' for completed_at" do
+        presenter.completed_at.should eq('Due today')
+      end
+      it "should be warning" do
+        expect(presenter.status_code).to eq('warning')
+      end
+    end
+
+    context 'when overdue' do
+      let(:age) { DateTime.parse('04-02-2012 15:15') - date }
+      it "should return 'Overdue (1 day)' for completed_at" do
+        presenter.completed_at.should eq('Overdue (1 day)')
+      end
+      it "should be danger" do
+        expect(presenter.status_code).to eq('danger')
+      end
     end
   end
 
-  context "an unfinished asset" do
+  context "an completed asset" do
     let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,created_at:date,completed_at:date) }
 
     include_examples "shared behaviour"
-    it "should return 'in progress' for completed_at" do
+    it "should return its completed date for completed_at" do
       presenter.completed_at.should eq('01/02/2012')
     end
   end

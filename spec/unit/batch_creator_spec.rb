@@ -8,6 +8,7 @@ describe Batch::Creator do
   #   study:'test',
   #   workflow:'wf',
   #   asset_type:'at',
+  #   begun_at: date,
   #   assets:[
   #     {identifier:'a',sample_count:1},
   #     {identifier:'b',sample_count:1}
@@ -41,19 +42,21 @@ describe Batch::Creator do
   let(:mock_comment) { double('mock_comment') }
   let(:asset_association) { double('asset_association')}
 
-  context "With comments" do
+  context "With comments and date" do
 
     let(:workflow) {
       double('mock_workflow',has_comment?:true)
     }
+
+    let(:time)   { DateTime.parse('01-02-2003 00:00') }
 
     it "should create the batch, comment and assets" do
       Batch.should_receive(:new).once.and_return(mock_batch)
       Comment.should_receive(:create!).with(comment:comment).once.and_return(mock_comment)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil},
-        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil}
+        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time},
+        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time}
       ])
 
       mock_batch.should_receive(:save!).once
@@ -61,7 +64,9 @@ describe Batch::Creator do
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
+        cost_code:nil,
         asset_type:asset_type,
+        begun_at:time,
         assets:[
           {identifier:'a',sample_count:1},
           {identifier:'b',sample_count:5}
@@ -71,7 +76,7 @@ describe Batch::Creator do
     end
   end
 
-  context "Without comments" do
+  context "Without comments or date" do
 
     let(:workflow) {
       wf = double('mock_workflow')
@@ -83,8 +88,8 @@ describe Batch::Creator do
       Batch.should_receive(:new).once.and_return(mock_batch)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,comment:nil},
-        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,comment:nil}
+        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil},
+        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil}
       ])
 
       mock_batch.should_receive(:save!).once
@@ -92,6 +97,7 @@ describe Batch::Creator do
         study:study,
         workflow:workflow,
         pipeline_destination:nil,
+        cost_code:nil,
         asset_type:asset_type,
         assets:[
           {identifier:'a',sample_count:1},

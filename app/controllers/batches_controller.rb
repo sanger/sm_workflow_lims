@@ -10,9 +10,11 @@ class BatchesController < Controller
   required_parameters_for :create, [:study], 'You must specify a study.'
 
   validate_parameters_for :create, :assets_provided, 'You must register at least one asset.'
+  validate_parameters_for :create, :valid_date_provided, 'Dates must be in the format DD/MM/YYYY and cannot be in the future.'
 
   required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
   required_parameters_for :update, [:batch_id], 'You must specify a batch.'
+  validate_parameters_for :update, :valid_date_provided, 'Dates must be in the format DD/MM/YYYY and cannot be in the future.'
 
   required_parameters_for :remove, [:batch_id], 'You must specify a batch.'
 
@@ -31,7 +33,9 @@ class BatchesController < Controller
       batch: batch,
       study: params[:study],
       workflow: workflow,
+      cost_code: get_or_create_cost_code,
       pipeline_destination: pipeline_destination,
+      begun_at: @date,
       comment: params[:comment]
       )
     Presenter::BatchPresenter::Show.new(updated_batch)
@@ -46,6 +50,8 @@ class BatchesController < Controller
       study: params[:study],
       workflow: workflow,
       pipeline_destination: pipeline_destination,
+      begun_at: @date,
+      cost_code: get_or_create_cost_code,
       asset_type: asset_type,
       assets: params[:assets].values,
       comment: params[:comment]
@@ -60,7 +66,13 @@ class BatchesController < Controller
   end
 
   def pipeline_destination
-    PipelineDestination.find_by_id(params[:pipeline_destination_id])
+    return nil if params[:pipeline_destination_id].blank?
+    PipelineDestination.find_by_id(params[:pipeline_destination_id])||user_error("There is no pipeline destination with the id #{params[:pipeline_destination_id]}.")
+  end
+
+  def get_or_create_cost_code
+    return CostCode.find_or_create_by(:name => params[:cost_code]) if params.keys.include?(:cost_code)
+    nil
   end
 
   def asset_type
@@ -73,6 +85,17 @@ class BatchesController < Controller
 
   def assets_provided
     params[:assets] && params[:assets].keys.size > 0
+  end
+
+  def valid_date_provided
+    @date = nil
+    return true if params[:begun_at].blank?
+    begin
+      @date = DateTime.strptime(params[:begun_at],'%d/%m/%Y') + 12.hours
+      @date < DateTime.now
+    rescue ArgumentError
+      false
+    end
   end
 
 
