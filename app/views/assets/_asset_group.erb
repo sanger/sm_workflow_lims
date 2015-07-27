@@ -14,9 +14,9 @@
   <% end %>
 
   <% if presenter.is_search? %>
-    <td class="assets-show-batch with-button"><a href="/batches/<%= asset.batch_id %>"><button type="button" class="btn btn-default table_button" data-psg-batch-id="<%= asset.batch_id %>" >Edit batch</button></a></td>
+    <td class="assets-show-batch with-button"><a href="/batches/<%= asset.batch_id %>"><button type="button" class="btn btn-<%= asset.status_code %> table_button" data-psg-batch-id="<%= asset.batch_id %>" >Edit batch</button></a></td>
   <% else %>
-    <td class="assets-select-batch with-button"><button type="button" class="btn btn-default table_button" data-psg-batch-id="<%= asset.batch_id %>" >Select batch</button></td>
+    <td class="assets-select-batch with-button"><button type="button" class="btn btn-<%= asset.status_code %> table_button" data-psg-batch-id="<%= asset.batch_id %>" >Select batch</button></td>
   <% end %>
 </tr>
 <% end %>
