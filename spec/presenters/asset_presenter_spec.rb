@@ -39,7 +39,7 @@ describe Presenter::AssetPresenter::Asset do
   end
 
   context "with an asset with comments" do
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,created_at:date,comment:comment) }
+    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,comment:comment) }
 
     include_examples "shared behaviour"
 
@@ -49,7 +49,7 @@ describe Presenter::AssetPresenter::Asset do
   end
 
   context "with an asset without comments" do
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,created_at:date,comment:nil) }
+    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,comment:nil) }
 
     include_examples "shared behaviour"
 
@@ -61,7 +61,7 @@ describe Presenter::AssetPresenter::Asset do
   context "an unfinished asset" do
 
     let(:age) { date - DateTime.parse('01-02-2012 15:15') }
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,created_at:date,completed_at:nil,age:age) }
+    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:nil,age:age) }
 
     include_examples "shared behaviour"
 
@@ -100,7 +100,7 @@ describe Presenter::AssetPresenter::Asset do
   end
 
   context "an completed asset" do
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,created_at:date,completed_at:date) }
+    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:date) }
 
     include_examples "shared behaviour"
     it "should return its completed date for completed_at" do
