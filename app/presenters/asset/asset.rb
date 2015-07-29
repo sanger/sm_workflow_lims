@@ -42,7 +42,7 @@ module Presenter::AssetPresenter
     end
 
     def created_at
-      asset.created_at.strftime('%d/%m/%Y')
+      asset.begun_at.strftime('%d/%m/%Y')
     end
 
     def updated_at
