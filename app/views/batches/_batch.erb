@@ -63,7 +63,9 @@
   <div class="form-group">
     <label for="cost_code" class="col-sm-2 control-label">Cost Code</label>
     <div class="col-sm-10">
-      <input type="text" value="<%= presenter.cost_code %>" name="cost_code" id="cost_code" class="form-control" data-psg-regexp="^[A-Za-z]\d+$"/>
+      <input type="text" value="<%= presenter.cost_code %>" name="cost_code" id="cost_code" class="form-control"
+      data-psg-input-optional="true"
+      data-psg-regexp="^[A-Za-z]\d+$"/>
     </div>
   </div>
 

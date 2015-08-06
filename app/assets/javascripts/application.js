@@ -214,6 +214,12 @@
     } else {
       validated = partialedValidation(node.val());
     }
+    /* Optional inputs are valid even when they are empty, which means the haven't been specified */
+    if (node.val().length===0) {
+      if (node.attr("data-psg-input-optional")==="true") {
+        validated = true;
+      }
+    }
     setValidationStatus(node, validated);
     return validated;
   }
