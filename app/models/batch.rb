@@ -1,6 +1,9 @@
 require 'active_record'
 
+require './lib/client_side_validations'
+
 class Batch < ActiveRecord::Base
+
 
   has_many :assets
   has_many :comments, :through => :assets
@@ -12,6 +15,9 @@ class Batch < ActiveRecord::Base
       self.assets.each(&:destroy!)
     end
   end
+
+  include ClientSideValidations
+  validate_with_regexp :study, :with => /^\w+$/
 
   class Creator
 

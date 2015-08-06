@@ -3,12 +3,12 @@ module ClientSideValidations
     base.instance_eval do |klass|
       @regexp = {}
       def validate_with_regexp(attr_name, params)
-        validates_format_of attr_name, params
-        @regexp[attr_name] = params[:with]
+        validates_format_of attr_name, params.merge(:multiline => true)
+        @regexp[attr_name] = params
       end
 
-      def regexp_str(attr_name)
-        @regexp[attr_name].source
+      def html_validation_attributes(attr_name)
+        "data-psg-regexp='#{@regexp[attr_name][:with].source}' data-psg-input-optional='#{@regexp[attr_name][:allow_blank]==true}'" if @regexp[attr_name]
       end
     end
   end
