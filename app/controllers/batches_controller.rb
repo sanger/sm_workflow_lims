@@ -71,7 +71,7 @@ class BatchesController < Controller
   end
 
   def cost_code
-    return CostCode.find_or_create_by(:name => params[:cost_code]).tap{|c| c.save || user_error("The cost code should should be one letter followed by digits") } if params[:cost_code].present?
+    return CostCode.find_or_create_by(:name => params[:cost_code]).tap{|c| c.save || user_error(CostCode.validationErrorMsg(:name)) } if params[:cost_code].present?
     nil
   end
 
