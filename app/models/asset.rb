@@ -1,5 +1,6 @@
 require 'active_record'
 require './lib/state_scoping'
+require './lib/client_side_validations'
 
 class Asset < ActiveRecord::Base
 
@@ -13,6 +14,9 @@ class Asset < ActiveRecord::Base
   belongs_to :comment
 
   after_destroy :remove_comment, :if => :comment
+
+  include ClientSideValidations
+  validate_with_regexp :study, :with => /^\w+$/
 
   def remove_comment
     comment.destroy

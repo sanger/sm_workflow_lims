@@ -16,7 +16,6 @@ describe BatchesController do
       Batch.stub(:find_by_id).
         with(3).
         and_return('bat')
-
     }
 
   context "new" do
@@ -62,6 +61,74 @@ describe BatchesController do
   context "create" do
 
     let(:request) { BatchesController.new(params).post }
+
+    context "with new cost code" do
+      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test', :cost_code => 'S12345',
+        :assets=>{
+          1=>{identifier:'a',sample_count:1},
+          2=>{identifier:'b',sample_count:1}
+        }, :comment => 'comment' } }
+      it "should create a new cost code" do
+        mocked_lookups
+
+        CostCode.all.length.should eq(0)
+        Batch::Creator.should_receive(:create!).
+          with(
+            study:'test',
+            workflow:'wf',
+            pipeline_destination: nil,
+            cost_code: CostCode.new({ :id => 1, :name => "S12345"}),
+            asset_type:'at',
+            begun_at: nil,
+            assets:[
+              {identifier:'a',sample_count:1},
+              {identifier:'b',sample_count:1}
+            ],
+            comment: 'comment'
+          )
+        request
+        CostCode.all.length.should eq(1)
+      end
+    end
+
+    context "with an existing cost code" do
+      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test', :cost_code => 'S12345', :assets=>{
+        1=>{identifier:'a',sample_count:1},
+        2=>{identifier:'b',sample_count:1}
+      }, :comment => 'comment' } }
+      it "should reuse the cost code without creating a new one" do
+        mocked_lookups
+        CostCode.all.length.should eq(1)
+        Batch::Creator.should_receive(:create!).
+          with(
+            study:'test',
+            workflow:'wf',
+            pipeline_destination: nil,
+            cost_code: CostCode.new({ :id => 1, :name => "S12345"}),
+            asset_type:'at',
+            begun_at: nil,
+            assets:[
+              {identifier:'a',sample_count:1},
+              {identifier:'b',sample_count:1}
+            ],
+            comment: 'comment'
+          )
+        request
+        CostCode.all.length.should eq(1)
+      end
+    end
+
+    context "with an incorrect cost code" do
+      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test', :cost_code => 'SS1111', :assets=>{
+        1=>{identifier:'a',sample_count:1},
+        2=>{identifier:'b',sample_count:1}
+      }, :comment => 'comment' } }
+      it "should display an error" do
+        mocked_lookups
+        expect { request }.to raise_error(Controller::ParameterError,'The cost code should should be one letter followed by digits')
+      end
+    end
+
 
     context "with full parameters" do
 
