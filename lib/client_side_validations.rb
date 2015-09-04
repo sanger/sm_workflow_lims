@@ -12,16 +12,26 @@ module ClientSideValidations
         {
           :'data-psg-regexp' => "#{@regexp[attr_name][:with].source}",
           :'data-psg-input-optional' => "#{@regexp[attr_name][:allow_blank]==true}",
-          :'data-psg-validation-error-msg' => validationErrorMsg(attr_name)
-        }
+          :'data-psg-validation-error-msg' => "#{@regexp[attr_name][:error_msg]}"
+        }.tap do |obj|
+          # For the moment, it's just for data-psg-validation-error-msg
+          obj.delete_if{|k, v| v.empty? }
+        end
       end
 
       def validationErrorMsg(attr_name)
-        {:name => "The cost code should should be one letter followed by digits"}[attr_name]
+        nil if @regexp[attr_name].nil?
+        @regexp[attr_name][:error_msg]
       end
 
       def html_input_control(attr_name, params)
-        "<input #{params_obj_to_html_params(params.merge(html_validation_attributes(attr_name)))}>"
+        html_control("input", attr_name, params)
+      end
+
+      def html_control(html_tag, attr_name, params)
+        %Q{
+          <#{html_tag} #{params_obj_to_html_params(params.merge(html_validation_attributes(attr_name)))}>
+        }
       end
     end
   end
