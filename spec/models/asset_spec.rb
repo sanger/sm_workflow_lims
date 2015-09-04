@@ -7,6 +7,7 @@ describe Asset do
 
     let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
     let(:identifier) { 'name' }
+    let(:study) { 'study_A'}
     let(:batch) { Batch.new }
     let(:workflow) { Workflow.new }
     let(:comment) { Comment.new }
@@ -15,12 +16,14 @@ describe Asset do
       asset = Asset.new(
         :identifier => identifier,
         :batch      => batch,
+        :study      => study,
         :asset_type => asset_type,
         :workflow   => workflow,
         :comment    => comment
       )
       expect(asset).to have(0).errors_on(:identifier)
       expect(asset).to have(0).errors_on(:batch)
+      expect(asset).to have(0).errors_on(:study)
       expect(asset).to have(0).errors_on(:workflow)
       expect(asset).to have(0).errors_on(:comment)
       expect(asset).to have(0).errors_on(:asset_type)
@@ -76,16 +79,41 @@ describe Asset do
   end
 
   context "with invalid parameters" do
+    let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let(:identifier) { 'name' }
+    let(:study) { 'study_A'}
+    let(:batch) { Batch.new }
+    let(:workflow) { Workflow.new }
+    let(:comment) { Comment.new }
 
-    it 'requires an identifier, batch, asset type and workflow' do
+    it 'requires an identifier, batch, study, asset type and workflow' do
       asset = Asset.new()
       expect(asset).to have(1).errors_on(:identifier)
       expect(asset).to have(1).errors_on(:batch)
+      expect(asset).to have(1).errors_on(:study)
       expect(asset).to have(1).errors_on(:asset_type)
       expect(asset).to have(1).errors_on(:workflow)
       asset.valid?.should eq(false)
     end
 
+    it 'requires study to follow convention format (no spaces)' do
+      asset = Asset.new(
+        :identifier => identifier,
+        :batch      => batch,
+        :study      => 'Not valid because it has spaces',
+        :asset_type => asset_type,
+        :workflow   => workflow,
+        :comment    => comment
+      )
+      expect(asset).to have(1).errors_on(:study)
+    end
+
+    it 'requires cost code to follow convention format (1 letter + digits)' do
+      cost_code = CostCode.new(:name => 'NOT VALID')
+      expect(cost_code).to have(1).errors_on(:name)
+      cost_code = CostCode.new(:name => 'S1')
+      expect(cost_code).to have(0).errors_on(:name)
+    end
   end
 
   context 'scopes' do
