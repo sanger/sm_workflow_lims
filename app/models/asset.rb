@@ -66,6 +66,12 @@ class Asset < ActiveRecord::Base
     DateTime.now - begun_at.to_datetime
   end
 
+  def time_without_completion
+    return ((completed_at - begun_at) / 86400).floor if completed?
+    age
+  end
+
+
   class AssetAction
     attr_reader :time, :assets, :state
 
