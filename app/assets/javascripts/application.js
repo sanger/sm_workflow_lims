@@ -214,7 +214,7 @@
       var value = $(node).prop("checked");
       var row = $(node).parent().parent().parent();
       $("[data-psg-batch-id]", row).each(function(pos, button) {
-        row[value ? 'addClass' : 'removeClass']("success");
+        row[value ? 'addClass' : 'removeClass']("selected-row");
         $(button).html(value ? "Unselect batch" : "Select batch");
       });
     });
