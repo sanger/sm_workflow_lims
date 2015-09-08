@@ -204,6 +204,7 @@
     });
     attachBatchValidation();
     attachBatchSelection();
+    attachEditBatch();
     attachSelectAllControls();
     attachComplete();
   }
@@ -215,7 +216,10 @@
       var row = $(node).parent().parent().parent();
       $("[data-psg-batch-id]", row).each(function(pos, button) {
         row[value ? 'addClass' : 'removeClass']("selected-row");
-        $(button).html(value ? "Unselect batch" : "Select batch");
+        if ($(button).data('psg-select-button')===true) {
+          $(button)[value ? 'addClass' : 'removeClass']('active');
+          $(button).html(value ? "Unselect" : "Select");
+        }
       });
     });
 
@@ -240,21 +244,33 @@
     });
   }
   // in_progress inbox
+  function attachEditBatch() {
+    var batchEditButtons = $("button[data-psg-edit-button]");
+    batchEditButtons.each(function(pos, node) {
+      var batchId = $(node).attr("data-psg-batch-id");
+      $(node).click(function(event) {
+        window.location.href="/batches/" + batchId;
+      });
+    });
+  }
   function attachBatchSelection() {
     function checkboxForNode(node) {
-      return $("input[type=checkbox]", $(node).parent().parent());
+      return $("input[type=checkbox]", $(node).closest("tr"));
     }
 
-    var batchSelectButtons = $("[data-psg-batch-id]");
+    var batchSelectButtons = $("button[data-psg-select-button]");
     batchSelectButtons.each(function(pos, node) {
       var batchId = $(node).attr("data-psg-batch-id");
       $(node).click(function(event) {
         var value = !checkboxForNode(node).prop("checked");
-        $(batchSelectButtons.filter(function(pos, evaluatedNode) {
+        $("input[data-psg-batch-id="+batchId+"]", $(node).closest("table")).each(function(pos, selectedNode) {
+          checkboxForNode(selectedNode).prop("checked", value).change();
+        });
+        /*$(batchSelectButtons.filter(function(pos, evaluatedNode) {
           return ($(evaluatedNode).attr("data-psg-batch-id") === batchId);
         })).each(function(pos, selectedNode) {
           checkboxForNode(selectedNode).prop("checked", value).change();
-        });
+        });*/
       });
     });
   }

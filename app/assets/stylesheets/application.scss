@@ -52,6 +52,23 @@ float: right;
   }
 }
 
+tr.selected-row {
+  font-weight: bold;
+}
+
+tr.starting-batch-mark {
+  border: solid;
+  border-top-width: 3px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-color: lightgray;
+}
+
+td.batch-box {
+  background-color: white !important;
+}
+
 // Ensures that we can toggle checkbox glyphs on toggleable buttons
 .btn-primary.active .glyphicon-unchecked { display:none;}
 .btn-primary .glyphicon-check { display:none;}
