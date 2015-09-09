@@ -52,21 +52,49 @@ float: right;
   }
 }
 
-tr.selected-row {
-  font-weight: bold;
-}
 
-tr.starting-batch-mark {
-  border: solid;
-  border-top-width: 3px;
-  border-bottom-width: 0px;
-  border-left-width: 0px;
-  border-right-width: 0px;
-  border-color: lightgray;
-}
+tbody {
+  tr.selected-row {
+    font-weight: bold;
+    color: black;
+    transition-property: color, font-weight;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+  }
 
-td.batch-box {
-  background-color: white !important;
+  tr {
+    font-weight: normal;
+    transition-property: color, font-weight;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+  }
+
+  tr:hover {
+    cursor: pointer;
+    color: gray;
+  }
+
+  td a {
+    text-decoration: underline;
+  }
+
+  tr:active {
+    color: lightgray;
+  }
+
+  tr.starting-batch-mark {
+    border: solid;
+    border-top-width: 3px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-color: lightgray;
+  }
+
+  td.batch-box {
+    background-color: white !important;
+    font-weight: normal !important;
+  }
 }
 
 // Ensures that we can toggle checkbox glyphs on toggleable buttons

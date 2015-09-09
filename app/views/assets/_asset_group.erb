@@ -2,34 +2,33 @@
 <% new_batch = 1 %>
 <% presenter.each_asset(asset_type.name) do |asset, pos| %>
 <% new_batch = asset.send(:batch_id) %>
+
 <tr data-psg-workflow="<%= asset.workflow %>" class="<%= asset.status_code %> <%= 'starting-batch-mark' if previous_batch != new_batch %>">
   <% asset_type.asset_fields.each do |asset_field| %>
     <!-- % if asset_field == :batch_id % -->
     <% if asset_field == :batch_id %>
       <% if new_batch != previous_batch %>
-        <td rowspan=<%= presenter.assets_from_batch(asset_type.name, new_batch).count %> class="batch-box">
-          <div style="text-align: center;">
-            <h5> Batch <%= new_batch %></h5>
-            <div class="btn-group-vertical" role="group">
-              <button type="button" class="btn btn-default table_button" data-psg-select-button="true" data-psg-batch-id="<%= asset.batch_id %>">Select</button>
-              <!-- a href="/batches/<%= asset.batch_id %>" -->
-                <button type="button" class="btn btn-default table_button" data-psg-edit-button="true" data-psg-batch-id="<%= asset.batch_id %>" >Edit</button>
-              <!--/a -->
-            </div>
-          </div>
 
+        <td rowspan=<%= presenter.assets_from_batch(asset_type.name, new_batch).count %> class="batch-box" style="text-align: center;">
+          <% if !presenter.is_search? %>
+            <div class="checkbox">
+              <input name="batch_id" type="checkbox" data-psg-select-batch="true" data-psg-batch-id="<%= asset.batch_id %>" />
+            </div>
+          <% end %>
+          <a href="/batches/<%= asset.batch_id %>"><%= new_batch %></a>
         </td>
+
       <% end %>
     <% else %>
-      <td>
-        <%= asset.send(asset_field) %>
-        <% if (asset_field == :completed_at) %>
+      <td class="common-attribute">
+        <% if ((asset_field == :identifier) && (!presenter.is_search?)) %>
           <% presenter.action do |action|%>
-            <span style="float: right;">
-              <input name="<%= action %>[<%= asset.id %>]" type="checkbox" data-psg-batch-id="<%= asset.batch_id %>" />
-            </span>
+            <div class="checkbox">
+              <input name="<%= action %>[<%= asset.id %>]" type="checkbox" data-psg-select-asset="true" data-psg-batch-id="<%= asset.batch_id %>" />
+            </div>
           <% end %>
         <% end %>
+        <%= asset.send(asset_field) %>
       </td>
     <% end %>
   <% end %>

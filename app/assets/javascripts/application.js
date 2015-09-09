@@ -207,13 +207,14 @@
     attachEditBatch();
     attachSelectAllControls();
     attachComplete();
+    attachInputSelectByTr();
   }
 
   function attachComplete() {
     $("input[type=checkbox]").on("change", function(event) {
       var node = event.currentTarget;
       var value = $(node).prop("checked");
-      var row = $(node).parent().parent().parent();
+      var row = $(node).closest("tr");
       $("[data-psg-batch-id]", row).each(function(pos, button) {
         row[value ? 'addClass' : 'removeClass']("selected-row");
         if ($(button).data('psg-select-button')===true) {
@@ -222,7 +223,15 @@
         }
       });
     });
+  }
 
+  function attachInputSelectByTr() {
+    $("td.common-attribute").on("click", function(event) {
+      var node = $("[data-psg-select-asset]", $(event.currentTarget).closest("tr"));
+      if (node[0] !== event.target) {
+        node.click();
+      }
+    });
   }
 
   function attachBatchValidation() {
@@ -253,24 +262,16 @@
       });
     });
   }
-  function attachBatchSelection() {
-    function checkboxForNode(node) {
-      return $("input[type=checkbox]", $(node).closest("tr"));
-    }
 
-    var batchSelectButtons = $("button[data-psg-select-button]");
+  function attachBatchSelection() {
+    var batchSelectButtons = $("input[data-psg-select-batch]");
     batchSelectButtons.each(function(pos, node) {
       var batchId = $(node).attr("data-psg-batch-id");
       $(node).click(function(event) {
-        var value = !checkboxForNode(node).prop("checked");
+        var value = $(node).prop("checked");
         $("input[data-psg-batch-id="+batchId+"]", $(node).closest("table")).each(function(pos, selectedNode) {
-          checkboxForNode(selectedNode).prop("checked", value).change();
+          $(selectedNode).prop("checked", value).change();
         });
-        /*$(batchSelectButtons.filter(function(pos, evaluatedNode) {
-          return ($(evaluatedNode).attr("data-psg-batch-id") === batchId);
-        })).each(function(pos, selectedNode) {
-          checkboxForNode(selectedNode).prop("checked", value).change();
-        });*/
       });
     });
   }
@@ -360,6 +361,24 @@
     return null;
   }
 
+  function configMenuActiveTab() {
+    var menu = $("#sm_workflow_menu");
+    $("a", menu).each(function(pos, node) {
+      if (typeof $(node).data("toggle") !== 'undefined') {
+        /* Do not apply to the dropdown list */
+        return;
+      }
+      var href = $(node).attr('href');
+      var url = window.location.href;
+      var posFinding = url.indexOf(href);
+      if ((posFinding>=0) && (posFinding + href.length === url.length)) {
+        /* Just one active */
+        //$("li", menu).removeClass("active");
+        $(node).closest("li").addClass("active");
+      }
+    });
+  }
+
   function attachTabHandlers() {
     var tabId = getFragmentId(window.location.href);
     $("[data-toggle=tab]").each(function(pos, node) {
@@ -413,7 +432,9 @@
     });
   }
 
+
   $(document).ready(function() {
+    configMenuActiveTab();
     //attachFormMethodsSubmitHandlers();
     attachAssetsCreationHandlers();
     attachBatchCreationHandlers();

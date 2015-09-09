@@ -42,7 +42,7 @@ module Presenter::AssetTypePresenter
 
     def asset_fields
       sample_count = asset_type.has_sample_count ? :sample_count : nil
-      [:identifier, :study, sample_count, :workflow, :pipeline_destination, :cost_code, :created_at, :completed_at, :batch_id].compact
+      [:batch_id, :identifier, :study, sample_count, :workflow, :pipeline_destination, :cost_code, :created_at, :completed_at].compact
     end
 
     def is_field_value_shared_inside_batch?(asset_field)
