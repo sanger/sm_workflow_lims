@@ -1,22 +1,38 @@
+<% previous_batch = nil %>
+<% new_batch = 1 %>
 <% presenter.each_asset(asset_type.name) do |asset, pos| %>
-<tr data-psg-workflow="<%= asset.workflow %>" class="<%= asset.status_code %>">
+<% new_batch = asset.send(:batch_id) %>
+
+<tr data-psg-workflow="<%= asset.workflow %>" class="<%= asset.status_code %> <%= 'starting-batch-mark' if previous_batch != new_batch %>">
   <% asset_type.asset_fields.each do |asset_field| %>
-    <td>
-      <%= asset.send(asset_field) %>
-      <% if (asset_field == :completed_at) %>
-        <% presenter.action do |action|%>
-          <span style="float: right;">
-            <input name="<%= action %>[<%= asset.id %>]" type="checkbox"/>
-          </span>
-        <% end %>
+    <!-- % if asset_field == :batch_id % -->
+    <% if asset_field == :batch_id %>
+      <% if new_batch != previous_batch %>
+
+        <td rowspan=<%= presenter.assets_from_batch(asset_type.name, new_batch).count %> class="batch-box" style="text-align: center;">
+          <% if !presenter.is_search? %>
+            <div class="checkbox">
+              <input name="batch_id" type="checkbox" data-psg-select-batch="true" data-psg-batch-id="<%= asset.batch_id %>" />
+            </div>
+          <% end %>
+          <a href="/batches/<%= asset.batch_id %>"><%= new_batch %></a>
+        </td>
+
       <% end %>
-    </td>
+    <% else %>
+      <td class="common-attribute">
+        <% if ((asset_field == :identifier) && (!presenter.is_search?)) %>
+          <% presenter.action do |action|%>
+            <div class="checkbox">
+              <input name="<%= action %>[<%= asset.id %>]" type="checkbox" data-psg-select-asset="true" data-psg-batch-id="<%= asset.batch_id %>" />
+            </div>
+          <% end %>
+        <% end %>
+        <%= asset.send(asset_field) %>
+      </td>
+    <% end %>
   <% end %>
 
-  <% if presenter.is_search? %>
-    <td class="assets-show-batch with-button"><a href="/batches/<%= asset.batch_id %>"><button type="button" class="btn btn-<%= asset.status_code %> table_button" data-psg-batch-id="<%= asset.batch_id %>" >Edit batch</button></a></td>
-  <% else %>
-    <td class="assets-select-batch with-button"><button type="button" class="btn btn-<%= asset.status_code %> table_button" data-psg-batch-id="<%= asset.batch_id %>" >Select batch</button></td>
-  <% end %>
+  <% previous_batch = new_batch %>
 </tr>
 <% end %>

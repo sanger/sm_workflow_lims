@@ -4,6 +4,22 @@ Sample Management Workflow LIMS
 A simple workflow management system, originally developed for use in Sample Management.
 
 
+How to start it
+===============
+
+1) Generate the web assets:
+
+rake assetpack:build
+
+2) Start the web server and go to http://localhost:9292
+
+bundle exec puma
+
+How to test
+================
+
+rake
+
 Console
 ================
 
