@@ -61,7 +61,7 @@ module Presenter::AssetPresenter
     end
 
     def completed_at_status
-      "#{asset.completed_at.strftime('%d/%m/%Y')} (#{completed_status_label})"
+      "#{asset.completed_at.strftime('%d/%m/%Y')} #{'(' + completed_status_label + ')' if completed_status_label}"
     end
 
     def completed_at
