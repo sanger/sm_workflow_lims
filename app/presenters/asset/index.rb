@@ -25,6 +25,10 @@ module Presenter::AssetPresenter
       return assets[type].length
     end
 
+    def assets_from_batch(type, batch_id)
+      @assets[type].select{|a| a.batch.id==batch_id}
+    end
+
     def each_asset(type)
       if assets[type].nil?
         return

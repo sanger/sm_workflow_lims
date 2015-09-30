@@ -8,8 +8,12 @@
     }
   }
 
-  function showAlert(type, message) {
+  function hideAlert() {
     $("#alert-shown").remove();
+  }
+
+  function showAlert(type, message) {
+    hideAlert();
     $("#alerts-box").append($("<div id='alert-shown' class='alert alert-" + type + "'>" + message + "</div>"));
   }
 
@@ -76,49 +80,54 @@
     $(".batch-view .badge").html($(".batch-view tbody tr").length);
   }
 
+
+  function onSuccessfulValidationForm(form) {
+    var inputs = $("input", form);
+    var assets = [];
+    inputs.each(function(pos, input) {
+      var tokenizer = $(input).attr("data-psg-tokenizer");
+      var processValues;
+      // If it is using the token separator in the input
+      if ((typeof tokenizer !== "undefined") && (input.value.search(tokenizer)>=0)) {
+        processValues = input.value.split(tokenizer);
+      } else {
+        // In other case, we'll create as many inputs as assets previously generated. At least
+        // one in case this is the first asset generated
+        processValues = [];
+        for (var i=0; i<Math.max(1, assets.length); i++) {
+          processValues.push(input.value);
+        }
+      }
+      // Resets the value after reading it
+      if ($(input).prop("type")!=="hidden") {
+        input.value = "";
+      }
+
+      $.each(processValues, function(pos, processValue) {
+        var obj = {};
+        obj[input.name] = processValue;
+        if (typeof assets[pos] === "undefined") {
+          assets[pos] = Object.create({});
+          if (pos>0) {
+            assets[pos] = $.extend(assets[pos], assets[pos-1]);
+          }
+        }
+        assets[pos] = $.extend(assets[pos], obj);
+      });
+
+    });
+    $.each(assets, function(pos, asset) {
+      if (addAsset(asset)===null) {
+        showAlert("danger", "The asset identifier must be unique inside the batch");
+      } else {
+        showAlert("success", "Asset added to the batch");
+      }
+    });
+  }
+
   function processFormAssetCreation(form) {
-    if (validateForm(form)) {
-      var inputs = $("input", form);
-      var assets = [];
-      inputs.each(function(pos, input) {
-        var tokenizer = $(input).attr("data-psg-tokenizer");
-        var processValues;
-        // If it is using the token separator in the input
-        if ((typeof tokenizer !== "undefined") && (input.value.search(tokenizer)>=0)) {
-          processValues = input.value.split(tokenizer);
-        } else {
-          // In other case, we'll create as many inputs as assets previously generated. At least
-          // one in case this is the first asset generated
-          processValues = [];
-          for (var i=0; i<Math.max(1, assets.length); i++) {
-            processValues.push(input.value);
-          }
-        }
-        // Resets the value after reading it
-        if ($(input).prop("type")!=="hidden") {
-          input.value = "";
-        }
-
-        $.each(processValues, function(pos, processValue) {
-          var obj = {};
-          obj[input.name] = processValue;
-          if (typeof assets[pos] === "undefined") {
-            assets[pos] = Object.create({});
-            if (pos>0) {
-              assets[pos] = $.extend(assets[pos], assets[pos-1]);
-            }
-          }
-          assets[pos] = $.extend(assets[pos], obj);
-        });
-
-      });
-      $.each(assets, function(pos, asset) {
-        if (addAsset(asset)===null) {
-          showAlert("danger", "The asset identifier must be unique inside the batch");
-        } else {
-          showAlert("success", "Asset added to the batch");
-        }
-      });
+    if (ClientSideValidations.validateForm(form, onSuccessfulValidationInput, onErrorValidationInput)) {
+      onSuccessfulValidationForm(form)
     } else {
       showAlert("danger", "The entry can't be created as the form contains some errors.");
     }
@@ -158,23 +167,7 @@
     });
   };
 
-  function all(list, checkMethod) {
-    var validations = $.map(list, checkMethod);
-    var i=0;
-    var value = true;
-    while (i<validations.length && value) {
-      value = value && validations[i];
-      i += 1;
-    }
-    return value;
-  }
-
-  function validateForm(form) {
-    var inputs = $("[data-psg-regexp]", form);
-    return all(inputs, validateInput);
-  }
-
-  function setValidationStatus(node, isSuccess) {
+  function setValidationStatus(node, isSuccess, errorMessage) {
     node.parent().removeClass("has-success has-error");
     node.parent().addClass((isSuccess) ? "has-success" : "has-error");
 
@@ -187,68 +180,64 @@
     }
     spanIcon.removeClass("glyphicon-ok glyphicon-remove");
     spanIcon.addClass((isSuccess) ? "glyphicon-ok" : "glyphicon-remove");
-  }
 
-  function partial() {
-    var _function = arguments[0];
-    var _arguments = Array.prototype.slice.call(arguments, 1);
-    var _ctx = this;
-    return function() {
-      return _function.apply(_ctx, _arguments.concat(Array.prototype.slice.call(arguments, 0)));
-    };
-  }
-
-  function validateInput(input) {
-    function validateRegexp(regexp, str) {
-      var regexp = new RegExp(regexp);
-      return str.search(regexp)>=0;
+    hideAlert();
+    if ((!isSuccess) && (typeof errorMessage !== 'undefined')) {
+      showAlert("danger", errorMessage);
     }
-
-    var node = $(input);
-    var partialedValidation = partial(validateRegexp, node.attr("data-psg-regexp"));
-
-    var validated;
-    var tokenizer = node.attr("data-psg-tokenizer");
-    if (typeof tokenizer !== "undefined") {
-      validated = all(node.val().split(tokenizer), partialedValidation);
-    } else {
-      validated = partialedValidation(node.val());
-    }
-    setValidationStatus(node, validated);
-    return validated;
   }
 
+  function onSuccessfulValidationInput(input) {
+    setValidationStatus($(input), true);
+  }
+
+  function onErrorValidationInput(input, errorMessage) {
+    setValidationStatus($(input), false, errorMessage);
+  }
 
   function attachValidations() {
     $("[data-psg-regexp]").each(function(pos, input) {
       var node = $(input);
       node.on("blur", function() {
-        validateInput(input);
+        ClientSideValidations.validateInput(input, onSuccessfulValidationInput, onErrorValidationInput);
       });
     });
     attachBatchValidation();
     attachBatchSelection();
+    attachEditBatch();
     attachSelectAllControls();
     attachComplete();
+    attachInputSelectByTr();
   }
 
   function attachComplete() {
     $("input[type=checkbox]").on("change", function(event) {
       var node = event.currentTarget;
       var value = $(node).prop("checked");
-      var row = $(node).parent().parent().parent();
+      var row = $(node).closest("tr");
       $("[data-psg-batch-id]", row).each(function(pos, button) {
-        row[value ? 'addClass' : 'removeClass']("success");
-        $(button).html(value ? "Unselect batch" : "Select batch");
+        row[value ? 'addClass' : 'removeClass']("selected-row");
+        if ($(button).data('psg-select-button')===true) {
+          $(button)[value ? 'addClass' : 'removeClass']('active');
+          $(button).html(value ? "Unselect" : "Select");
+        }
       });
     });
+  }
 
+  function attachInputSelectByTr() {
+    $("td.common-attribute").on("click", function(event) {
+      var node = $("[data-psg-select-asset]", $(event.currentTarget).closest("tr"));
+      if (node[0] !== event.target) {
+        node.click();
+      }
+    });
   }
 
   function attachBatchValidation() {
     var form = $("#form-batch");
     $("button[type=submit]", form).click(function(event) {
-      if (!validateForm(form)) {
+      if (!ClientSideValidations.validateForm(form, onSuccessfulValidationInput, onErrorValidationInput)) {
         event.preventDefault();
         showAlert("danger", "The batch provided contains some errors.");
       }
@@ -264,20 +253,24 @@
     });
   }
   // in_progress inbox
-  function attachBatchSelection() {
-    function checkboxForNode(node) {
-      return $("input[type=checkbox]", $(node).parent().parent());
-    }
+  function attachEditBatch() {
+    var batchEditButtons = $("button[data-psg-edit-button]");
+    batchEditButtons.each(function(pos, node) {
+      var batchId = $(node).attr("data-psg-batch-id");
+      $(node).click(function(event) {
+        window.location.href="/batches/" + batchId;
+      });
+    });
+  }
 
-    var batchSelectButtons = $("[data-psg-batch-id]");
+  function attachBatchSelection() {
+    var batchSelectButtons = $("input[data-psg-select-batch]");
     batchSelectButtons.each(function(pos, node) {
       var batchId = $(node).attr("data-psg-batch-id");
       $(node).click(function(event) {
-        var value = !checkboxForNode(node).prop("checked");
-        $(batchSelectButtons.filter(function(pos, evaluatedNode) {
-          return ($(evaluatedNode).attr("data-psg-batch-id") === batchId);
-        })).each(function(pos, selectedNode) {
-          checkboxForNode(selectedNode).prop("checked", value).change();
+        var value = $(node).prop("checked");
+        $("input[data-psg-batch-id="+batchId+"]", $(node).closest("table")).each(function(pos, selectedNode) {
+          $(selectedNode).prop("checked", value).change();
         });
       });
     });
@@ -368,6 +361,24 @@
     return null;
   }
 
+  function configMenuActiveTab() {
+    var menu = $("#sm_workflow_menu");
+    $("a", menu).each(function(pos, node) {
+      if (typeof $(node).data("toggle") !== 'undefined') {
+        /* Do not apply to the dropdown list */
+        return;
+      }
+      var href = $(node).attr('href');
+      var url = window.location.href;
+      var posFinding = url.indexOf(href);
+      if ((posFinding>=0) && (posFinding + href.length === url.length)) {
+        /* Just one active */
+        //$("li", menu).removeClass("active");
+        $(node).closest("li").addClass("active");
+      }
+    });
+  }
+
   function attachTabHandlers() {
     var tabId = getFragmentId(window.location.href);
     $("[data-toggle=tab]").each(function(pos, node) {
@@ -421,7 +432,9 @@
     });
   }
 
+
   $(document).ready(function() {
+    configMenuActiveTab();
     //attachFormMethodsSubmitHandlers();
     attachAssetsCreationHandlers();
     attachBatchCreationHandlers();

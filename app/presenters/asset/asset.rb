@@ -54,11 +54,30 @@ module Presenter::AssetPresenter
       ''
     end
 
+    def completed_status_label
+      return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} #{'day'.pluralize(overdue_by)}" if completed_late?
+      return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'day'.pluralize(overdue_by)}" if completed_early?
+      return "On time" if completed_on_time?
+    end
+
+    def completed_at_status
+      "#{asset.completed_at.strftime('%d/%m/%Y')} #{'(' + completed_status_label + ')' if completed_status_label}"
+    end
+
     def completed_at
-      return asset.completed_at.strftime('%d/%m/%Y') if asset.completed_at
+      return completed_at_status if asset.completed_at
       return 'Due today' if due_today?
       return "Overdue (#{overdue_by} #{'day'.pluralize(overdue_by)})" if overdue?
-      'In progress'
+      'In progress' + in_progress_status
+    end
+
+    def days_left
+      [asset.workflow.turn_around_days - asset.age, 0].max.to_i
+    end
+
+    def in_progress_status
+      return " (#{days_left} days left)" if asset.workflow.turn_around_days
+      return ""
     end
 
     def due_today?
@@ -68,6 +87,21 @@ module Presenter::AssetPresenter
 
     def time_from_due_date
       asset.age - asset.workflow.turn_around_days
+    end
+
+    def completed_early?
+      return asset.time_without_completion < asset.workflow.turn_around_days if asset.workflow.turn_around_days
+      return false
+    end
+
+    def completed_late?
+      return asset.time_without_completion > asset.workflow.turn_around_days if asset.workflow.turn_around_days
+      return false
+    end
+
+    def completed_on_time?
+      return asset.time_without_completion == asset.workflow.turn_around_days if asset.workflow.turn_around_days
+      return false
     end
 
     def overdue_by
@@ -88,9 +122,9 @@ module Presenter::AssetPresenter
     end
 
     def status_code
-      return 'success' if asset.completed_at
-      return 'warning' if due_today?
-      return 'danger' if overdue?
+      return 'success' if completed_early?
+      return 'warning' if due_today? || completed_on_time?
+      return 'danger' if overdue? || completed_late?
       'default'
     end
   end

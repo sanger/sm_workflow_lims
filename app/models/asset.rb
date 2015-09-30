@@ -1,5 +1,6 @@
 require 'active_record'
 require './lib/state_scoping'
+require './lib/client_side_validations'
 
 class Asset < ActiveRecord::Base
 
@@ -13,6 +14,9 @@ class Asset < ActiveRecord::Base
   belongs_to :comment
 
   after_destroy :remove_comment, :if => :comment
+
+  include ClientSideValidations
+  validate_with_regexp :study, :with => /^\w+$/
 
   def remove_comment
     comment.destroy
@@ -61,6 +65,12 @@ class Asset < ActiveRecord::Base
     # DateTime#-(DateTime) Returns the difference in days as a rational (in Ruby 2.2.2)
     DateTime.now - begun_at.to_datetime
   end
+
+  def time_without_completion
+    return ((completed_at - begun_at) / 86400).floor if completed?
+    age
+  end
+
 
   class AssetAction
     attr_reader :time, :assets, :state

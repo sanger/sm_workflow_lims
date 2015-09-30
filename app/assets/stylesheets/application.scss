@@ -26,8 +26,10 @@ button.table_button {
   top: 0;
 }
 
-a {	color: #999999; }
-a:hover { color: #777777; }
+/*a {	color: #999999; } */
+
+/*a:hover { color: #777777; }*/
+
 #remove-batch-acceptance {
   .input-group-addon {width: 8em;}
   .input-group { margin-bottom: 1em; width: 100%; }
@@ -49,6 +51,51 @@ float: right;
   a {
     cursor: pointer;
   }
+  }
+}
+
+
+tbody {
+  tr.selected-row {
+    font-weight: bold;
+    color: black;
+    transition-property: color, font-weight;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+  }
+
+  tr {
+    font-weight: normal;
+    transition-property: color, font-weight;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+  }
+
+  tr:hover {
+    cursor: pointer;
+    color: gray;
+  }
+
+  td a {
+    text-decoration: underline;
+  }
+
+  tr:active {
+    color: lightgray;
+  }
+
+  tr.starting-batch-mark {
+    border: solid;
+    border-top-width: 3px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-color: lightgray;
+  }
+
+  td.batch-box {
+    background-color: white !important;
+    font-weight: normal !important;
   }
 }
 
