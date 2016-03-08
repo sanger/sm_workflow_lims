@@ -83,7 +83,7 @@ describe Presenter::AssetPresenter::Asset do
       let(:age) { (DateTime.parse('01-02-2012 15:15') - date).to_i }
 
       it "should return 'in progress' for completed_at" do
-        presenter.completed_at.should eq('In progress (2 days left)')
+        presenter.completed_at.should eq('In progress (2 weekdays left)')
       end
 
       it "should have 'success' styling" do
@@ -107,8 +107,8 @@ describe Presenter::AssetPresenter::Asset do
       let(:today) { DateTime.parse('04-02-2012 15:15') }
       let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:nil,age:age, time_without_completion: age) }
       let(:age) { today - date }
-      it "should return 'Overdue (1 day)' for completed_at" do
-        presenter.completed_at.should eq('Overdue (1 day)')
+      it "should return 'Overdue (1 weekday)' for completed_at" do
+        presenter.completed_at.should eq('Overdue (1 weekday)')
       end
       it "should be danger" do
         expect(presenter.status_code).to eq('danger')
@@ -120,7 +120,7 @@ describe Presenter::AssetPresenter::Asset do
     include_examples "shared behaviour"
     let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:date, time_without_completion: 0, age: 0) }
     it "should return its completed date for completed_at" do
-      presenter.completed_at.should eq('01/02/2012 (Early 2 days)')
+      presenter.completed_at.should eq('01/02/2012 (Early 2 weekdays)')
     end
   end
 
