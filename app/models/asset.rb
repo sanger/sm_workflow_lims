@@ -1,6 +1,7 @@
 require 'active_record'
 require './lib/state_scoping'
 require './lib/client_side_validations'
+require './lib/weekdays'
 
 class Asset < ActiveRecord::Base
 
@@ -61,16 +62,17 @@ class Asset < ActiveRecord::Base
     completed_at.present?
   end
 
+
+  include Weekdays
+
   def age
-    # DateTime#-(DateTime) Returns the difference in days as a rational (in Ruby 2.2.2)
-    DateTime.now - begun_at.to_datetime
+    weekdays_between(DateTime.now, begun_at.to_datetime)
   end
 
   def time_without_completion
-    return ((completed_at - begun_at) / 86400).floor if completed?
+    return weekdays_between(completed_at, begun_at) if completed?
     age
   end
-
 
   class AssetAction
     attr_reader :time, :assets, :state
