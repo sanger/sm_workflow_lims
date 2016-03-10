@@ -4,7 +4,7 @@ module Weekdays
     lower_date, greater_date = [date_a, date_b].sort
 
     num_weeks = ((greater_date - lower_date).days / 1.week).floor
-    pivot_date = lower_date + (num_weeks * 1.week)
+    pivot_date = lower_date + num_weeks.weeks
 
     (num_weeks * 5) + num_weekdays_between(pivot_date, greater_date)
   end
