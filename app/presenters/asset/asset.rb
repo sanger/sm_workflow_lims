@@ -55,8 +55,8 @@ module Presenter::AssetPresenter
     end
 
     def completed_status_label
-      return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} #{'day'.pluralize(overdue_by)}" if completed_late?
-      return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'day'.pluralize(overdue_by)}" if completed_early?
+      return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} #{'weekday'.pluralize(overdue_by)}" if completed_late?
+      return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'weekday'.pluralize(overdue_by)}" if completed_early?
       return "On time" if completed_on_time?
     end
 
@@ -67,7 +67,7 @@ module Presenter::AssetPresenter
     def completed_at
       return completed_at_status if asset.completed_at
       return 'Due today' if due_today?
-      return "Overdue (#{overdue_by} #{'day'.pluralize(overdue_by)})" if overdue?
+      return "Overdue (#{overdue_by} #{'weekday'.pluralize(overdue_by)})" if overdue?
       'In progress' + in_progress_status
     end
 
@@ -76,7 +76,7 @@ module Presenter::AssetPresenter
     end
 
     def in_progress_status
-      return " (#{days_left} days left)" if asset.workflow.turn_around_days
+      return " (#{days_left} weekdays left)" if asset.workflow.turn_around_days
       return ""
     end
 
