@@ -17,4 +17,8 @@ gem "sinatra-assetpack"
 group :test do
   gem "rspec"
   gem "timecop"
+  gem "database_cleaner"
+  gem 'factory_girl'
+  gem "capybara"
+  gem "poltergeist"
 end

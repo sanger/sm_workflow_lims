@@ -92,10 +92,11 @@ describe BatchesController do
     end
 
     context "with an existing cost code" do
-      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test', :cost_code => 'S12345', :assets=>{
-        1=>{identifier:'a',sample_count:1},
-        2=>{identifier:'b',sample_count:1}
-      }, :comment => 'comment' } }
+      let!(:cost_code) { create :cost_code }
+      let(:params)  { { workflow_id: 3, asset_type_id: 3, study: 'test', cost_code: cost_code.name, assets: {
+        1=>{ identifier:'a', sample_count:1 },
+        2=>{ identifier:'b', sample_count:1 }
+      }, comment: 'comment' } }
       it "should reuse the cost code without creating a new one" do
         mocked_lookups
         CostCode.all.length.should eq(1)
@@ -104,7 +105,7 @@ describe BatchesController do
             study:'test',
             workflow:'wf',
             pipeline_destination: nil,
-            cost_code: CostCode.new({ :id => 1, :name => "S12345"}),
+            cost_code: CostCode.new({ id: cost_code.id, name: cost_code.name}),
             asset_type:'at',
             begun_at: nil,
             assets:[

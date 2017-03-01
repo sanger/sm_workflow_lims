@@ -11,6 +11,10 @@ How to start it
 
 rake assetpack:build
 
+or
+
+rake build:assets (on local)
+
 2) Start the web server and go to http://localhost:9292
 
 bundle exec puma
