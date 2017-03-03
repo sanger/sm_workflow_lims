@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630102003) do
+ActiveRecord::Schema.define(version: 20170302115312) do
 
   create_table "asset_types", force: :cascade do |t|
     t.string   "name",                 limit: 255,                          null: false
     t.string   "identifier_type",      limit: 255,                          null: false
-    t.boolean  "has_sample_count",     limit: 1,   default: false,          null: false
+    t.boolean  "has_sample_count",                 default: false,          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "identifier_data_type", limit: 255, default: "alphanumeric", null: false
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20150630102003) do
     t.integer  "pipeline_destination_id", limit: 4
     t.integer  "cost_code_id",            limit: 4
     t.datetime "begun_at",                                        null: false
+    t.string   "current_state",           limit: 255
   end
 
   add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
@@ -61,17 +62,38 @@ ActiveRecord::Schema.define(version: 20150630102003) do
     t.string "name", limit: 255, null: false
   end
 
+  create_table "flow_steps", force: :cascade do |t|
+    t.integer  "step_id",    limit: 4, null: false
+    t.integer  "flow_id",    limit: 4, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "position",   limit: 4
+  end
+
+  create_table "flows", force: :cascade do |t|
+    t.string   "name",       limit: 255, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "pipeline_destinations", force: :cascade do |t|
     t.string "name", limit: 255
   end
 
-  create_table "workflows", force: :cascade do |t|
-    t.string   "name",             limit: 255,                 null: false
-    t.boolean  "has_comment",      limit: 1,   default: false, null: false
+  create_table "steps", force: :cascade do |t|
+    t.string   "name",       limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "reportable",       limit: 1,   default: false, null: false
+  end
+
+  create_table "workflows", force: :cascade do |t|
+    t.string   "name",             limit: 255,                 null: false
+    t.boolean  "has_comment",                  default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "reportable",                   default: false, null: false
     t.integer  "turn_around_days", limit: 4
+    t.integer  "flow_id",          limit: 4
   end
 
 end

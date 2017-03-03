@@ -24,6 +24,12 @@ describe Workflow do
       workflow.assets.first.identifier.should eq('test')
     end
 
+    it 'has a flow' do
+      flow = create :flow
+      workflow = Workflow.new(name: test_name, has_comment: has_comment, flow: flow)
+      expect(workflow.flow).to eq flow
+    end
+
   end
 
   context "with invalid parameters" do
@@ -50,3 +56,4 @@ describe Workflow do
   end
 
 end
+

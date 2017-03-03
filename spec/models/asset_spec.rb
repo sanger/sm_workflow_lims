@@ -9,33 +9,38 @@ describe Asset do
     let(:identifier) { 'name' }
     let(:study) { 'study_A'}
     let(:batch) { Batch.new }
-    let(:workflow) { Workflow.new }
+    let(:workflow) { create :workflow }
     let(:comment) { Comment.new }
 
     it 'can be created' do
       asset = Asset.new(
-        :identifier => identifier,
-        :batch      => batch,
-        :study      => study,
-        :asset_type => asset_type,
-        :workflow   => workflow,
-        :comment    => comment
+        identifier: identifier,
+        batch:      batch,
+        study:      study,
+        asset_type: asset_type,
+        workflow:   workflow,
+        comment:    comment,
+        current_state: 'in_progress'
       )
+
       expect(asset).to have(0).errors_on(:identifier)
       expect(asset).to have(0).errors_on(:batch)
       expect(asset).to have(0).errors_on(:study)
       expect(asset).to have(0).errors_on(:workflow)
       expect(asset).to have(0).errors_on(:comment)
       expect(asset).to have(0).errors_on(:asset_type)
+      expect(asset).to have(0).errors_on(:current_state)
 
       expect(asset).to have(0).errors_on(:begun_at)
 
-      asset.valid?.should eq(true)
+      expect(asset.valid?).to eq(true)
+      expect(asset.save).to eq(true)
 
-      asset.identifier.should eq(identifier)
-      asset.batch.should eq(batch)
-      asset.asset_type.should eq(asset_type)
-      asset.workflow.should eq(workflow)
+      expect(asset.identifier).to eq(identifier)
+      expect(asset.batch).to eq(batch)
+      expect(asset.asset_type).to eq(asset_type)
+      expect(asset.workflow).to eq(workflow)
+      expect(asset.current_state).to eq 'in_progress'
 
       asset.begun_at.should eq(asset.created_at)
     end
@@ -121,7 +126,7 @@ describe Asset do
     let(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true ) }
     let(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false) }
 
-    let(:basics) { {identifier:'one',asset_type_id:1,batch_id:1,workflow_id:1} }
+    let(:basics) { { identifier:'one', asset_type_id:1, batch_id:1, workflow_id:1, current_state: 'in_progress' } }
     let(:completed) { basics.merge(completed_at:Time.now) }
     let(:created_last) { basics.merge(begun_at:Time.at(1000)) }
     let(:created_first) { basics.merge(begun_at:Time.at(10)) }

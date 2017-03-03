@@ -3,6 +3,7 @@ require 'active_record'
 class Workflow < ActiveRecord::Base
 
   has_many :assets
+  belongs_to :flow
 
   validates_presence_of :name
   validates_uniqueness_of :name
