@@ -9,24 +9,38 @@ class Workflow < ActiveRecord::Base
   validates_uniqueness_of :name
   validates_numericality_of :turn_around_days, :greater_than_or_equal_to => 0, :allow_nil => true, :only_integer => true
 
+  delegate :initial_step_name, to: :flow
+
+  def flow=(flow)
+    flow = Flow.find_by(name: flow) if flow.is_a? String
+    super
+  end
+
   class Creator
 
-    attr_reader :name, :has_comment, :reportable, :turn_around_days
+    attr_reader :name, :has_comment, :reportable, :turn_around_days, :flow
 
     def self.create!(*args)
       self.new(*args).do!
     end
 
-    def initialize(name:,has_comment:,reportable:,turn_around_days:nil)
+    def initialize(name:,has_comment:,reportable:,multi_team_quant_essential:,turn_around_days:nil)
       @name = name
       @has_comment = has_comment
       @reportable = reportable
+      @flow = find_flow(multi_team_quant_essential)
     end
 
     def do!
       ActiveRecord::Base.transaction do
-        Workflow.new(:name => name, :has_comment => has_comment, :reportable => reportable).save!
+        Workflow.new(name: name, has_comment: has_comment, reportable: reportable, flow: flow).save!
       end
+    end
+
+    #to be changed
+    def find_flow(multi_team_quant_essential)
+      flow_name = multi_team_quant_essential ? 'multi_team_quant_essential' : 'standard'
+      Flow.find_by(name: flow_name)
     end
   end
 

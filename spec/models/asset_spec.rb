@@ -1,27 +1,27 @@
 require 'spec_helper'
 require './app/models/asset'
+require './app/models/event'
 
 describe Asset do
 
   context "with valid parameters" do
 
-    let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
-    let(:identifier) { 'name' }
-    let(:study) { 'study_A'}
-    let(:batch) { Batch.new }
-    let(:workflow) { create :workflow }
-    let(:comment) { Comment.new }
-
-    it 'can be created' do
-      asset = Asset.new(
+    let!(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let!(:identifier) { 'name' }
+    let!(:study) { 'study_A'}
+    let!(:batch) { Batch.new }
+    let!(:workflow) { create :workflow }
+    let!(:comment) { Comment.new }
+    let(:asset) { Asset.new(
         identifier: identifier,
         batch:      batch,
         study:      study,
         asset_type: asset_type,
         workflow:   workflow,
         comment:    comment,
-        current_state: 'in_progress'
-      )
+        current_state: 'in_progress') }
+
+    it 'can be created' do
 
       expect(asset).to have(0).errors_on(:identifier)
       expect(asset).to have(0).errors_on(:batch)
@@ -46,14 +46,12 @@ describe Asset do
     end
 
     it 'should delegate identifier_type to asset_type' do
-
-      asset = Asset.new(
-        :identifier=>identifier,
-        :batch=>batch,
-        :asset_type=>asset_type,
-        :workflow=>workflow
-      )
       asset.identifier_type.should eq('example')
+    end
+
+    it 'can have events' do
+      3.times { |n| create :event, asset: asset }
+      expect(asset.events.count).to eq 3
     end
 
 

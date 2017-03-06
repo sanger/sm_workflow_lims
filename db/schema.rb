@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302115312) do
+ActiveRecord::Schema.define(version: 20170306102500) do
 
   create_table "asset_types", force: :cascade do |t|
     t.string   "name",                 limit: 255,                          null: false
@@ -60,6 +60,14 @@ ActiveRecord::Schema.define(version: 20170302115312) do
 
   create_table "cost_codes", force: :cascade do |t|
     t.string "name", limit: 255, null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.integer  "asset_id",   limit: 4,   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "from",       limit: 255
+    t.string   "to",         limit: 255
   end
 
   create_table "flow_steps", force: :cascade do |t|

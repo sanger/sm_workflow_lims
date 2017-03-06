@@ -1,5 +1,16 @@
+require './spec/support/active_record'
 require 'database_cleaner'
 require 'factory_girl'
+require 'capybara/rspec'
+require 'capybara/poltergeist'
+require 'sinatra'
+require File.expand_path '../../app.rb', __FILE__
+
+ActiveRecord::Base.logger = nil
+
+Capybara.app = SmWorkflowLims
+
+Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
 

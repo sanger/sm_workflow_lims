@@ -7,6 +7,13 @@ class Flow < ActiveRecord::Base
 
   validates_presence_of :name
 
+  attr_accessor :steps_names
+
+  def initialize(attributes={})
+    super
+    add_steps(attributes[:steps_names])
+  end
+
   def initial_step
     flow_steps.order(:position).first
   end
@@ -22,6 +29,13 @@ class Flow < ActiveRecord::Base
   def next_step_by_name(step_name)
     flow_step = flow_steps.select {|flow_step| flow_step.name == step_name}.first
     next_step(flow_step)
+  end
+
+  def add_steps(steps_names)
+    return unless steps_names.present?
+    steps_names.each do |name|
+      flow_step = FlowStep.create!(step: Step.find_by(name: name), flow: self, position: flow_steps.count)
+    end
   end
 
 end

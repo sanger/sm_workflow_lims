@@ -36,6 +36,8 @@ GEM
     i18n (0.7.0)
     jsmin (1.0.1)
     json (1.8.3)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -106,6 +108,7 @@ DEPENDENCIES
   capybara
   database_cleaner
   factory_girl
+  launchy
   mysql2
   poltergeist
   pry

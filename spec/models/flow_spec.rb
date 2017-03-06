@@ -51,4 +51,15 @@ describe Flow do
     expect(flow.next_step_by_name(step4.name)).to eq new_step
   end
 
+  it 'should add steps' do
+    step1 = create :step, name: 'first'
+    step3 = create :step, name: 'last'
+    step2 = create :step, name: 'middle'
+    flow = Flow.new(name: 'test', steps_names: ['first', 'middle', 'last'])
+    expect(flow.steps.count).to eq 3
+    expect(flow.initial_step_name).to eq 'first'
+    expect(flow.next_step_by_name('first').name).to eq 'middle'
+    expect(flow.next_step_by_name('middle').name).to eq 'last'
+  end
+
 end

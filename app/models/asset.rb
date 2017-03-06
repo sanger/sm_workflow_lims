@@ -13,6 +13,8 @@ class Asset < ActiveRecord::Base
   belongs_to :batch
   belongs_to :comment
 
+  has_many :events
+
   after_destroy :remove_comment, :if => :comment
 
   include ClientSideValidations

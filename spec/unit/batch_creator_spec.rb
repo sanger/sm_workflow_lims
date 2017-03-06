@@ -45,7 +45,7 @@ describe Batch::Creator do
   context "With comments and date" do
 
     let(:workflow) {
-      double('mock_workflow',has_comment?:true)
+      create :workflow_with_comment, flow: (create :flow_with_steps)
     }
 
     let(:time)   { DateTime.parse('01-02-2003 00:00') }
@@ -55,8 +55,8 @@ describe Batch::Creator do
       Comment.should_receive(:create!).with(comment:comment).once.and_return(mock_comment)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time},
-        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time}
+        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,current_state:workflow.initial_step_name,pipeline_destination:nil,cost_code:nil,begun_at:time},
+        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,current_state:workflow.initial_step_name,pipeline_destination:nil,cost_code:nil,begun_at:time}
       ])
 
       mock_batch.should_receive(:save!).once
@@ -79,17 +79,15 @@ describe Batch::Creator do
   context "Without comments or date" do
 
     let(:workflow) {
-      wf = double('mock_workflow')
-      wf.stub(:has_comment?) {false}
-      wf
+      create :workflow, flow: (create :flow_with_steps)
     }
 
     it "should create the batch and assets" do
       Batch.should_receive(:new).once.and_return(mock_batch)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil},
-        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil}
+        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,current_state:workflow.initial_step_name,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil},
+        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,current_state:workflow.initial_step_name,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil}
       ])
 
       mock_batch.should_receive(:save!).once
@@ -105,6 +103,26 @@ describe Batch::Creator do
         ],
         comment:comment
       )
+    end
+
+    it 'should create the right batch and the right assets' do
+      assets = [{type: "Plate", identifier: "test", sample_count: "25"},
+               {type: "Plate", identifier: "test2", sample_count: "10"},
+               {type: "Plate", identifier: "test3", sample_count: "96"}]
+      workflow = create :workflow, flow: (create :flow_with_steps)
+
+      batch_creator = Batch::Creator.new(
+        study: 'study',
+        assets: assets,
+        asset_type: (create :asset_type_has_sample_count),
+        workflow: workflow,
+        pipeline_destination: (create :pipeline_destination),
+        cost_code: (create :cost_code)
+      )
+      expect(Asset.count).to eq 0
+      batch_creator.do!
+      expect(Asset.count).to eq 3
+      expect(Asset.last.current_state). to eq workflow.initial_step_name
     end
   end
 
