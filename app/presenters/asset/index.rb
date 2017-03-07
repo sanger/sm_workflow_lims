@@ -55,17 +55,22 @@ module Presenter::AssetPresenter
     end
 
     def action
-      {
-        'in_progress' => 'complete',
-        'report_required' => 'report'
-      }[@state].tap do |action|
-        yield action if action.present?
-      end
+      yield 'update'
+      # {
+      #   'in_progress' => 'complete',
+      #   'volume_check' => 'volume_check',
+      #   'quant' => 'quant',
+      #   'report_required' => 'report'
+      # }[@state].tap do |action|
+      #   yield action if action.present?
+      # end
     end
 
     def action_button
       {
         'in_progress' => 'Completed selected',
+        'volume_check' => 'Volume checked selected',
+        'quant' => 'Quanted selected',
         'report_required' => 'Reported selected'
       }[@state].tap do |button|
         yield button if button.present?

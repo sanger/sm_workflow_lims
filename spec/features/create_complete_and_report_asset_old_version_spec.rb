@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'spec_helper'
 
-feature 'create complete and report assets', js: true do
+feature 'create complete and report assets with old code', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:workflow1) { create(:workflow, flow:(create :flow_with_steps), name: 'Workflow') }

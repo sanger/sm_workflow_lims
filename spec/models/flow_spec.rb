@@ -41,14 +41,14 @@ describe Flow do
     expect(flow.next_step(step4)).to eq new_step
   end
 
-  it 'should know the next step based on current step name' do
+  it 'should know the next step name based on current step name' do
     flow = create :flow_with_steps
     step3_name = flow.flow_steps.find_by(position: 3).name
     step4 = flow.flow_steps.find_by(position: 4)
-    expect(flow.next_step_by_name(step3_name)).to eq step4
+    expect(flow.next_step_name(step3_name)).to eq step4.name
     new_step = create :flow_step, position: 7
     flow.flow_steps << new_step
-    expect(flow.next_step_by_name(step4.name)).to eq new_step
+    expect(flow.next_step_name(step4.name)).to eq new_step.name
   end
 
   it 'should add steps' do
@@ -58,8 +58,8 @@ describe Flow do
     flow = Flow.new(name: 'test', steps_names: ['first', 'middle', 'last'])
     expect(flow.steps.count).to eq 3
     expect(flow.initial_step_name).to eq 'first'
-    expect(flow.next_step_by_name('first').name).to eq 'middle'
-    expect(flow.next_step_by_name('middle').name).to eq 'last'
+    expect(flow.next_step_name('first')).to eq 'middle'
+    expect(flow.next_step_name('middle')).to eq 'last'
   end
 
 end

@@ -29,7 +29,9 @@ class Asset < ActiveRecord::Base
   end
 
   def self.in_state(state)
-    scope_for(state)
+    Asset.where("current_state = ?", state)
+
+    # scope_for(state)
   end
 
   before_create :set_begun_at
@@ -41,12 +43,12 @@ class Asset < ActiveRecord::Base
 
   validates_presence_of :workflow, :batch, :identifier, :asset_type
 
-  delegate :identifier_type, :to => :asset_type
+  delegate :identifier_type, to: :asset_type
 
-  scope :in_progress,     -> { where(completed_at: nil) }
-  scope :completed,       -> { where.not(completed_at: nil) }
-  scope :reportable,      -> { where(workflows:{reportable:true}) }
-  scope :report_required, -> { reportable.completed.where(reported_at:nil) }
+  # scope :in_progress,     -> { where(completed_at: nil) }
+  # scope :completed,       -> { where.not(completed_at: nil) }
+  # scope :reportable,      -> { where(workflows:{reportable:true}) }
+  # scope :report_required, -> { reportable.completed.where(reported_at:nil) }
   scope :latest_first,    -> { order('begun_at DESC') }
 
   add_state('all',             :all)
@@ -73,9 +75,18 @@ class Asset < ActiveRecord::Base
     age
   end
 
+  def next_state
+    workflow.next_step_name(current_state)
+  end
+
+  def move_to_next_state
+    events.create!(from: current_state, to: next_state)
+    update_attributes!(current_state: next_state)
+  end
+
 
   class AssetAction
-    attr_reader :time, :assets, :state
+    attr_reader :time, :assets, :state, :asset_state
 
     def self.create!(*args)
       self.new(*args).tap {|action| action.do! }
@@ -84,6 +95,7 @@ class Asset < ActiveRecord::Base
     def initialize(time:,assets:)
       @time = time
       @assets = assets
+      @asset_state = assets.first.current_state
       @state = 'incomplete'
     end
 
@@ -98,62 +110,82 @@ class Asset < ActiveRecord::Base
     end
   end
 
-  class Completer < AssetAction
+  class Updater < AssetAction
 
     def do!
+      # return false unless valid?
       ActiveRecord::Base.transaction do
-        assets.each {|a| a.update_attributes!(completed_at:time) }
+        assets.each {|a| a.move_to_next_state }
         @state = 'success'
       end
       true
     end
 
     def message
-      done? ? "#{identifiers.to_sentence} #{identifiers.many? ? 'were' : 'was'} marked as completed." :
-              'Assets have not been completed.'
+      done? ? "#{asset_state.humanize} step is done for #{identifiers.to_sentence}" :
+              "#{asset_state.humanize} step is not done for requested assets."
     end
 
-    def redirect_state; 'in_progress'; end
+    def redirect_state; asset_state; end
 
   end
 
-  class Reporter < AssetAction
+  # class Completer < AssetAction
 
-    def do!
-      return false unless valid?
-      ActiveRecord::Base.transaction do
-        assets.each {|a| a.update_attributes!(reported_at:time) }
-        @state = 'success'
-      end
-      true
-    end
+  #   def do!
+  #     ActiveRecord::Base.transaction do
+  #       assets.each {|a| a.update_attributes!(completed_at:time) }
+  #       @state = 'success'
+  #     end
+  #     true
+  #   end
 
-    def valid?
-      assets.each do |asset|
-        asset.reportable? || log_error("#{asset.identifier} is in #{asset.workflow.name}, which does not need a report.")
-        asset.completed?  || log_error("#{asset.identifier} can not be reported on before it is completed.")
-      end
-      errors.empty?
-    end
+  #   def message
+  #     done? ? "#{identifiers.to_sentence} #{identifiers.many? ? 'were' : 'was'} marked as completed." :
+  #             'Assets have not been completed.'
+  #   end
 
-    def message
-      return errors.join("\n") if errors.present?
-      done? ? "#{identifiers.to_sentence} #{identifiers.many? ? 'were' : 'was'} marked as reported." :
-              'Assets have not been reported.'
-    end
+  #   def redirect_state; 'in_progress'; end
 
-    def redirect_state; 'report_required'; end
+  # end
 
-    private
+  # class Reporter < AssetAction
 
-    def errors
-      @errors ||= []
-    end
+  #   def do!
+  #     return false unless valid?
+  #     ActiveRecord::Base.transaction do
+  #       assets.each {|a| a.update_attributes!(reported_at:time) }
+  #       @state = 'success'
+  #     end
+  #     true
+  #   end
 
-    def log_error(message)
-      @state = 'danger'
-      errors << message
-    end
+  #   def valid?
+  #     assets.each do |asset|
+  #       asset.reportable? || log_error("#{asset.identifier} is in #{asset.workflow.name}, which does not need a report.")
+  #       asset.completed?  || log_error("#{asset.identifier} can not be reported on before it is completed.")
+  #     end
+  #     errors.empty?
+  #   end
 
-  end
+  #   def message
+  #     return errors.join("\n") if errors.present?
+  #     done? ? "#{identifiers.to_sentence} #{identifiers.many? ? 'were' : 'was'} marked as reported." :
+  #             'Assets have not been reported.'
+  #   end
+
+  #   def redirect_state; 'report_required'; end
+
+  #   private
+
+  #   def errors
+  #     @errors ||= []
+  #   end
+
+  #   def log_error(message)
+  #     @state = 'danger'
+  #     errors << message
+  #   end
+
+  # end
 end

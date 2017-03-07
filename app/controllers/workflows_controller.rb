@@ -16,10 +16,11 @@ class WorkflowsController < Controller
 
   def create
     Workflow::Creator.create!(
-      :name             => params[:name],
-      :has_comment      => params[:hasComment] || false,
-      :reportable       => params[:reportable] || false,
-      :turn_around_days => params[:turn_around_days]
+      name:             params[:name],
+      has_comment:      params[:hasComment] || false,
+      reportable:       params[:reportable] || false,
+      multi_team_quant_essential: params[:multi_team_quant_essential] || false,
+      turn_around_days: params[:turn_around_days]
     )
   end
 

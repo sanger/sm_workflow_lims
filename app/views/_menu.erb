@@ -29,7 +29,9 @@
                       <li><a data-toggle="tab" href="/batches/new#<%= asset_type.template_name %>-template"><%= asset_type.name %></a></li>
                     <% end %>
                   </ul></li>
-                <li><a href="/assets">In Progress</a></li>
+                <li><a href="/assets?state=in_progress">In Progress</a></li>
+                <li><a href="/assets?state=volume_check">Volume check</a></li>
+                <li><a href="/assets?state=quant">Quant</a></li>
                 <li><a href="/assets?state=report_required">Report Required</a></li>
                 <li><a href="/admin">Admin</a></li>
                 <li>

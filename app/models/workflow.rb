@@ -10,6 +10,7 @@ class Workflow < ActiveRecord::Base
   validates_numericality_of :turn_around_days, :greater_than_or_equal_to => 0, :allow_nil => true, :only_integer => true
 
   delegate :initial_step_name, to: :flow
+  delegate :next_step_name, to: :flow
 
   def flow=(flow)
     flow = Flow.find_by(name: flow) if flow.is_a? String

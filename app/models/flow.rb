@@ -26,9 +26,9 @@ class Flow < ActiveRecord::Base
     flow_steps.where("position > ?", flow_step.position).first
   end
 
-  def next_step_by_name(step_name)
-    flow_step = flow_steps.select {|flow_step| flow_step.name == step_name}.first
-    next_step(flow_step)
+  def next_step_name(current_step_name)
+    flow_step = flow_steps.select {|flow_step| flow_step.name == current_step_name}.first
+    next_step(flow_step).try(:name) || 'done'
   end
 
   def add_steps(steps_names)
