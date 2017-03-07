@@ -4,6 +4,7 @@ require 'factory_girl'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'sinatra'
+require 'timecop'
 require File.expand_path '../../app.rb', __FILE__
 
 ActiveRecord::Base.logger = nil

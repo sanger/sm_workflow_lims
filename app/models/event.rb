@@ -5,4 +5,6 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :from, :to
 
+  scope :completed,     -> { where( to: ['report_required', 'done']) }
+
 end

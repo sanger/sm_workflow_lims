@@ -29,7 +29,7 @@ class Workflow < ActiveRecord::Base
       @name = name
       @has_comment = has_comment
       @reportable = reportable
-      @flow = find_flow(multi_team_quant_essential)
+      @flow = find_flow(multi_team_quant_essential, reportable)
     end
 
     def do!
@@ -39,8 +39,10 @@ class Workflow < ActiveRecord::Base
     end
 
     #to be changed
-    def find_flow(multi_team_quant_essential)
-      flow_name = multi_team_quant_essential ? 'multi_team_quant_essential' : 'standard'
+    def find_flow(multi_team_quant_essential, reportable)
+      type = multi_team_quant_essential ? 'multi_team_quant_essential' : 'standard'
+      reportable = reportable ? '_reportable' : ''
+      flow_name = type+reportable
       Flow.find_by(name: flow_name)
     end
   end

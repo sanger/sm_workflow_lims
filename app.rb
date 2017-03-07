@@ -98,7 +98,6 @@ class SmWorkflowLims < Sinatra::Base
 
   get '/admin' do
     presenter = AdminController.new(params).get_index
-
     erb :'admin/index', :locals => { :presenter =>  presenter }
   end
 

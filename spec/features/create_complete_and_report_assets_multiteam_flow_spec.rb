@@ -55,7 +55,7 @@ feature 'create complete and report assets within multi team flow', js: true do
     end
     click_on 'Append to batch'
     within("div#tube-template") do
-      fill_in 'identifier', with: 456
+      fill_in 'identifier', with: 789
     end
     click_on 'Append to batch'
     expect(page).to have_content "Asset added to the batch"
@@ -66,23 +66,24 @@ feature 'create complete and report assets within multi team flow', js: true do
     click_on 'In Progress'
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
-    expect(page).to have_selector('table tr', count: 3)
+    expect(page).to have_selector('table tr', count: 4)
     check 'update[1]'
+    check 'update[3]'
     click_on 'Volume checked selected'
-    expect(page).to have_content "Volume check step is done for 123"
+    expect(page).to have_content "Volume check step is done for 123 and 789"
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Quant'
-    expect(page).to have_selector('table tr', count: 2)
-    check 'update[1]'
+    expect(page).to have_selector('table tr', count: 3)
+    check 'update[3]'
     click_on 'Quanted selected'
-    expect(page).to have_content "Quant step is done for 123"
-    expect(page).not_to have_selector('table tr')
-    click_on 'Report Required'
+    expect(page).to have_content "Quant step is done for 789"
+    expect(page).to have_selector('table tr', count: 2)
     click_on 'Report Required'
     expect(page).to have_selector('table tr', count: 2)
-    check 'report[2]'
+    check 'update[3]'
     click_on 'Reported selected'
-    expect(page).to have_content "456 was marked as reported."
+    expect(page).to have_content "Report required step is done for 789"
+    expect(page).not_to have_selector('table tr')
   end
 
 end

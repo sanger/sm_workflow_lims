@@ -8,10 +8,10 @@ module WorkflowFactory
       {name: 'RNA Extraction Q3',                has_comment: false, reportable: false, flow: 'standard'},
       {name: 'DNA Extraction BioRobot',          has_comment: false, reportable: false, flow: 'standard'},
       {name: 'FP lysis',                         has_comment: false, reportable: false, flow: 'standard'},
-      {name: 'Human DNA QC',                     has_comment: false, reportable: true, flow: 'standard'},
-      {name: 'Model DNA QC',                     has_comment: false, reportable: true, flow: 'standard'},
-      {name: 'Viral/Bacterial DNA QC',           has_comment: false, reportable: true, flow: 'standard'},
-      {name: 'RNA QC',                           has_comment: false, reportable: true, flow: 'standard'},
+      {name: 'Human DNA QC',                     has_comment: false, reportable: true, flow: 'standard_reportable'},
+      {name: 'Model DNA QC',                     has_comment: false, reportable: true, flow: 'standard_reportable'},
+      {name: 'Viral/Bacterial DNA QC',           has_comment: false, reportable: true, flow: 'standard_reportable'},
+      {name: 'RNA QC',                           has_comment: false, reportable: true, flow: 'standard_reportable'},
       {name: 'Formatting',                       has_comment: false, reportable: false, flow: 'standard'},
       {name: 'Formatting and 2ndry std QC',      has_comment: false, reportable: false, flow: 'standard'},
       {name: 'Formatting and CGP 2ndry QC',      has_comment: false, reportable: false, flow: 'standard'},
@@ -26,7 +26,7 @@ module WorkflowFactory
       {name: 'Fluidigm DDD 96:96',               has_comment: false, reportable: false, flow: 'standard'},
       {name: 'DNA extraction QS',                has_comment: false, reportable: false, flow: 'standard'},
       {name: 'Multiteam',                        has_comment: false, reportable: false, flow: 'multi_team_quant_essential'},
-      {name: 'Multiteam reportable',             has_comment: false, reportable: true,  flow: 'multi_team_quant_essential'}
+      {name: 'Multiteam reportable',             has_comment: false, reportable: true,  flow: 'multi_team_quant_essential_reportable'}
     ]
   end
 

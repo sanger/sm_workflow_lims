@@ -23,7 +23,7 @@
             <span class="glyphicon <%= reportable ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
-            <span class="glyphicon <%= (flow_name == 'multi_team_quant_essential') ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
+            <span class="glyphicon <%= (flow_name.match 'multi_team_quant_essential') ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
             <%= turn_around ? "#{turn_around} #{'day'.pluralize(turn_around)}" : 'None' %>

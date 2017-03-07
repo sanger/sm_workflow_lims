@@ -29,9 +29,11 @@ class Asset < ActiveRecord::Base
   end
 
   def self.in_state(state)
-    Asset.where("current_state = ?", state)
-
-    # scope_for(state)
+    if state.present?
+      Asset.where("current_state = ?", state)
+    else
+      Asset.all
+    end
   end
 
   before_create :set_begun_at
@@ -49,11 +51,12 @@ class Asset < ActiveRecord::Base
   # scope :completed,       -> { where.not(completed_at: nil) }
   # scope :reportable,      -> { where(workflows:{reportable:true}) }
   # scope :report_required, -> { reportable.completed.where(reported_at:nil) }
+
   scope :latest_first,    -> { order('begun_at DESC') }
 
-  add_state('all',             :all)
-  add_state('in_progress',     :in_progress)
-  add_state('report_required', :report_required)
+  # add_state('all',             :all)
+  # add_state('in_progress',     :in_progress)
+  # add_state('report_required', :report_required)
 
   default_scope { includes(:workflow,:asset_type,:comment,:batch) }
 
@@ -63,6 +66,10 @@ class Asset < ActiveRecord::Base
 
   def completed?
     completed_at.present?
+  end
+
+  def completed_at
+    @completed_at || events.completed.first.try(:created_at)
   end
 
   def age

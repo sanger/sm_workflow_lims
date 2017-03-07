@@ -20,7 +20,7 @@ class AssetsController < Controller
   private
 
   def state
-    params[:state]||'in_progress'
+    params[:state]
   end
 
   def search
