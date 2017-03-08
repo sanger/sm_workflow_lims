@@ -79,7 +79,9 @@ ActiveRecord::Schema.define(version: 20170306102500) do
   end
 
   create_table "flows", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
+    t.string   "name",                       limit: 255,                 null: false
+    t.boolean  "reportable",                             default: false, null: false
+    t.boolean  "multi_team_quant_essential",             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

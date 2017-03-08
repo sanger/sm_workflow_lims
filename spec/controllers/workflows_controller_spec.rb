@@ -62,6 +62,7 @@ describe WorkflowsController do
             name: 'Test',
             has_comment: true,
             reportable: false,
+            multi_team_quant_essential: false,
             turn_around_days: "30"
           )
 

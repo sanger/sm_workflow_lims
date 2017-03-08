@@ -42,10 +42,6 @@ describe Workflow do
       expect(workflow.initial_step_name).to eq flow.initial_step_name
     end
 
-    # it 'should know its next step' do
-
-    # end
-
   end
 
   context "with invalid parameters" do

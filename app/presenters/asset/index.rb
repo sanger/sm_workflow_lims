@@ -10,7 +10,7 @@ module Presenter::AssetPresenter
       @total  = found_assets.count
       @assets = found_assets.group_by {|a| a.asset_type.name}.tap {|h| h.default = [] }
       @search = search
-      @state  = state||'in_progress'
+      @state  = state
     end
 
     def asset_identifiers
@@ -56,14 +56,6 @@ module Presenter::AssetPresenter
 
     def action
       yield 'update'
-      # {
-      #   'in_progress' => 'complete',
-      #   'volume_check' => 'volume_check',
-      #   'quant' => 'quant',
-      #   'report_required' => 'report'
-      # }[@state].tap do |action|
-      #   yield action if action.present?
-      # end
     end
 
     def action_button

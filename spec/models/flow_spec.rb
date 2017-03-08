@@ -14,6 +14,11 @@ describe Flow do
     expect(flow.save).to be true
   end
 
+  it 'should know if it is reportable/multi_team' do
+    expect(flow.reportable?).to be false
+    expect(flow.multi_team_quant_essential?).to be false
+  end
+
   it 'can have many steps' do
     flow.name = 'test'
     flow.steps << (create :step)

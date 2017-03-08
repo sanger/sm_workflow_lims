@@ -72,11 +72,10 @@ describe Presenter::AssetPresenter::Index do
     let(:search) {nil}
 
     context 'all' do
-      let(:state)  {'all'}
+      let(:state)  { nil }
 
-      it "should have no actions" do
+      it "should have no action button" do
         expect { |b| presenter.action_button(&b) }.not_to yield_control
-         expect { |b| presenter.action(&b) }.not_to yield_control
       end
     end
     context 'in_progress' do
@@ -84,7 +83,23 @@ describe Presenter::AssetPresenter::Index do
 
       it "should have complete actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
-        expect { |b| presenter.action(&b) }.to yield_with_args('complete')
+        expect { |b| presenter.action(&b) }.to yield_with_args('update')
+      end
+    end
+    context 'volume_check' do
+      let(:state)  {'volume_check'}
+
+      it "should have volume_check actions" do
+        expect { |b| presenter.action_button(&b) }.to yield_with_args('Volume checked selected')
+        expect { |b| presenter.action(&b) }.to yield_with_args('update')
+      end
+    end
+    context 'quant' do
+      let(:state)  {'quant'}
+
+      it "should have quant actions" do
+        expect { |b| presenter.action_button(&b) }.to yield_with_args('Quanted selected')
+        expect { |b| presenter.action(&b) }.to yield_with_args('update')
       end
     end
     context 'report_required' do
@@ -92,7 +107,7 @@ describe Presenter::AssetPresenter::Index do
 
       it "should have reporting actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Reported selected')
-        expect { |b| presenter.action(&b) }.to yield_with_args('report')
+        expect { |b| presenter.action(&b) }.to yield_with_args('update')
       end
     end
   end

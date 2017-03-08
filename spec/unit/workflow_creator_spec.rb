@@ -3,9 +3,9 @@ require './app/models/workflow'
 
 describe Workflow::Creator do
   it 'can choose the correct flow' do
-    arguments = { has_comment: true, reportable: true }
+    arguments = { has_comment: true, reportable: false }
     standard_flow = create :flow, name: 'standard'
-    multi_team_flow = create :flow, name: 'multi_team_quant_essential'
+    multi_team_flow = create :flow, name: 'multi_team_quant_essential', multi_team_quant_essential: true
     creator = Workflow::Creator.create!(arguments.merge(name: 'new_workflow', multi_team_quant_essential: false))
     expect(Workflow.last.flow).to eq standard_flow
     creator = Workflow::Creator.create!(arguments.merge(name: 'new_workflow2', multi_team_quant_essential: true))

@@ -2,9 +2,9 @@ module FlowFactory
   def self.flows
     [
       {name: 'standard', steps_names: ['in_progress']},
-      {name: 'standard_reportable', steps_names: ['in_progress', 'report_required']},
-      {name: 'multi_team_quant_essential', steps_names: ['volume_check', 'quant']},
-      {name: 'multi_team_quant_essential_reportable', steps_names: ['volume_check', 'quant', 'report_required']}
+      {name: 'standard_reportable', steps_names: ['in_progress', 'report_required'], reportable: true},
+      {name: 'multi_team_quant_essential', steps_names: ['volume_check', 'quant'], multi_team_quant_essential: true},
+      {name: 'multi_team_quant_essential_reportable', steps_names: ['volume_check', 'quant', 'report_required'], reportable: true, multi_team_quant_essential: true}
     ]
   end
 

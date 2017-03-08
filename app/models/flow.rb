@@ -1,11 +1,12 @@
 require 'active_record'
 
 class Flow < ActiveRecord::Base
-  has_many :flow_steps
+  has_many :flow_steps, dependent: :destroy
   has_many :steps, through: :flow_steps
   has_many :workflows
 
   validates_presence_of :name
+  validates_uniqueness_of :name
 
   attr_accessor :steps_names
 

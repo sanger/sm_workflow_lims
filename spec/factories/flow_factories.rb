@@ -23,6 +23,7 @@ FactoryGirl.define do
 
       factory :standard_reportable_flow do
         name 'standard_reportable'
+        reportable true
         after(:create) do |flow|
           flow.flow_steps << create(:flow_step, step: (create :step, name: 'report_required'), position: 1)
         end
@@ -31,6 +32,7 @@ FactoryGirl.define do
 
     factory :multi_team_flow do
       name 'multi_team_quant_essential'
+      multi_team_quant_essential true
       after(:create) do |flow|
         flow.flow_steps << create(:flow_step, step: (create :step, name: 'volume_check'), position: 0)
         flow.flow_steps << create(:flow_step, step: (create :step, name: 'quant'), position: 1)
@@ -38,6 +40,8 @@ FactoryGirl.define do
 
       factory :multi_team_reportable_flow do
         name 'multi_team_quant_essential_reportable'
+        reportable true
+        multi_team_quant_essential true
         after(:create) do |flow|
           flow.flow_steps << create(:flow_step, step: (create :step, name: 'report_required'), position: 2)
         end
