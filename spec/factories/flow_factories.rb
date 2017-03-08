@@ -10,7 +10,7 @@ FactoryGirl.define do
     factory :flow_with_steps do
 
       after(:create) do |flow|
-        3.times {|n| flow.flow_steps << (create :flow_step, position: n+2)}
+        3.times {|n| flow.flow_steps << (create :flow_step, flow: flow, position: n+2)}
       end
 
     end
@@ -18,14 +18,14 @@ FactoryGirl.define do
     factory :standard_flow do
       name 'standard'
       after(:create) do |flow|
-        flow.flow_steps << create(:flow_step, step: (create :step, name: 'in_progress'), position: 0)
+        flow.flow_steps << create(:flow_step, flow: flow, step: (create :step, name: 'in_progress'), position: 0)
       end
 
       factory :standard_reportable_flow do
         name 'standard_reportable'
         reportable true
         after(:create) do |flow|
-          flow.flow_steps << create(:flow_step, step: (create :step, name: 'report_required'), position: 1)
+          flow.flow_steps << create(:flow_step, flow: flow, step: (create :step, name: 'report_required'), position: 1)
         end
       end
     end
@@ -34,8 +34,8 @@ FactoryGirl.define do
       name 'multi_team_quant_essential'
       multi_team_quant_essential true
       after(:create) do |flow|
-        flow.flow_steps << create(:flow_step, step: (create :step, name: 'volume_check'), position: 0)
-        flow.flow_steps << create(:flow_step, step: (create :step, name: 'quant'), position: 1)
+        flow.flow_steps << create(:flow_step, flow: flow, step: (create :step, name: 'volume_check'), position: 0)
+        flow.flow_steps << create(:flow_step, flow: flow, step: (create :step, name: 'quant'), position: 1)
       end
 
       factory :multi_team_reportable_flow do
@@ -43,7 +43,7 @@ FactoryGirl.define do
         reportable true
         multi_team_quant_essential true
         after(:create) do |flow|
-          flow.flow_steps << create(:flow_step, step: (create :step, name: 'report_required'), position: 2)
+          flow.flow_steps << create(:flow_step, flow: flow, step: (create :step, name: 'report_required'), position: 2)
         end
       end
     end
