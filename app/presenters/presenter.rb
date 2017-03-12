@@ -38,7 +38,7 @@ class Presenter
 
     def each_workflow
       Workflow.all.each do |workflow|
-        yield(workflow.name,workflow.has_comment,workflow.id,workflow.reportable,workflow.turn_around_days,workflow.flow.name)
+        yield(workflow.name, workflow.has_comment, workflow.id, workflow.reportable, workflow.multi_team_quant_essential, workflow.turn_around_days)
       end
     end
 

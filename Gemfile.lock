@@ -104,6 +104,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  activesupport
   bootstrap-sass
   capybara
   database_cleaner

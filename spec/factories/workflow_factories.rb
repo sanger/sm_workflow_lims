@@ -6,8 +6,6 @@ FactoryGirl.define do
 
   factory :workflow do
     name { generate :workflow_name }
-    flow
-    has_comment false
 
     factory :workflow_with_comment do
       has_comment true

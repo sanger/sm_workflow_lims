@@ -4,8 +4,8 @@ require 'spec_helper'
 feature 'create complete and report assets within standard flow', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
-  let!(:workflow1) { create(:workflow, flow:(create :standard_flow), name: 'Workflow') }
-  let!(:workflow2) { create(:workflow_with_report, flow:(create :standard_reportable_flow), name: 'Reportable workflow') }
+  let!(:workflow1) { create(:workflow, name: 'Workflow') }
+  let!(:workflow2) { create(:workflow_with_report, name: 'Reportable workflow') }
 
   scenario 'can create and complete a non-reportable asset' do
     visit '/'

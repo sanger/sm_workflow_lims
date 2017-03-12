@@ -3,9 +3,8 @@ class CreateEventTable < ActiveRecord::Migration
     create_table(:events) do |t|
       # id
       t.references  :asset,   null: false
+      t.references  :state,   null: false
       t.timestamps
-      t.string     :from
-      t.string     :to
     end
   end
 end

@@ -3,23 +3,14 @@ require 'active_record'
 class Workflow < ActiveRecord::Base
 
   has_many :assets
-  belongs_to :flow
 
   validates_presence_of :name
   validates_uniqueness_of :name
   validates_numericality_of :turn_around_days, :greater_than_or_equal_to => 0, :allow_nil => true, :only_integer => true
 
-  delegate :initial_step_name, to: :flow
-  delegate :next_step_name, to: :flow
-
-  def flow=(flow)
-    flow = Flow.find_by(name: flow) if flow.is_a? String
-    super
-  end
-
   class Creator
 
-    attr_reader :name, :has_comment, :reportable, :turn_around_days, :flow
+    attr_reader :name, :has_comment, :reportable, :turn_around_days, :multi_team_quant_essential
 
     def self.create!(*args)
       self.new(*args).do!
@@ -29,12 +20,12 @@ class Workflow < ActiveRecord::Base
       @name = name
       @has_comment = has_comment
       @reportable = reportable
-      @flow = Flow.find_by(reportable: reportable, multi_team_quant_essential: multi_team_quant_essential)
+      @multi_team_quant_essential = multi_team_quant_essential
     end
 
     def do!
       ActiveRecord::Base.transaction do
-        Workflow.new(name: name, has_comment: has_comment, reportable: reportable, flow: flow).save!
+        Workflow.new(name: name, has_comment: has_comment, reportable: reportable, multi_team_quant_essential: multi_team_quant_essential).save!
       end
     end
 

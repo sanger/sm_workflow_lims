@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20170306102500) do
     t.integer  "pipeline_destination_id", limit: 4
     t.integer  "cost_code_id",            limit: 4
     t.datetime "begun_at",                                        null: false
-    t.string   "current_state",           limit: 255
   end
 
   add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
@@ -63,25 +62,8 @@ ActiveRecord::Schema.define(version: 20170306102500) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.integer  "asset_id",   limit: 4,   null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "from",       limit: 255
-    t.string   "to",         limit: 255
-  end
-
-  create_table "flow_steps", force: :cascade do |t|
-    t.integer  "step_id",    limit: 4, null: false
-    t.integer  "flow_id",    limit: 4, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "position",   limit: 4
-  end
-
-  create_table "flows", force: :cascade do |t|
-    t.string   "name",                       limit: 255,                 null: false
-    t.boolean  "reportable",                             default: false, null: false
-    t.boolean  "multi_team_quant_essential",             default: false, null: false
+    t.integer  "asset_id",   limit: 4, null: false
+    t.integer  "state_id",   limit: 4, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -90,20 +72,20 @@ ActiveRecord::Schema.define(version: 20170306102500) do
     t.string "name", limit: 255
   end
 
-  create_table "steps", force: :cascade do |t|
+  create_table "states", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "workflows", force: :cascade do |t|
-    t.string   "name",             limit: 255,                 null: false
-    t.boolean  "has_comment",                  default: false, null: false
+    t.string   "name",                       limit: 255,                 null: false
+    t.boolean  "has_comment",                            default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "reportable",                   default: false, null: false
-    t.integer  "turn_around_days", limit: 4
-    t.integer  "flow_id",          limit: 4
+    t.boolean  "reportable",                             default: false, null: false
+    t.integer  "turn_around_days",           limit: 4
+    t.boolean  "multi_team_quant_essential",             default: false, null: false
   end
 
 end

@@ -1,8 +1,11 @@
 require 'active_record'
-require './lib/state_scoping'
+require './app/models/concerns/state_machine'
 require './lib/client_side_validations'
+require './lib/state_scoping'
 
 class Asset < ActiveRecord::Base
+
+  include StateMachine
 
   extend StateScoping
 
@@ -17,6 +20,8 @@ class Asset < ActiveRecord::Base
 
   after_destroy :remove_comment, :if => :comment
 
+  after_create :create_initial_event
+
   include ClientSideValidations
   validate_with_regexp :study, :with => /^\w+$/
 
@@ -25,15 +30,7 @@ class Asset < ActiveRecord::Base
   end
 
   def self.with_identifier(search_string)
-    search_string.nil? ? all : where(identifier:search_string)
-  end
-
-  def self.in_state(state)
-    if state.present?
-      Asset.where("current_state = ?", state)
-    else
-      Asset.all
-    end
+    search_string.nil? ? all : where(identifier: search_string)
   end
 
   before_create :set_begun_at
@@ -47,6 +44,10 @@ class Asset < ActiveRecord::Base
 
   delegate :identifier_type, to: :asset_type
 
+  scope :in_progress,     -> { where(completed_at: nil) }
+  scope :completed,       -> { where.not(completed_at: nil) }
+  scope :reportable,      -> { where(workflows:{reportable:true}) }
+  scope :report_required, -> { reportable.completed.where(reported_at:nil) }
   scope :latest_first,    -> { order('begun_at DESC') }
 
   default_scope { includes(:workflow,:asset_type,:comment,:batch) }
@@ -60,7 +61,7 @@ class Asset < ActiveRecord::Base
   end
 
   def completed_at
-    @completed_at || events.completed.first.try(:created_at)
+    events.where(state: State.find_by(name: 'completed')).first.try(:created_at)
   end
 
   def age
@@ -73,27 +74,21 @@ class Asset < ActiveRecord::Base
     age
   end
 
-  def next_state
-    workflow.next_step_name(current_state)
+  #to be changed
+  def create_initial_event
+    initial_state = workflow.multi_team_quant_essential ? 'volume_check' : 'in_progress'
+    events.create!(state: initial_state)
   end
-
-  def move_to_next_state
-    ActiveRecord::Base.transaction do
-      events.create!(from: current_state, to: next_state)
-      update_attributes!(current_state: next_state)
-    end
-  end
-
 
   class AssetAction
-    attr_reader :time, :assets, :state, :asset_state
+    attr_reader :action, :assets, :state, :asset_state
 
     def self.create!(*args)
       self.new(*args).tap {|action| action.do! }
     end
 
-    def initialize(time:,assets:)
-      @time = time
+    def initialize(action:,assets:)
+      @action = action
       @assets = assets
       @asset_state = assets.first.current_state
       @state = 'incomplete'
@@ -114,7 +109,7 @@ class Asset < ActiveRecord::Base
 
     def do!
       ActiveRecord::Base.transaction do
-        assets.each {|a| a.move_to_next_state }
+        assets.each { |a| a.send(action) }
         @state = 'success'
       end
       true

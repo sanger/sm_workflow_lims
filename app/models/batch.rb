@@ -58,7 +58,6 @@ class Batch < ActiveRecord::Base
           begun_at:             begun_at,
           pipeline_destination: pipeline_destination,
           cost_code:     cost_code,
-          current_state: workflow.initial_step_name,
           comment:       comment_object
         }
       end

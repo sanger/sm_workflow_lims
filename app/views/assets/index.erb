@@ -68,6 +68,7 @@
   </div>
 <% end %>
 
+  <input type="hidden" name="action" value=<%= presenter.action %> />
   <% presenter.action_button do |button_text| %>
     <div class="form-group center-block">
         <button type="submit" class="btn btn-default"><%= button_text %></button>

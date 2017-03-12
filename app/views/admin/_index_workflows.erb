@@ -14,7 +14,7 @@
       <th></th>
     </thead>
     <tbody>
-      <% presenter.each_workflow do |name,has_comment, id, reportable, turn_around, flow_name| %>
+      <% presenter.each_workflow do |name,has_comment, id, reportable, multi_team_quant_essential, turn_around| %>
         <tr><td><%= name %></td>
           <td class="text-center">
               <span class="glyphicon <%= has_comment ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
@@ -23,7 +23,7 @@
             <span class="glyphicon <%= reportable ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
-            <span class="glyphicon <%= (flow_name.match 'multi_team_quant_essential') ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
+            <span class="glyphicon <%= multi_team_quant_essential ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
             <%= turn_around ? "#{turn_around} #{'day'.pluralize(turn_around)}" : 'None' %>

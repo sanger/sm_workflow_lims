@@ -1,21 +1,23 @@
-module StepFactory
-  def self.steps
+module StateFactory
+  def self.states
     [
       {name: 'in_progress'},
       {name: 'volume_check'},
       {name: 'quant'},
-      {name: 'report_required'}
+      {name: 'completed'},
+      {name: 'report_required'},
+      {name: 'reported'}
     ]
   end
 
   def self.seed
-    Step.create!(steps)
+    State.create!(states)
   end
 
   def self.update
     ActiveRecord::Base.transaction do
-      steps.each do |at|
-        Step.find_or_initialize_by(name:at[:name]).tap do |s|
+      states.each do |at|
+        State.find_or_initialize_by(name:at[:name]).tap do |s|
           s.update_attributes(at)
         end.save!
       end

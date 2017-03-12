@@ -1,6 +1,6 @@
-class CreateStepTable < ActiveRecord::Migration
+class CreateStateTable < ActiveRecord::Migration
   def change
-    create_table(:steps) do |t|
+    create_table(:states) do |t|
       # id
       t.string      :name,         null: false
       t.timestamps
