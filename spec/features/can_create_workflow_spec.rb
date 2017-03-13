@@ -4,7 +4,6 @@ require 'spec_helper'
 feature 'can create workflow', js: true do
 
   scenario 'can create workflow' do
-    create :standard_flow
     visit '/'
     click_on 'Admin'
     find("a", text: "Create a new workflow").click

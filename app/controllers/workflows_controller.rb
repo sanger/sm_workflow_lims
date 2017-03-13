@@ -30,11 +30,12 @@ class WorkflowsController < Controller
 
   def update
     Workflow::Updater.create!(
-      :workflow         => workflow,
-      :name             => params[:name],
-      :has_comment      => params[:hasComment] || false,
-      :reportable       => params[:reportable] || false,
-      :turn_around_days => turn_around_days
+      workflow:         workflow,
+      name:             params[:name],
+      has_comment:      params[:hasComment] || false,
+      reportable:       params[:reportable] || false,
+      multi_team_quant_essential: params[:multi_team_quant_essential] || false,
+      turn_around_days: turn_around_days
     )
   end
 

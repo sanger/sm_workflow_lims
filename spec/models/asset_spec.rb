@@ -12,14 +12,15 @@ describe Asset do
     let!(:batch) { Batch.new }
     let!(:workflow) { create :workflow }
     let!(:comment) { Comment.new }
-    let(:asset) { Asset.new(
+    let!(:state) { create :state, name: 'in_progress'}
+    let!(:completed) { create :state, name: 'completed'}
+    let!(:asset) { Asset.new(
         identifier: identifier,
         batch:      batch,
         study:      study,
         asset_type: asset_type,
         workflow:   workflow,
-        comment:    comment,
-        current_state: 'in_progress') }
+        comment:    comment) }
 
     it 'can be created' do
 
@@ -29,7 +30,6 @@ describe Asset do
       expect(asset).to have(0).errors_on(:workflow)
       expect(asset).to have(0).errors_on(:comment)
       expect(asset).to have(0).errors_on(:asset_type)
-      expect(asset).to have(0).errors_on(:current_state)
 
       expect(asset).to have(0).errors_on(:begun_at)
 
@@ -50,13 +50,17 @@ describe Asset do
     end
 
     it 'can have events' do
-      3.times { |n| create :event, asset: asset }
-      expect(asset.events.count).to eq 3
+      expect(asset.events.count).to eq 0
+      asset.save
+      expect(asset.events.count).to eq 1
+      create_list(:event, 3, asset: asset)
+      expect(asset.events.count).to eq 4
     end
 
     it 'should know if it is completed' do
+      asset.save
       expect(asset.completed?).to be_false
-      create :event, asset: asset, from: 'in_progress', to: 'report_required'
+      create :event, asset: asset, state: completed
       expect(asset.completed?).to be_true
     end
 
@@ -125,93 +129,78 @@ describe Asset do
     end
   end
 
-  # context 'scopes' do
+  context 'scopes' do
 
-  #   let(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true ) }
-  #   let(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false) }
+    let!(:state) { create :state, name: 'in_progress' }
+    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true ) }
+    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false) }
 
-  #   let(:basics) { { identifier:'one', asset_type_id:1, batch_id:1, workflow_id:1, current_state: 'in_progress' } }
-  #   let(:completed) { basics.merge(completed_at:Time.now) }
-  #   let(:created_last) { basics.merge(begun_at:Time.at(1000)) }
-  #   let(:created_first) { basics.merge(begun_at:Time.at(10)) }
+    let(:basics) { { identifier:'one', asset_type_id:1, batch_id:1, workflow_id: reportable_workflow.id } }
+    let(:completed) { basics.merge(completed_at:Time.now) }
+    let(:created_last) { basics.merge(begun_at:Time.at(1000)) }
+    let(:created_first) { basics.merge(begun_at:Time.at(10)) }
 
-  #   let(:incomplete_reportable)    { basics.merge(workflow_id:reportable_workflow.id) }
-  #   let(:complete_reportable)      { completed.merge(workflow_id:reportable_workflow.id) }
-  #   let(:complete_nonreportable)   { completed.merge(workflow_id:nonreportable_workflow.id) }
-  #   let(:reported_reportable)      { completed.merge(workflow_id:reportable_workflow.id,reported_at:Time.now ) }
+    let(:incomplete_reportable)    { basics.merge(workflow_id:reportable_workflow.id) }
+    let(:complete_reportable)      { completed.merge(workflow_id:reportable_workflow.id) }
+    let(:complete_nonreportable)   { completed.merge(workflow_id:nonreportable_workflow.id) }
+    let(:reported_reportable)      { completed.merge(workflow_id:reportable_workflow.id,reported_at:Time.now ) }
 
-  #   it 'in_progress filters on completed_at' do
-  #     incomplete = Asset.new(basics)
-  #     complete = Asset.new(completed)
+    it 'in_progress filters on completed_at' do
+      incomplete = Asset.new(basics)
+      complete = Asset.new(completed)
 
+      incomplete.save!(validate: false)
+      complete.save!(validate: false)
 
-  #     incomplete.save!(validate: false)
-  #     complete.save!(validate: false)
+      Asset.in_progress.should include(incomplete)
+      Asset.in_progress.should_not include(complete)
+    end
 
-  #     Asset.in_progress.should include(incomplete)
-  #     Asset.in_progress.should_not include(complete)
-  #   end
+    it 'should return all if scope nil' do
+      expect(Asset.in_state(nil)).to eq(Asset.all)
+    end
 
-  #   it 'should scope all' do
-  #     Asset.in_state('all').should eq(Asset.all)
-  #   end
+    it 'reporting_required lists appropriate assets' do
 
-  #   it 'should scope report_required' do
-  #     Asset.should_receive(:report_required).and_return('valid')
-  #     Asset.in_state('report_required').should eq('valid')
-  #   end
+      #TODO: Should look into testing this without needing database writes
 
-  #   it 'should scope in_progress' do
-  #     Asset.should_receive(:in_progress).and_return('valid')
-  #     Asset.in_state('in_progress').should eq('valid')
-  #   end
+      asset_incomplete_reportable = Asset.new(incomplete_reportable)
+      asset_complete_reportable = Asset.new(complete_reportable)
+      asset_complete_nonreportable = Asset.new(complete_nonreportable)
+      asset_reported_reportable = Asset.new(reported_reportable)
 
-  #   it 'should scope invalid_states' do
-  #     Asset.should_receive(:none).and_return('nothing')
-  #     Asset.in_state('invalid_state').should eq('nothing')
-  #   end
+      asset_incomplete_reportable.save!(validate: false)
+      asset_complete_reportable.save!(validate: false)
+      asset_complete_nonreportable.save!(validate: false)
+      asset_reported_reportable.save!(validate: false)
 
-  #   it 'reporting_required lists appropriate assets' do
+      Asset.reportable.should     include(asset_complete_reportable)
+      Asset.reportable.should     include(asset_incomplete_reportable)
+      Asset.reportable.should_not include(asset_complete_nonreportable)
+      Asset.reportable.should     include(asset_reported_reportable)
 
-  #     #TODO: Should look into testing this without needing database writes
+      Asset.report_required.should     include(asset_complete_reportable)
+      Asset.report_required.should_not include(asset_incomplete_reportable)
+      Asset.report_required.should_not include(asset_complete_nonreportable)
+      Asset.report_required.should_not include(asset_reported_reportable)
+    end
 
-  #     asset_incomplete_reportable = Asset.new(incomplete_reportable)
-  #     asset_complete_reportable = Asset.new(complete_reportable)
-  #     asset_complete_nonreportable = Asset.new(complete_nonreportable)
-  #     asset_reported_reportable = Asset.new(reported_reportable)
+    it 'latest_first orders by created_at' do
+      earliest = Asset.new(created_first)
+      latest   = Asset.new(created_last)
 
-  #     asset_incomplete_reportable.save!(validate: false)
-  #     asset_complete_reportable.save!(validate: false)
-  #     asset_complete_nonreportable.save!(validate: false)
-  #     asset_reported_reportable.save!(validate: false)
+      earliest.save!(validate: false)
+      latest.save!(validate: false)
 
-  #     Asset.reportable.should     include(asset_complete_reportable)
-  #     Asset.reportable.should     include(asset_incomplete_reportable)
-  #     Asset.reportable.should_not include(asset_complete_nonreportable)
-  #     Asset.reportable.should     include(asset_reported_reportable)
+      Asset.latest_first.first.should eq(latest)
+    end
 
-  #     Asset.report_required.should     include(asset_complete_reportable)
-  #     Asset.report_required.should_not include(asset_incomplete_reportable)
-  #     Asset.report_required.should_not include(asset_complete_nonreportable)
-  #     Asset.report_required.should_not include(asset_reported_reportable)
-  #   end
+    after do
+      Workflow.destroy_all
+      Asset.destroy_all
+    end
 
-  #   it 'latest_first orders by created_at' do
-  #     earliest = Asset.new(created_first)
-  #     latest   = Asset.new(created_last)
-
-  #     earliest.save!(validate: false)
-  #     latest.save!(validate: false)
-
-  #     Asset.latest_first.first.should eq(latest)
-  #   end
-
-  #   after do
-  #     Workflow.destroy_all
-  #     Asset.destroy_all
-  #   end
-
-  # end
+  end
 
   context 'removal of an asset' do
     let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
@@ -235,6 +224,31 @@ describe Asset do
       comment.assets.size.should eq(2)
       comment.assets.each(&:destroy!)
       comment.destroyed?.should eq(true)
+    end
+  end
+
+  context 'state machine' do
+    let!(:state1) { create :state, name: 'in_progress' }
+    let!(:state2) { create :state, name: 'completed' }
+    let!(:state3) { create :state, name: 'report_required' }
+    let(:asset) { create :asset }
+    let(:reportable_asset) { create :asset, workflow: (create :workflow_with_report) }
+
+    it 'should know the current state' do
+      expect(asset.in_progress?).to be_true
+      expect(asset.reported?).to be_false
+    end
+
+    it 'should create the right events' do
+      expect(asset.events.count).to eq 1
+      asset.complete
+      expect(asset.events.count).to eq 2
+      expect(asset.completed?).to be_true
+
+      expect(reportable_asset.events.count).to eq 1
+      reportable_asset.complete
+      expect(reportable_asset.events.count).to eq 3
+      expect(reportable_asset.report_required?).to be_true
     end
   end
 

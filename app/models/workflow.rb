@@ -21,11 +21,12 @@ class Workflow < ActiveRecord::Base
       @has_comment = has_comment
       @reportable = reportable
       @multi_team_quant_essential = multi_team_quant_essential
+      @turn_around_days = turn_around_days
     end
 
     def do!
       ActiveRecord::Base.transaction do
-        Workflow.new(name: name, has_comment: has_comment, reportable: reportable, multi_team_quant_essential: multi_team_quant_essential).save!
+        Workflow.new(name: name, has_comment: has_comment, reportable: reportable, multi_team_quant_essential: multi_team_quant_essential, turn_around_days: turn_around_days).save!
       end
     end
 
@@ -33,23 +34,24 @@ class Workflow < ActiveRecord::Base
 
   class Updater
 
-    attr_reader :name, :has_comment, :reportable, :turn_around_days, :workflow, :turn_around_days
+    attr_reader :name, :has_comment, :reportable, :turn_around_days, :workflow, :turn_around_days, :multi_team_quant_essential
 
     def self.create!(*args)
       self.new(*args).do!
     end
 
-    def initialize(workflow:,name:,has_comment:,reportable:,turn_around_days:nil)
+    def initialize(workflow:, name:, has_comment:, reportable:, multi_team_quant_essential:, turn_around_days:nil)
       @workflow = workflow
       @name = name
       @has_comment = has_comment
       @reportable = reportable
       @turn_around_days = turn_around_days
+      @multi_team_quant_essential = multi_team_quant_essential
     end
 
     def do!
       ActiveRecord::Base.transaction do
-        workflow.update_attributes!(name:name, has_comment: has_comment, reportable: reportable, turn_around_days: turn_around_days)
+        workflow.update_attributes!(name:name, has_comment: has_comment, reportable: reportable, turn_around_days: turn_around_days, multi_team_quant_essential: multi_team_quant_essential)
       end
     end
   end

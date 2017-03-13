@@ -10,10 +10,10 @@ shared_examples "shared presenter behaviour" do
 
   it "should yield each workflow and its comment_requirement in turn for each_workflow" do
     flow = double("flow", name: 'flow_name')
-    workflow_1 = double("workflow_1", :name=>'wf1', :has_comment=>true, :id=>1, :reportable => true, flow: flow, :turn_around_days=>1 )
-    workflow_2 = double("workflow_2", :name=>'wf2', :has_comment=>false, :id=>2, :reportable => false, flow: flow, :turn_around_days=>nil)
+    workflow_1 = double("workflow_1", :name=>'wf1', :has_comment=>true, :id=>1, :reportable => true, multi_team_quant_essential: false, :turn_around_days=>1 )
+    workflow_2 = double("workflow_2", :name=>'wf2', :has_comment=>false, :id=>2, :reportable => false, multi_team_quant_essential: false, :turn_around_days=>nil)
     Workflow.stub(:all) {[workflow_1,workflow_2]}
 
-    expect { |b| presenter.each_workflow(&b) }.to yield_successive_args(['wf1', true,1, true, 1, 'flow_name'], ['wf2', false,2, false, nil, 'flow_name'])
+    expect { |b| presenter.each_workflow(&b) }.to yield_successive_args(['wf1', true,1, true, false, 1], ['wf2', false,2, false, false, nil])
   end
 end

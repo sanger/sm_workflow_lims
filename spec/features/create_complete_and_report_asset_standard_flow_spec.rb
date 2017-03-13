@@ -6,6 +6,12 @@ feature 'create complete and report assets within standard flow', js: true do
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
   let!(:workflow2) { create(:workflow_with_report, name: 'Reportable workflow') }
+  let!(:in_progress) { create :state, name: 'in_progress' }
+  let!(:volume_check) { create :state, name: 'volume_check' }
+  let!(:quant) { create :state, name: 'quant' }
+  let!(:report_required) { create :state, name: 'report_required' }
+  let!(:completed) { create :state, name: 'completed' }
+  let!(:reported) { create :state, name: 'reported' }
 
   scenario 'can create and complete a non-reportable asset' do
     visit '/'
@@ -24,9 +30,9 @@ feature 'create complete and report assets within standard flow', js: true do
     expect(page).to have_content "The batch was created."
     click_on 'In Progress'
     expect(page).to have_selector('table tr', count: 2)
-    check 'update[1]'
+    check 'assets[1]'
     click_on 'Completed selected'
-    expect(page).to have_content "In progress step is done for 123"
+    expect(page).to have_content "In progress is done for 123"
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
     expect(page).not_to have_selector('table tr')
@@ -60,9 +66,9 @@ feature 'create complete and report assets within standard flow', js: true do
     expect(page).to have_content "The batch was created."
     click_on 'In Progress'
     expect(page).to have_selector('table tr', count: 4)
-    check 'update[2]'
+    check 'assets[2]'
     click_on 'Completed selected'
-    expect(page).to have_content "In progress step is done for 456"
+    expect(page).to have_content "In progress is done for 456"
     expect(page).to have_selector('table tr', count: 3)
     click_on 'Volume check'
     expect(page).not_to have_selector('table tr')
@@ -70,9 +76,9 @@ feature 'create complete and report assets within standard flow', js: true do
     expect(page).not_to have_selector('table tr')
     click_on 'Report Required'
     expect(page).to have_selector('table tr', count: 2)
-    check 'update[2]'
+    check 'assets[2]'
     click_on 'Reported selected'
-    expect(page).to have_content "Report required step is done for 456"
+    expect(page).to have_content "Report required is done for 456"
   end
 
 end

@@ -20,7 +20,7 @@ module StateMachine
   end
 
   def current_state
-    (events.last.try(:state).try(:name) || State.first.name).inquiry
+    events.last.state.name.inquiry
   end
 
   included do
@@ -30,7 +30,11 @@ module StateMachine
   class_methods do
 
     def in_state(state)
-      joins(:events).where("events.id IN (SELECT MAX(id) FROM events GROUP BY asset_id) AND state_id = #{state.id}")
+      if state.present?
+        joins(:events).where("events.id IN (SELECT MAX(id) FROM events GROUP BY asset_id) AND state_id = #{state.id}")
+      else
+        all
+      end
     end
 
   end

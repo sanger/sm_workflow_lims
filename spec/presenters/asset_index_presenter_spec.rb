@@ -10,9 +10,8 @@ describe Presenter::AssetPresenter::Index do
     let(:mock_workflow)  { double('mock_wf',  name:'Work',has_comment:true)}
     let(:asset1) { double('asset_1',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study') }
     let(:asset2) { double('asset_2',identifier:'asset_2',asset_type:mock_type2,workflow:mock_workflow,study:'study') }
-
     let(:assets) { [asset1,asset2] }
-
+    let!(:state) { create :state, name: 'in_progress'}
     let(:presenter) { Presenter::AssetPresenter::Index.new(assets,search,state)}
   end
 
@@ -36,7 +35,6 @@ describe Presenter::AssetPresenter::Index do
     include_examples "standard behaviour"
 
     let(:search) {"identifier matches 'Type'"}
-    let(:state)  {'all'}
 
     it "should yield the search parameters on search_parameters" do
       expect { |b| presenter.search_parameters(&b) }.to yield_with_args(search)
@@ -54,7 +52,6 @@ describe Presenter::AssetPresenter::Index do
     include_examples "standard behaviour"
 
     let(:search) {nil}
-    let(:state)  {'in_progress'}
 
     it "should not yield on search_parameters" do
       expect { |b| presenter.search_parameters(&b) }.to yield_successive_args()
@@ -79,35 +76,35 @@ describe Presenter::AssetPresenter::Index do
       end
     end
     context 'in_progress' do
-      let(:state)  {'in_progress'}
+      let(:state) { create :state, name: 'in_progress'}
 
       it "should have complete actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
-        expect { |b| presenter.action(&b) }.to yield_with_args('update')
+        expect(presenter.action).to eq ('complete')
       end
     end
     context 'volume_check' do
-      let(:state)  {'volume_check'}
+      let(:state)  { create :state, name: 'volume_check'}
 
       it "should have volume_check actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Volume checked selected')
-        expect { |b| presenter.action(&b) }.to yield_with_args('update')
+        expect(presenter.action).to eq ('check_volume')
       end
     end
     context 'quant' do
-      let(:state)  {'quant'}
+      let(:state)  { create :state, name: 'quant'}
 
       it "should have quant actions" do
-        expect { |b| presenter.action_button(&b) }.to yield_with_args('Quanted selected')
-        expect { |b| presenter.action(&b) }.to yield_with_args('update')
+        expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
+        expect(presenter.action).to eq ('complete')
       end
     end
     context 'report_required' do
-      let(:state)  {'report_required'}
+      let(:state)  { create :state, name: 'report_required'}
 
       it "should have reporting actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Reported selected')
-        expect { |b| presenter.action(&b) }.to yield_with_args('update')
+        expect(presenter.action).to eq ('report')
       end
     end
   end

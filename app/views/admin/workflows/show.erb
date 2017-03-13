@@ -43,6 +43,10 @@
             <input type="checkbox" autocomplete="off" name="reportable" id="reportable" <%= presenter.reportable ? 'checked' : '' %> > Reportable
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
+          <label class="btn btn-primary <%= presenter.multi_team_quant_essential ? 'active' : '' %>" for="multi_team_quant_essential">
+            <input type="checkbox" autocomplete="off" name="multi_team_quant_essential" id="multi_team_quant_essential" <%= presenter.multi_team_quant_essential ? 'checked' : '' %> > Multi team quant essential
+            <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+          </label>
         </div>
       </div>
     </div>

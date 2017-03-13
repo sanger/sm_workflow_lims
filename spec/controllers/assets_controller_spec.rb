@@ -13,7 +13,7 @@ describe AssetsController do
     let(:request) { AssetsController.new(params).get_index }
     let(:params)  { {} }
 
-    it "stet should be nil by defauld" do
+    it "state should be nil by default" do
       Asset.should_receive(:in_state).with(nil).and_return(searchless)
       request
     end
@@ -37,7 +37,9 @@ describe AssetsController do
     # We'll shift to the join
 
     let(:request) { AssetsController.new(params).get_index }
-    let(:params)  { {identifier:'Test',state:'volume_check'} }
+    let!(:state_name) { 'volume_check' }
+    let(:params)  { {identifier:'Test',state: state_name} }
+    let(:state) { create :state, name: state_name}
 
     it "should look up all assets with an identifier" do
       Asset.should_receive(:with_identifier).with('Test').and_return([mock_asset])
@@ -52,7 +54,7 @@ describe AssetsController do
 
     it "should pass a search parameter and assets to the presenter" do
       Asset.stub(:with_identifier).and_return([mock_asset])
-      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],"identifier matches 'Test'",'volume_check')
+      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset], "identifier matches 'Test'", state)
       request
     end
 
@@ -63,10 +65,11 @@ describe AssetsController do
     # We'll shift to the join
 
     let(:request) { AssetsController.new(params).get_index }
-    let(:params)  { {:state=>'report_required'} }
+    let(:params)  { { state: 'report_required'} }
+    let!(:state)  { create :state, name: 'report_required' }
 
     it "should look up all in report_required assets" do
-      Asset.should_receive(:in_state).with('report_required').and_return(searchless)
+      Asset.should_receive(:in_state).with(state).and_return(searchless)
       request
     end
 
@@ -78,7 +81,7 @@ describe AssetsController do
 
     it "should pass a nil search parameter and assets to the presenter" do
       Asset.stub(:in_state).and_return(searchless)
-      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset],nil,'report_required')
+      Presenter::AssetPresenter::Index.should_receive(:new).with([mock_asset], nil, state)
       request
     end
 
@@ -98,8 +101,7 @@ describe AssetsController do
     end
 
     context "with update" do
-      let(:params)  { {:update=>{1=>1,2=>1,3=>1}} }
-      let(:time) { DateTime.parse('01-02-2012 13:15') }
+      let(:params)  { {:assets=>{1=>1,2=>1,3=>1}, action: 'action'} }
       let(:mock_asset) {
         double('asset',identifier:'fake',asset_type:double('asset_type',name:'type'))
       }
@@ -110,7 +112,7 @@ describe AssetsController do
         Asset.should_receive(:find).with([1,2,3]).and_return([mock_asset])
         Asset::Updater.should_receive(:create!).with(
           assets: [mock_asset],
-          time: time
+          action: 'action'
         )
         request
       end

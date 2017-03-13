@@ -4,8 +4,14 @@ require 'spec_helper'
 feature 'create complete and report assets within multi team flow', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
-  let!(:workflow1) { create(:workflow, name: 'Multi team workflow') }
-  let!(:workflow2) { create(:workflow_with_report, name: 'Reportable multi team workflow') }
+  let!(:workflow1) { create(:workflow_multi_team, name: 'Multi team workflow') }
+  let!(:workflow2) { create(:workflow_multi_team_reportable, name: 'Reportable multi team workflow') }
+  let!(:in_progress) { create :state, name: 'in_progress' }
+  let!(:volume_check) { create :state, name: 'volume_check' }
+  let!(:quant) { create :state, name: 'quant' }
+  let!(:report_required) { create :state, name: 'report_required' }
+  let!(:completed) { create :state, name: 'completed' }
+  let!(:reported) { create :state, name: 'reported' }
 
   scenario 'can create and complete a non-reportable asset' do
     visit '/'
@@ -28,15 +34,15 @@ feature 'create complete and report assets within multi team flow', js: true do
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
     expect(page).to have_selector('table tr', count: 3)
-    check 'update[1]'
+    check 'assets[1]'
     click_on 'Volume checked selected'
-    expect(page).to have_content "Volume check step is done for 123"
+    expect(page).to have_content "Volume check is done for 123"
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 2)
-    check 'update[1]'
-    click_on 'Quanted selected'
-    expect(page).to have_content "Quant step is done for 123"
+    check 'assets[1]'
+    click_on 'Completed selected'
+    expect(page).to have_content "Quant is done for 123"
     expect(page).not_to have_selector('table tr')
     click_on 'Report Required'
     expect(page).not_to have_selector('table tr')
@@ -67,22 +73,22 @@ feature 'create complete and report assets within multi team flow', js: true do
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
     expect(page).to have_selector('table tr', count: 4)
-    check 'update[1]'
-    check 'update[3]'
+    check 'assets[1]'
+    check 'assets[3]'
     click_on 'Volume checked selected'
-    expect(page).to have_content "Volume check step is done for 123 and 789"
+    expect(page).to have_content "Volume check is done for 123 and 789"
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 3)
-    check 'update[3]'
-    click_on 'Quanted selected'
-    expect(page).to have_content "Quant step is done for 789"
+    check 'assets[3]'
+    click_on 'Completed selected'
+    expect(page).to have_content "Quant is done for 789"
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Report Required'
     expect(page).to have_selector('table tr', count: 2)
-    check 'update[3]'
+    check 'assets[3]'
     click_on 'Reported selected'
-    expect(page).to have_content "Report required step is done for 789"
+    expect(page).to have_content "Report required is done for 789"
     expect(page).not_to have_selector('table tr')
   end
 

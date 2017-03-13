@@ -11,8 +11,4 @@ class Event < ActiveRecord::Base
     super
   end
 
-  def self.with_last_state(state)
-    order("id desc").group("asset_id").having(state_id: state.id)
-  end
-
 end

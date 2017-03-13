@@ -116,8 +116,8 @@ class Asset < ActiveRecord::Base
     end
 
     def message
-      done? ? "#{asset_state.humanize} step is done for #{identifiers.to_sentence}" :
-              "#{asset_state.humanize} step is not done for requested assets."
+      done? ? "#{asset_state.humanize} is done for #{identifiers.to_sentence}" :
+              "#{asset_state.humanize} has not been finished for requested assets."
     end
 
     def redirect_state; asset_state; end

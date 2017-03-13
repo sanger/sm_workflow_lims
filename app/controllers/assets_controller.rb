@@ -9,11 +9,7 @@ class AssetsController < Controller
   end
 
   def index
-    if state.present?
-      assets = Asset.in_state(state).with_identifier(params[:identifier])
-    else
-      assets = Asset.all.with_identifier(params[:identifier])
-    end
+    assets = Asset.in_state(state).with_identifier(params[:identifier])
     Presenter::AssetPresenter::Index.new(assets, search, state)
   end
 
