@@ -27,17 +27,5 @@ module StateMachine
     delegate :in_progress?, :volume_check?, :quant?, :report_required?, :reported?, to: :current_state
   end
 
-  class_methods do
-
-    def in_state(state)
-      if state.present?
-        joins(:events).where("events.id IN (SELECT MAX(id) FROM events GROUP BY asset_id) AND state_id = #{state.id}")
-      else
-        all
-      end
-    end
-
-  end
-
 end
 

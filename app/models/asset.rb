@@ -29,6 +29,14 @@ class Asset < ActiveRecord::Base
     comment.destroy
   end
 
+  def self.in_state(state)
+    if state.present?
+      joins(:events).where("events.id IN (SELECT MAX(id) FROM events GROUP BY asset_id) AND state_id = #{state.id}")
+    else
+      all
+    end
+  end
+
   def self.with_identifier(search_string)
     search_string.nil? ? all : where(identifier: search_string)
   end
@@ -48,6 +56,7 @@ class Asset < ActiveRecord::Base
   scope :completed,       -> { where.not(completed_at: nil) }
   scope :reportable,      -> { where(workflows:{reportable:true}) }
   scope :report_required, -> { reportable.completed.where(reported_at:nil) }
+  scope :reported,        -> { reportable.completed.where.not(reported_at:nil) }
   scope :latest_first,    -> { order('begun_at DESC') }
 
   default_scope { includes(:workflow,:asset_type,:comment,:batch) }
@@ -61,7 +70,7 @@ class Asset < ActiveRecord::Base
   end
 
   def completed_at
-    events.where(state: State.find_by(name: 'completed')).first.try(:created_at)
+    events.date('completed')
   end
 
   def age

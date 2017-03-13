@@ -11,4 +11,8 @@ class Event < ActiveRecord::Base
     super
   end
 
+  def self.date(state_name)
+    where(state: State.find_by(name: state_name)).first.try(:created_at)
+  end
+
 end
