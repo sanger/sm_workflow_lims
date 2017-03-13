@@ -5,7 +5,7 @@ namespace :old_assets do
     def update_in_progress_assets
       Asset.in_progress.each do |asset|
         if asset.events.empty?
-          asset.events.create!(state: 'in_progress', created_at: asset.created_at)
+          asset.events.create!(state: 'in_progress', created_at: asset.begun_at)
         end
       end
     end
@@ -13,7 +13,7 @@ namespace :old_assets do
     def update_completed_assets
       Asset.completed.each do |asset|
         if asset.events.empty?
-          asset.events.create!(state: 'in_progress', created_at: asset.created_at)
+          asset.events.create!(state: 'in_progress', created_at: asset.begun_at)
           asset.events.create!(state: 'completed', created_at: asset.completed_at)
         end
       end

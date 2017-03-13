@@ -31,7 +31,7 @@ class Asset < ActiveRecord::Base
 
   def self.in_state(state)
     if state.present?
-      joins(:events).where("events.id IN (SELECT MAX(id) FROM events GROUP BY asset_id) AND state_id = #{state.id}")
+      joins(:events).where("events.id IN (SELECT MAX(id) FROM events GROUP BY asset_id) AND state_id = ?", state.id)
     else
       all
     end
@@ -86,7 +86,7 @@ class Asset < ActiveRecord::Base
   #to be changed
   def create_initial_event
     initial_state = workflow.multi_team_quant_essential ? 'volume_check' : 'in_progress'
-    events.create!(state: initial_state)
+    events.create!(state: initial_state, created_at: begun_at)
   end
 
   class AssetAction
