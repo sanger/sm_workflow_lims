@@ -31,7 +31,7 @@ class Asset < ActiveRecord::Base
 
   def self.in_state(state)
     if state.present?
-      joins(:events).where("events.id IN (SELECT MAX(id) FROM events GROUP BY asset_id) AND state_id = ?", state.id)
+      joins(:events).where(events: {id: Event.latests, state: state})
     else
       all
     end

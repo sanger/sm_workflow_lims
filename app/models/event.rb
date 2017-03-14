@@ -15,4 +15,8 @@ class Event < ActiveRecord::Base
     where(state: State.find_by(name: state_name)).first.try(:created_at)
   end
 
+  def self.latests
+    Event.group(:asset_id).maximum(:id).values
+  end
+
 end
