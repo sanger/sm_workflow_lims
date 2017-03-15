@@ -19,7 +19,7 @@ class WorkflowsController < Controller
       name:             params[:name],
       has_comment:      params[:hasComment] || false,
       reportable:       params[:reportable] || false,
-      multi_team_quant_essential: params[:multi_team_quant_essential] || false,
+      initial_state_name:    params[:initial_state_name],
       turn_around_days: params[:turn_around_days]
     )
   end
@@ -34,7 +34,7 @@ class WorkflowsController < Controller
       name:             params[:name],
       has_comment:      params[:hasComment] || false,
       reportable:       params[:reportable] || false,
-      multi_team_quant_essential: params[:multi_team_quant_essential] || false,
+      initial_state_name:    params[:initial_state_name],
       turn_around_days: turn_around_days
     )
   end

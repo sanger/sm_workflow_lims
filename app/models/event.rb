@@ -6,16 +6,17 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :asset_id, :state_id
 
-  def state=(state)
-    state = State.find_by(name: state) if state.is_a? String
-    super
+  attr_accessor :state_name
+
+  def state_name=(state_name)
+    self.state = State.find_by(name: state_name)
   end
 
   def self.date(state_name)
     where(state: State.find_by(name: state_name)).first.try(:created_at)
   end
 
-  def self.latests
+  def self.latest_per_asset
     Event.group(:asset_id).maximum(:id).values
   end
 

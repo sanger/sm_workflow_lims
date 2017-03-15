@@ -132,8 +132,8 @@ describe Asset do
   context 'scopes' do
 
     let!(:state) { create :state, name: 'in_progress' }
-    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state: 'in_progress' ) }
-    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state: 'in_progress' ) }
+    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state_name: 'in_progress' ) }
+    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state_name: 'in_progress' ) }
     let!(:in_progress) { create :state, name: 'in_progress' }
 
     let(:basics) { { identifier:'one', asset_type_id:1, batch_id:1, workflow_id: reportable_workflow.id } }
@@ -250,6 +250,11 @@ describe Asset do
       reportable_asset.complete
       expect(reportable_asset.events.count).to eq 3
       expect(reportable_asset.report_required?).to be_true
+    end
+
+    it 'should not perform actions that are not valid' do
+      expect { asset.perform_action('complete') }.to_not raise_error
+      expect { asset.perform_action('some_action') }.to raise_error(StateMachine::StateMachineError)
     end
   end
 

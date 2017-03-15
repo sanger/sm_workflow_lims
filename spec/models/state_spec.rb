@@ -11,5 +11,9 @@ describe State do
     expect(state.valid?).to be true
   end
 
+  it 'should know if it is default' do
+    expect(state.default?).to be_false
+  end
+
 
 end

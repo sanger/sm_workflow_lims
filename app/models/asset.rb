@@ -1,13 +1,10 @@
 require 'active_record'
 require './app/models/concerns/state_machine'
 require './lib/client_side_validations'
-require './lib/state_scoping'
 
 class Asset < ActiveRecord::Base
 
   include StateMachine
-
-  extend StateScoping
 
   belongs_to :asset_type
   belongs_to :workflow
@@ -31,7 +28,7 @@ class Asset < ActiveRecord::Base
 
   def self.in_state(state)
     if state.present?
-      joins(:events).where(events: {id: Event.latests, state: state})
+      joins(:events).where(events: {id: Event.latest_per_asset, state: state})
     else
       all
     end
@@ -70,7 +67,7 @@ class Asset < ActiveRecord::Base
   end
 
   def completed_at
-    @completed_at || events.date('completed')
+    super || events.date('completed')
   end
 
   def age
@@ -116,7 +113,7 @@ class Asset < ActiveRecord::Base
 
     def do!
       ActiveRecord::Base.transaction do
-        assets.each { |a| a.send(action) }
+        assets.each { |a| a.perform_action(action) }
         @state = 'success'
       end
       true
