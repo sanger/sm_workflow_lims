@@ -70,7 +70,7 @@ class Asset < ActiveRecord::Base
   end
 
   def completed_at
-    events.date('completed')
+    @completed_at || events.date('completed')
   end
 
   def age

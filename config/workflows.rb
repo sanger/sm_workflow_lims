@@ -24,9 +24,7 @@ module WorkflowFactory
       {name: 'Other',                            has_comment: true,  reportable: false, initial_state: 'in_progress' },
       {name: 'Volume Check',                     has_comment: false, reportable: false, initial_state: 'in_progress' },
       {name: 'Fluidigm DDD 96:96',               has_comment: false, reportable: false, initial_state: 'in_progress' },
-      {name: 'DNA extraction QS',                has_comment: false, reportable: false, initial_state: 'in_progress' },
-      {name: 'Multiteam',                        has_comment: false, reportable: false, initial_state: 'volume_check' },
-      {name: 'Multiteam reportable',             has_comment: false, reportable: true,  initial_state: 'volume_check' }
+      {name: 'DNA extraction QS',                has_comment: false, reportable: false, initial_state: 'in_progress' }
     ]
   end
 

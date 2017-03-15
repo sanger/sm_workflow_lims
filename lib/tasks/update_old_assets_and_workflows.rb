@@ -4,7 +4,7 @@ namespace :old do
   task :update do
 
     def update_workflows
-      Workflow.where(turn_around_days: nil).each do |workflow|
+      Workflow.where(initial_state: nil).each do |workflow|
         workflow.update_attributes!(initial_state: 'in_progress')
       end
     end
