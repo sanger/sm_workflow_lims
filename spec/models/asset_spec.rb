@@ -132,8 +132,9 @@ describe Asset do
   context 'scopes' do
 
     let!(:state) { create :state, name: 'in_progress' }
-    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true ) }
-    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false) }
+    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state: 'in_progress' ) }
+    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state: 'in_progress' ) }
+    let!(:in_progress) { create :state, name: 'in_progress' }
 
     let(:basics) { { identifier:'one', asset_type_id:1, batch_id:1, workflow_id: reportable_workflow.id } }
     let(:completed) { basics.merge(completed_at:Time.now) }
@@ -232,7 +233,7 @@ describe Asset do
     let!(:state2) { create :state, name: 'completed' }
     let!(:state3) { create :state, name: 'report_required' }
     let(:asset) { create :asset }
-    let(:reportable_asset) { create :asset, workflow: (create :workflow_with_report) }
+    let(:reportable_asset) { create :asset, workflow: (create :workflow_reportable) }
 
     it 'should know the current state' do
       expect(asset.in_progress?).to be_true

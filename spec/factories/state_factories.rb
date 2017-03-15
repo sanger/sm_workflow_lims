@@ -6,6 +6,7 @@ FactoryGirl.define do
 
   factory :state do
     name { generate :state_name }
+    initialize_with { State.find_or_create_by(name: name) }
   end
 
 end

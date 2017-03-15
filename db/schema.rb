@@ -79,13 +79,16 @@ ActiveRecord::Schema.define(version: 20170306102500) do
   end
 
   create_table "workflows", force: :cascade do |t|
-    t.string   "name",                       limit: 255,                 null: false
-    t.boolean  "has_comment",                            default: false, null: false
+    t.string   "name",             limit: 255,                 null: false
+    t.boolean  "has_comment",                  default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "reportable",                             default: false, null: false
-    t.integer  "turn_around_days",           limit: 4
-    t.boolean  "multi_team_quant_essential",             default: false, null: false
+    t.boolean  "reportable",                   default: false, null: false
+    t.integer  "turn_around_days", limit: 4
+    t.integer  "initial_state_id", limit: 4
   end
 
+  add_index "workflows", ["initial_state_id"], name: "fk_rails_e3fad0d986", using: :btree
+
+  add_foreign_key "workflows", "states", column: "initial_state_id"
 end

@@ -1,11 +1,14 @@
 require 'spec_helper'
+require './app/models/state'
 require './app/models/workflow'
+
 
 describe Workflow do
 
   context "with valid parameters" do
     let!(:test_name) { 'test' }
     let!(:has_comment) { true }
+    let!(:volume_check) { create :state, name: 'volume_check' }
     let(:workflow) { Workflow.new(name: test_name, has_comment: has_comment) }
 
     it 'can be created' do
@@ -22,6 +25,11 @@ describe Workflow do
       workflow.assets.new(:identifier=>'test')
       workflow.assets.size.should eq(1)
       workflow.assets.first.identifier.should eq('test')
+    end
+
+    it 'should know its initial state' do
+      workflow.update_attributes!(initial_state: 'volume_check')
+      expect(workflow.initial_state).to eq volume_check
     end
 
   end

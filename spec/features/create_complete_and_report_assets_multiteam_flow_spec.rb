@@ -4,8 +4,8 @@ require 'spec_helper'
 feature 'create complete and report assets within multi team flow', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
-  let!(:workflow1) { create(:workflow_multi_team, name: 'Multi team workflow') }
-  let!(:workflow2) { create(:workflow_multi_team_reportable, name: 'Reportable multi team workflow') }
+  let!(:workflow1) { create(:multi_team_workflow, name: 'Multi team workflow') }
+  let!(:workflow2) { create(:multi_team_workflow_reportable, name: 'Reportable multi team workflow') }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
   let!(:quant) { create :state, name: 'quant' }
