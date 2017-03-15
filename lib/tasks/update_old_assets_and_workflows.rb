@@ -1,7 +1,14 @@
 require "./app"
 
-namespace :old_assets do
+namespace :old do
   task :update do
+
+    def update_workflows
+      Workflow.where(turn_around_days: nil).each do |workflow|
+        workflow.update_attributes!(initial_state: 'in_progress')
+      end
+    end
+
     def update_in_progress_assets
       Asset.in_progress.each do |asset|
         if asset.events.empty?
@@ -31,6 +38,8 @@ namespace :old_assets do
       end
     end
 
+    puts "Update workflows"
+    update_workflows
     puts "Updating in_progress assets"
     update_in_progress_assets
     puts "Updating completed assets"

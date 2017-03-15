@@ -83,10 +83,8 @@ class Asset < ActiveRecord::Base
     age
   end
 
-  #to be changed
   def create_initial_event
-    initial_state = workflow.multi_team_quant_essential ? 'volume_check' : 'in_progress'
-    events.create!(state: initial_state, created_at: begun_at)
+    events.create!(state: workflow.initial_state, created_at: begun_at)
   end
 
   class AssetAction

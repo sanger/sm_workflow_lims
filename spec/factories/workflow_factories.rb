@@ -6,6 +6,7 @@ FactoryGirl.define do
 
   factory :workflow do
     name { generate :workflow_name }
+    association :initial_state, factory: :state, name: 'in_progress'
 
     trait :has_comment do
       has_comment true
@@ -15,15 +16,15 @@ FactoryGirl.define do
       reportable true
     end
 
-    trait :multi_team_quant_essential do
-      multi_team_quant_essential true
-    end
-
+    factory :workflow_reportable, traits: [:reportable]
     factory :workflow_with_comment, traits: [:has_comment]
-    factory :workflow_with_report, traits: [:reportable]
-    factory :workflow_multi_team, traits: [:multi_team_quant_essential]
-    factory :workflow_multi_team_reportable, traits: [:multi_team_quant_essential, :reportable]
 
+    factory :multi_team_workflow do
+
+      association :initial_state, factory: :state, name: 'volume_check'
+      factory :multi_team_workflow_reportable, traits: [:reportable]
+
+    end
   end
 
 end
