@@ -18,7 +18,7 @@ module StateMachine
     if VALID_ACTIONS.include? action
       send(action)
     else
-      raise StateMachineError
+      raise StateMachineError, "#{action} is not a recognised action"
     end
   end
 
