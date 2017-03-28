@@ -28,6 +28,7 @@ namespace :old do
 
     def update_reported_assets
       Asset.reported.find_each do |asset|
+        asset.events.create!(state_name: 'report_required', created_at: asset.completed_at)
         asset.events.create!(state_name: 'reported', created_at: asset.reported_at)
       end
     end
