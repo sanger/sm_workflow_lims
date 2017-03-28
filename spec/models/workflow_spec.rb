@@ -1,14 +1,19 @@
 require 'spec_helper'
+require './app/models/state'
 require './app/models/workflow'
+
 
 describe Workflow do
 
+  let!(:volume_check) { create :state, name: 'volume_check' }
+
   context "with valid parameters" do
-    let(:test_name) { 'test' }
-    let(:has_comment) { true }
+    let!(:test_name) { 'test' }
+    let!(:has_comment) { true }
+    let(:workflow) { Workflow.new(name: test_name, has_comment: has_comment, initial_state_name: 'volume_check') }
 
     it 'can be created' do
-      workflow = Workflow.new(:name=>test_name,:has_comment=>has_comment,:turn_around_days=>2)
+      workflow = Workflow.new(:name=>test_name,:has_comment=>has_comment,:turn_around_days=>2, initial_state: volume_check)
       workflow.valid?.should eq(true)
       expect(workflow).to have(0).errors_on(:name)
       expect(workflow).to have(0).errors_on(:has_comment)
@@ -18,10 +23,13 @@ describe Workflow do
     end
 
     it 'has many assets' do
-      workflow = Workflow.new(:name=>test_name,:has_comment=>has_comment)
       workflow.assets.new(:identifier=>'test')
       workflow.assets.size.should eq(1)
       workflow.assets.first.identifier.should eq('test')
+    end
+
+    it 'should know its initial state' do
+      expect(workflow.initial_state).to eq volume_check
     end
 
   end
@@ -35,7 +43,7 @@ describe Workflow do
     end
 
     it 'requires a unique name' do
-      workflow = Workflow.create!(:name=>'test1')
+      workflow = Workflow.create!(:name=>'test1', initial_state: volume_check)
       workflow = Workflow.create(:name=>'test1')
       expect(workflow).to have(1).errors_on(:name)
       workflow.valid?.should eq(false)
@@ -50,3 +58,4 @@ describe Workflow do
   end
 
 end
+

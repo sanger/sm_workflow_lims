@@ -43,3 +43,4 @@ namespace :build do
   end
 end
 
+require './lib/tasks/update_old_assets_and_workflows'

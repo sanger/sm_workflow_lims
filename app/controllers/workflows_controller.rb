@@ -16,10 +16,11 @@ class WorkflowsController < Controller
 
   def create
     Workflow::Creator.create!(
-      :name             => params[:name],
-      :has_comment      => params[:hasComment] || false,
-      :reportable       => params[:reportable] || false,
-      :turn_around_days => params[:turn_around_days]
+      name:             params[:name],
+      has_comment:      params[:hasComment] || false,
+      reportable:       params[:reportable] || false,
+      initial_state_name:    params[:initial_state_name],
+      turn_around_days: params[:turn_around_days]
     )
   end
 
@@ -29,11 +30,12 @@ class WorkflowsController < Controller
 
   def update
     Workflow::Updater.create!(
-      :workflow         => workflow,
-      :name             => params[:name],
-      :has_comment      => params[:hasComment] || false,
-      :reportable       => params[:reportable] || false,
-      :turn_around_days => turn_around_days
+      workflow:         workflow,
+      name:             params[:name],
+      has_comment:      params[:hasComment] || false,
+      reportable:       params[:reportable] || false,
+      initial_state_name:    params[:initial_state_name],
+      turn_around_days: turn_around_days
     )
   end
 

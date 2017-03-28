@@ -15,6 +15,7 @@ describe Workflow::Updater do
   let(:new_has_comment) { true       }
   let(:new_reportable)  { false      }
   let(:new_turn_around) { 5 }
+  let(:new_multi_team_quant_essential)  { false }
 
   let(:mock_workflow)   { double('workflow').tap do |wf|
 
@@ -23,6 +24,7 @@ describe Workflow::Updater do
         name: new_name,
         has_comment: new_has_comment,
         reportable: new_reportable,
+        initial_state_name: 'in_progress',
         turn_around_days: new_turn_around
       )
 
@@ -35,6 +37,7 @@ describe Workflow::Updater do
       name: new_name,
       has_comment: new_has_comment,
       reportable: new_reportable,
+      initial_state_name: 'in_progress',
       turn_around_days: new_turn_around
     )
   end
