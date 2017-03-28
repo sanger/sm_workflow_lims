@@ -9,7 +9,7 @@ How to start it
 
 1) Generate the web assets:
 
-rake assetpack:build
+rake build:assets
 
 2) Start the web server and go to http://localhost:9292
 

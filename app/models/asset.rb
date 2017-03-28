@@ -1,10 +1,10 @@
 require 'active_record'
-require './lib/state_scoping'
+require './app/models/concerns/state_machine'
 require './lib/client_side_validations'
 
 class Asset < ActiveRecord::Base
 
-  extend StateScoping
+  include StateMachine
 
   belongs_to :asset_type
   belongs_to :workflow
@@ -13,7 +13,11 @@ class Asset < ActiveRecord::Base
   belongs_to :batch
   belongs_to :comment
 
+  has_many :events, dependent: :destroy
+
   after_destroy :remove_comment, :if => :comment
+
+  after_create :create_initial_event
 
   include ClientSideValidations
   validate_with_regexp :study, :with => /^\w+$/
@@ -22,12 +26,16 @@ class Asset < ActiveRecord::Base
     comment.destroy
   end
 
-  def self.with_identifier(search_string)
-    search_string.nil? ? all : where(identifier:search_string)
+  def self.in_state(state)
+    if state.present?
+      joins(:events).where(events: {id: Event.latest_per_asset, state: state})
+    else
+      all
+    end
   end
 
-  def self.in_state(state)
-    scope_for(state)
+  def self.with_identifier(search_string)
+    search_string.nil? ? all : where(identifier: search_string)
   end
 
   before_create :set_begun_at
@@ -39,17 +47,14 @@ class Asset < ActiveRecord::Base
 
   validates_presence_of :workflow, :batch, :identifier, :asset_type
 
-  delegate :identifier_type, :to => :asset_type
+  delegate :identifier_type, to: :asset_type
 
   scope :in_progress,     -> { where(completed_at: nil) }
   scope :completed,       -> { where.not(completed_at: nil) }
   scope :reportable,      -> { where(workflows:{reportable:true}) }
   scope :report_required, -> { reportable.completed.where(reported_at:nil) }
+  scope :reported,        -> { reportable.completed.where.not(reported_at:nil) }
   scope :latest_first,    -> { order('begun_at DESC') }
-
-  add_state('all',             :all)
-  add_state('in_progress',     :in_progress)
-  add_state('report_required', :report_required)
 
   default_scope { includes(:workflow,:asset_type,:comment,:batch) }
 
@@ -59,6 +64,10 @@ class Asset < ActiveRecord::Base
 
   def completed?
     completed_at.present?
+  end
+
+  def completed_at
+    super || events.date('completed')
   end
 
   def age
@@ -71,17 +80,21 @@ class Asset < ActiveRecord::Base
     age
   end
 
+  def create_initial_event
+    events.create!(state: workflow.initial_state, created_at: begun_at)
+  end
 
   class AssetAction
-    attr_reader :time, :assets, :state
+    attr_reader :action, :assets, :state, :asset_state
 
     def self.create!(*args)
       self.new(*args).tap {|action| action.do! }
     end
 
-    def initialize(time:,assets:)
-      @time = time
+    def initialize(action:,assets:)
+      @action = action
       @assets = assets
+      @asset_state = assets.first.current_state
       @state = 'incomplete'
     end
 
@@ -96,62 +109,22 @@ class Asset < ActiveRecord::Base
     end
   end
 
-  class Completer < AssetAction
+  class Updater < AssetAction
 
     def do!
       ActiveRecord::Base.transaction do
-        assets.each {|a| a.update_attributes!(completed_at:time) }
+        assets.each { |a| a.perform_action(action) }
         @state = 'success'
       end
       true
     end
 
     def message
-      done? ? "#{identifiers.to_sentence} #{identifiers.many? ? 'were' : 'was'} marked as completed." :
-              'Assets have not been completed.'
+      done? ? "#{asset_state.humanize} is done for #{identifiers.to_sentence}" :
+              "#{asset_state.humanize} has not been finished for requested assets."
     end
 
-    def redirect_state; 'in_progress'; end
-
+    def redirect_state; asset_state; end
   end
 
-  class Reporter < AssetAction
-
-    def do!
-      return false unless valid?
-      ActiveRecord::Base.transaction do
-        assets.each {|a| a.update_attributes!(reported_at:time) }
-        @state = 'success'
-      end
-      true
-    end
-
-    def valid?
-      assets.each do |asset|
-        asset.reportable? || log_error("#{asset.identifier} is in #{asset.workflow.name}, which does not need a report.")
-        asset.completed?  || log_error("#{asset.identifier} can not be reported on before it is completed.")
-      end
-      errors.empty?
-    end
-
-    def message
-      return errors.join("\n") if errors.present?
-      done? ? "#{identifiers.to_sentence} #{identifiers.many? ? 'were' : 'was'} marked as reported." :
-              'Assets have not been reported.'
-    end
-
-    def redirect_state; 'report_required'; end
-
-    private
-
-    def errors
-      @errors ||= []
-    end
-
-    def log_error(message)
-      @state = 'danger'
-      errors << message
-    end
-
-  end
 end

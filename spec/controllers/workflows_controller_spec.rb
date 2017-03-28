@@ -47,9 +47,10 @@ describe WorkflowsController do
     context "with full parameters" do
 
       let(:params)  { {
-        :name => 'Test',
-        :hasComment => true,
-        :turn_around_days => "30"
+        name: 'Test',
+        hasComment: true,
+        initial_state_name: 'in_progress',
+        turn_around_days: "30"
       } }
 
 
@@ -62,6 +63,7 @@ describe WorkflowsController do
             name: 'Test',
             has_comment: true,
             reportable: false,
+            initial_state_name: 'in_progress',
             turn_around_days: "30"
           )
 
@@ -88,7 +90,7 @@ describe WorkflowsController do
 
     context "with full parameters" do
 
-      let(:params)  { {:workflow_id=>3,:name=>'New Name',hasComment:true,turn_around_days:'30' } }
+      let(:params)  { {workflow_id: 3, name: 'New Name', hasComment:true, turn_around_days:'30', initial_state_name: 'in_progress' } }
 
       it "should pass the options to a workflow updater" do
         mocked_lookups
@@ -97,6 +99,7 @@ describe WorkflowsController do
           name: 'New Name',
           has_comment: true,
           reportable: false,
+          initial_state_name: 'in_progress',
           turn_around_days: 30
         )
         request

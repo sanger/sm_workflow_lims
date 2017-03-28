@@ -22,11 +22,9 @@
     <% else %>
       <td class="common-attribute">
         <% if ((asset_field == :identifier) && (!presenter.is_search?)) %>
-          <% presenter.action do |action|%>
-            <div class="checkbox">
-              <input name="<%= action %>[<%= asset.id %>]" type="checkbox" data-psg-select-asset="true" data-psg-batch-id="<%= asset.batch_id %>" />
-            </div>
-          <% end %>
+          <div class="checkbox">
+            <input name="assets[<%= asset.id %>]" type="checkbox" data-psg-select-asset="true" data-psg-batch-id="<%= asset.batch_id %>" />
+          </div>
         <% end %>
         <%= asset.send(asset_field) %>
       </td>

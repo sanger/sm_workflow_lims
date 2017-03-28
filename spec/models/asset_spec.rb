@@ -1,26 +1,29 @@
 require 'spec_helper'
 require './app/models/asset'
+require './app/models/event'
 
 describe Asset do
 
   context "with valid parameters" do
 
-    let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
-    let(:identifier) { 'name' }
-    let(:study) { 'study_A'}
-    let(:batch) { Batch.new }
-    let(:workflow) { Workflow.new }
-    let(:comment) { Comment.new }
+    let!(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let!(:identifier) { 'name' }
+    let!(:study) { 'study_A'}
+    let!(:batch) { Batch.new }
+    let!(:workflow) { create :workflow }
+    let!(:comment) { Comment.new }
+    let!(:state) { create :state, name: 'in_progress'}
+    let!(:completed) { create :state, name: 'completed'}
+    let!(:asset) { Asset.new(
+        identifier: identifier,
+        batch:      batch,
+        study:      study,
+        asset_type: asset_type,
+        workflow:   workflow,
+        comment:    comment) }
 
     it 'can be created' do
-      asset = Asset.new(
-        :identifier => identifier,
-        :batch      => batch,
-        :study      => study,
-        :asset_type => asset_type,
-        :workflow   => workflow,
-        :comment    => comment
-      )
+
       expect(asset).to have(0).errors_on(:identifier)
       expect(asset).to have(0).errors_on(:batch)
       expect(asset).to have(0).errors_on(:study)
@@ -30,25 +33,35 @@ describe Asset do
 
       expect(asset).to have(0).errors_on(:begun_at)
 
-      asset.valid?.should eq(true)
+      expect(asset.valid?).to eq(true)
+      expect(asset.save).to eq(true)
 
-      asset.identifier.should eq(identifier)
-      asset.batch.should eq(batch)
-      asset.asset_type.should eq(asset_type)
-      asset.workflow.should eq(workflow)
+      expect(asset.identifier).to eq(identifier)
+      expect(asset.batch).to eq(batch)
+      expect(asset.asset_type).to eq(asset_type)
+      expect(asset.workflow).to eq(workflow)
+      expect(asset.current_state).to eq 'in_progress'
 
       asset.begun_at.should eq(asset.created_at)
     end
 
     it 'should delegate identifier_type to asset_type' do
-
-      asset = Asset.new(
-        :identifier=>identifier,
-        :batch=>batch,
-        :asset_type=>asset_type,
-        :workflow=>workflow
-      )
       asset.identifier_type.should eq('example')
+    end
+
+    it 'can have events' do
+      expect(asset.events.count).to eq 0
+      asset.save
+      expect(asset.events.count).to eq 1
+      create_list(:event, 3, asset: asset)
+      expect(asset.events.count).to eq 4
+    end
+
+    it 'should know if it is completed' do
+      asset.save
+      expect(asset.completed?).to be_false
+      create :event, asset: asset, state: completed
+      expect(asset.completed?).to be_true
     end
 
 
@@ -118,10 +131,12 @@ describe Asset do
 
   context 'scopes' do
 
-    let(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true ) }
-    let(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false) }
+    let!(:state) { create :state, name: 'in_progress' }
+    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state_name: 'in_progress' ) }
+    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state_name: 'in_progress' ) }
+    let!(:in_progress) { create :state, name: 'in_progress' }
 
-    let(:basics) { {identifier:'one',asset_type_id:1,batch_id:1,workflow_id:1} }
+    let(:basics) { { identifier:'one', asset_type_id:1, batch_id:1, workflow_id: reportable_workflow.id } }
     let(:completed) { basics.merge(completed_at:Time.now) }
     let(:created_last) { basics.merge(begun_at:Time.at(1000)) }
     let(:created_first) { basics.merge(begun_at:Time.at(10)) }
@@ -135,7 +150,6 @@ describe Asset do
       incomplete = Asset.new(basics)
       complete = Asset.new(completed)
 
-
       incomplete.save!(validate: false)
       complete.save!(validate: false)
 
@@ -143,23 +157,8 @@ describe Asset do
       Asset.in_progress.should_not include(complete)
     end
 
-    it 'should scope all' do
-      Asset.in_state('all').should eq(Asset.all)
-    end
-
-    it 'should scope report_required' do
-      Asset.should_receive(:report_required).and_return('valid')
-      Asset.in_state('report_required').should eq('valid')
-    end
-
-    it 'should scope in_progress' do
-      Asset.should_receive(:in_progress).and_return('valid')
-      Asset.in_state('in_progress').should eq('valid')
-    end
-
-    it 'should scope invalid_states' do
-      Asset.should_receive(:none).and_return('nothing')
-      Asset.in_state('invalid_state').should eq('nothing')
+    it 'should return all if scope nil' do
+      expect(Asset.in_state(nil)).to eq(Asset.all)
     end
 
     it 'reporting_required lists appropriate assets' do
@@ -226,6 +225,36 @@ describe Asset do
       comment.assets.size.should eq(2)
       comment.assets.each(&:destroy!)
       comment.destroyed?.should eq(true)
+    end
+  end
+
+  context 'state machine' do
+    let!(:state1) { create :state, name: 'in_progress' }
+    let!(:state2) { create :state, name: 'completed' }
+    let!(:state3) { create :state, name: 'report_required' }
+    let(:asset) { create :asset }
+    let(:reportable_asset) { create :asset, workflow: (create :workflow_reportable) }
+
+    it 'should know the current state' do
+      expect(asset.in_progress?).to be_true
+      expect(asset.reported?).to be_false
+    end
+
+    it 'should create the right events' do
+      expect(asset.events.count).to eq 1
+      asset.complete
+      expect(asset.events.count).to eq 2
+      expect(asset.completed?).to be_true
+
+      expect(reportable_asset.events.count).to eq 1
+      reportable_asset.complete
+      expect(reportable_asset.events.count).to eq 3
+      expect(reportable_asset.report_required?).to be_true
+    end
+
+    it 'should not perform actions that are not valid' do
+      expect { asset.perform_action('complete') }.to_not raise_error
+      expect { asset.perform_action('some_action') }.to raise_error(StateMachine::StateMachineError)
     end
   end
 

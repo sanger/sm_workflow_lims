@@ -42,10 +42,12 @@ describe Batch::Creator do
   let(:mock_comment) { double('mock_comment') }
   let(:asset_association) { double('asset_association')}
 
+  let!(:state) { create :state, name: 'in_progress' }
+
   context "With comments and date" do
 
     let(:workflow) {
-      double('mock_workflow',has_comment?:true)
+      create :workflow_with_comment
     }
 
     let(:time)   { DateTime.parse('01-02-2003 00:00') }
@@ -79,9 +81,7 @@ describe Batch::Creator do
   context "Without comments or date" do
 
     let(:workflow) {
-      wf = double('mock_workflow')
-      wf.stub(:has_comment?) {false}
-      wf
+      create :workflow
     }
 
     it "should create the batch and assets" do
@@ -105,6 +105,26 @@ describe Batch::Creator do
         ],
         comment:comment
       )
+    end
+
+    it 'should create the right batch and the right assets' do
+      assets = [{type: "Plate", identifier: "test", sample_count: "25"},
+               {type: "Plate", identifier: "test2", sample_count: "10"},
+               {type: "Plate", identifier: "test3", sample_count: "96"}]
+      workflow = create :workflow
+
+      batch_creator = Batch::Creator.new(
+        study: 'study',
+        assets: assets,
+        asset_type: (create :asset_type_has_sample_count),
+        workflow: workflow,
+        pipeline_destination: (create :pipeline_destination),
+        cost_code: (create :cost_code)
+      )
+      expect(Asset.count).to eq 0
+      batch_creator.do!
+      expect(Asset.count).to eq 3
+      expect(Asset.last.current_state). to eq 'in_progress'
     end
   end
 
