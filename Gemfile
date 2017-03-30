@@ -15,6 +15,10 @@ gem "pry-nav"
 gem "bootstrap-sass"
 gem "sinatra-assetpack"
 
+group :development do
+  gem 'rack-mini-profiler'
+end
+
 group :test do
   gem "rspec"
   gem "timecop"

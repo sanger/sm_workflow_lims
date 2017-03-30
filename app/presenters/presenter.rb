@@ -37,7 +37,7 @@ class Presenter
     end
 
     def each_workflow
-      Workflow.all.each do |workflow|
+      Workflow.all.includes(:initial_state).each do |workflow|
         yield(workflow.name, workflow.has_comment, workflow.id, workflow.reportable, workflow.multi_team_quant_essential, workflow.turn_around_days)
       end
     end

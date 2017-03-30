@@ -14,12 +14,6 @@ describe Event do
     expect(event.valid?).to be true
   end
 
-  it 'should know the date for particular state' do
-    in_progress_event = Event.create!(state: in_progress, asset: asset)
-    expect(Event.date('reported')).to be_false
-    expect(Event.date('in_progress')).to be_true
-  end
-
   it 'should know ids for latest events per asset' do
     report_required = create :state, name: 'report_required'
     in_progress_event_first_asset = Event.create!(state: in_progress, asset: asset)

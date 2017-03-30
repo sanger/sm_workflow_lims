@@ -12,10 +12,6 @@ class Event < ActiveRecord::Base
     self.state = State.find_by(name: state_name)
   end
 
-  def self.date(state_name)
-    where(state: State.find_by(name: state_name)).first.try(:created_at)
-  end
-
   def self.latest_per_asset
     Event.group(:asset_id).maximum(:id).values
   end
