@@ -28,7 +28,9 @@ class Asset < ActiveRecord::Base
 
   def self.in_state(state)
     if state.present?
-      joins(:events).where(events: {id: Event.latest_per_asset, state: state})
+      joins(:events)
+        .where(events: {id: Event.latest_per_asset, state: state})
+        .includes(events: :state)
     else
       all
     end
@@ -67,7 +69,7 @@ class Asset < ActiveRecord::Base
   end
 
   def completed_at
-    super || events.date('completed')
+    super || events.detect { |event| event.state.name == 'completed' }.try(:created_at)
   end
 
   def age

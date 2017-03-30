@@ -9,7 +9,8 @@ class AssetsController < Controller
   end
 
   def index
-    assets = Asset.in_state(state).with_identifier(params[:identifier])
+    assets = Asset.in_state(state)
+                  .with_identifier(params[:identifier])
     Presenter::AssetPresenter::Index.new(assets, search, state)
   end
 
