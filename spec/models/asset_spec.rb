@@ -60,7 +60,7 @@ describe Asset do
     it 'should know if it is completed' do
       asset.save
       expect(asset.completed?).to be_false
-      create :event, asset: asset, state: completed
+      asset.events << (create :event, asset: asset, state: completed)
       expect(asset.completed?).to be_true
     end
 
