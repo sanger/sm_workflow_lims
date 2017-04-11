@@ -32,6 +32,7 @@ class BatchesController < Controller
     updated_batch = Batch::Updater.create!(
       batch: batch,
       study: params[:study],
+      project: params[:project],
       workflow: workflow,
       cost_code: cost_code,
       pipeline_destination: pipeline_destination,
@@ -48,6 +49,7 @@ class BatchesController < Controller
   def create
     updated_batch = Batch::Creator.create!(
       study: params[:study],
+      project: params[:project],
       workflow: workflow,
       pipeline_destination: pipeline_destination,
       begun_at: @date,

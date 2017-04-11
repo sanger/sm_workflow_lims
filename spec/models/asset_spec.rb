@@ -9,6 +9,7 @@ describe Asset do
     let!(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
     let!(:identifier) { 'name' }
     let!(:study) { 'study_A'}
+    let!(:project) { 'project'}
     let!(:batch) { Batch.new }
     let!(:workflow) { create :workflow }
     let!(:comment) { Comment.new }
@@ -27,6 +28,7 @@ describe Asset do
       expect(asset).to have(0).errors_on(:identifier)
       expect(asset).to have(0).errors_on(:batch)
       expect(asset).to have(0).errors_on(:study)
+      expect(asset).to have(0).errors_on(:project)
       expect(asset).to have(0).errors_on(:workflow)
       expect(asset).to have(0).errors_on(:comment)
       expect(asset).to have(0).errors_on(:asset_type)

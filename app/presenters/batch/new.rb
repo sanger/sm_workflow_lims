@@ -11,6 +11,10 @@ module Presenter::BatchPresenter
       ''
     end
 
+    def project
+      ''
+    end
+
     def workflow
       'None'
     end

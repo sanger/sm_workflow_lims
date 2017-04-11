@@ -33,6 +33,7 @@ describe Batch::Creator do
 
     batch_creator = Batch::Creator.new(
       study: 'study',
+      project: 'project',
       assets: assets,
       asset_type: (create :asset_type_has_sample_count),
       workflow: workflow,

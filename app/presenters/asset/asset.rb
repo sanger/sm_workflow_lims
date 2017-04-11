@@ -29,6 +29,10 @@ module Presenter::AssetPresenter
       asset.study
     end
 
+    def project
+      asset.project
+    end
+
     def workflow
       asset.workflow.name
     end
