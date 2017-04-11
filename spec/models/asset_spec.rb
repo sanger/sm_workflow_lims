@@ -131,32 +131,25 @@ describe Asset do
     end
   end
 
-  context 'scopes' do
+  context 'in_state' do
 
     let!(:state) { create :state, name: 'in_progress' }
     let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state_name: 'in_progress' ) }
     let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state_name: 'in_progress' ) }
     let!(:in_progress) { create :state, name: 'in_progress' }
+    let!(:completed) { create :state, name: 'completed' }
+    let!(:report_required) { create :state, name: 'report_required' }
+    let!(:reported) { create :state, name: 'reported' }
 
-    let(:basics) { { identifier:'one', asset_type_id:1, batch_id:1, workflow_id: reportable_workflow.id } }
-    let(:completed) { basics.merge(completed_at:Time.now) }
-    let(:created_last) { basics.merge(begun_at:Time.at(1000)) }
-    let(:created_first) { basics.merge(begun_at:Time.at(10)) }
+    let(:basics) { { identifier:'one', asset_type_id: 1, batch_id: 1, workflow_id: reportable_workflow.id } }
 
-    let(:incomplete_reportable)    { basics.merge(workflow_id:reportable_workflow.id) }
-    let(:complete_reportable)      { completed.merge(workflow_id:reportable_workflow.id) }
-    let(:complete_nonreportable)   { completed.merge(workflow_id:nonreportable_workflow.id) }
-    let(:reported_reportable)      { completed.merge(workflow_id:reportable_workflow.id,reported_at:Time.now ) }
+    it 'in_progress filters on last event' do
+      incomplete = create :asset
+      completed = create :asset
+      completed.complete
 
-    it 'in_progress filters on completed_at' do
-      incomplete = Asset.new(basics)
-      complete = Asset.new(completed)
-
-      incomplete.save!(validate: false)
-      complete.save!(validate: false)
-
-      Asset.in_progress.should include(incomplete)
-      Asset.in_progress.should_not include(complete)
+      Asset.in_state(in_progress).should include(incomplete)
+      Asset.in_state(in_progress).should_not include(completed)
     end
 
     it 'should return all if scope nil' do
@@ -164,43 +157,22 @@ describe Asset do
     end
 
     it 'reporting_required lists appropriate assets' do
+      asset_incomplete_reportable = create :asset, workflow: (create :workflow_reportable)
 
-      #TODO: Should look into testing this without needing database writes
+      asset_completed_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_completed_reportable.complete
 
-      asset_incomplete_reportable = Asset.new(incomplete_reportable)
-      asset_complete_reportable = Asset.new(complete_reportable)
-      asset_complete_nonreportable = Asset.new(complete_nonreportable)
-      asset_reported_reportable = Asset.new(reported_reportable)
+      asset_completed_nonreportable = create :asset
+      asset_completed_nonreportable.complete
 
-      asset_incomplete_reportable.save!(validate: false)
-      asset_complete_reportable.save!(validate: false)
-      asset_complete_nonreportable.save!(validate: false)
-      asset_reported_reportable.save!(validate: false)
+      asset_reported_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_reported_reportable.complete
+      asset_reported_reportable.report
 
-      Asset.reportable.should     include(asset_complete_reportable)
-      Asset.reportable.should     include(asset_incomplete_reportable)
-      Asset.reportable.should_not include(asset_complete_nonreportable)
-      Asset.reportable.should     include(asset_reported_reportable)
-
-      Asset.report_required.should     include(asset_complete_reportable)
-      Asset.report_required.should_not include(asset_incomplete_reportable)
-      Asset.report_required.should_not include(asset_complete_nonreportable)
-      Asset.report_required.should_not include(asset_reported_reportable)
-    end
-
-    it 'latest_first orders by created_at' do
-      earliest = Asset.new(created_first)
-      latest   = Asset.new(created_last)
-
-      earliest.save!(validate: false)
-      latest.save!(validate: false)
-
-      Asset.latest_first.first.should eq(latest)
-    end
-
-    after do
-      Workflow.destroy_all
-      Asset.destroy_all
+      Asset.in_state(report_required).should     include(asset_completed_reportable)
+      Asset.in_state(report_required).should_not include(asset_incomplete_reportable)
+      Asset.in_state(report_required).should_not include(asset_completed_nonreportable)
+      Asset.in_state(report_required).should_not include(asset_reported_reportable)
     end
 
   end

@@ -12,15 +12,18 @@ class Asset < ActiveRecord::Base
   belongs_to :cost_code
   belongs_to :batch
   belongs_to :comment
-
   has_many :events, dependent: :destroy
 
-  after_destroy :remove_comment, :if => :comment
-
+  before_create :set_begun_at
   after_create :create_initial_event
+  after_destroy :remove_comment, :if => :comment
 
   include ClientSideValidations
   validate_with_regexp :study, :with => /^\w+$/
+  validates_presence_of :workflow, :batch, :identifier, :asset_type
+
+  delegate :identifier_type, to: :asset_type
+  default_scope { includes(:workflow,:asset_type,:comment,:batch, :pipeline_destination, events: :state) }
 
   def remove_comment
     comment.destroy
@@ -39,25 +42,22 @@ class Asset < ActiveRecord::Base
     search_string.nil? ? all : where(identifier: search_string)
   end
 
-  before_create :set_begun_at
-
   def set_begun_at
     self.begun_at ||= self.created_at
   end
   private :set_begun_at
 
-  validates_presence_of :workflow, :batch, :identifier, :asset_type
-
-  delegate :identifier_type, to: :asset_type
-
-  scope :in_progress,     -> { where(completed_at: nil) }
-  scope :completed,       -> { where.not(completed_at: nil) }
-  scope :reportable,      -> { where(workflows:{reportable:true}) }
-  scope :report_required, -> { reportable.completed.where(reported_at:nil) }
-  scope :reported,        -> { reportable.completed.where.not(reported_at:nil) }
-  scope :latest_first,    -> { order('begun_at DESC') }
-
-  default_scope { includes(:workflow,:asset_type,:comment,:batch, :pipeline_destination, events: :state) }
+  # returns hash: {[study1, project1, cost_code1_id] => assets_count1, [study1, project2, cost_code2_id] => assets_count2 }
+  # can not do .joins(:cost_code) and # .group("cost_codes.name") as often cost_codes are nil
+  def self.generate_report_data(from, to, workflow)
+    where(workflow: workflow)
+      .joins(:events)
+      .merge(Event.completed_between(from, to))
+      .group("study")
+      .group("project")
+      .group("cost_code_id")
+      .count
+  end
 
   def reportable?
     workflow.reportable?
@@ -68,7 +68,7 @@ class Asset < ActiveRecord::Base
   end
 
   def completed_at
-    super || events.detect { |event| event.state.name == 'completed' }.try(:created_at)
+    events.detect { |event| event.state.name == 'completed' }.try(:created_at)
   end
 
   def age
