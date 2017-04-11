@@ -7,8 +7,8 @@ module Presenter::AssetPresenter
     attr_reader :search, :assets, :total
 
     def initialize(found_assets,search=nil,state=nil)
-      @total  = found_assets.count
       @assets = found_assets.group_by {|a| a.asset_type.name}.tap {|h| h.default = [] }
+      @total  = found_assets.length
       @search = search
       @state  = state.name if state
     end

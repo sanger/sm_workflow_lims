@@ -12,8 +12,12 @@ class Event < ActiveRecord::Base
     self.state = State.find_by(name: state_name)
   end
 
-  def self.latest_per_asset
-    Event.group(:asset_id).maximum(:id).values
+  def self.latest_event_per_asset
+    select("MAX(id)").group("asset_id")
+  end
+
+  def self.with_last_state(state)
+    where(id: latest_event_per_asset, state_id: state.id)
   end
 
 end
