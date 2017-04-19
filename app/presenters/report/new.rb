@@ -19,7 +19,7 @@ module Presenter::ReportPresenter
     end
 
     def flash
-      ['danger', report.errors.full_messages.join(', ')]
+      ['danger', report.errors.full_messages.join(', ')] if report.errors.present?
     end
 
     def workflow

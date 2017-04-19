@@ -20,9 +20,9 @@ class Event < ActiveRecord::Base
     where(id: latest_event_per_asset, state_id: state.id)
   end
 
-  def self.completed_between(from, to)
+  def self.completed_between(start_date, end_date)
     state = State.find_by(name: 'completed').id
-    where("events.created_at BETWEEN ? AND ? AND events.state_id = ?", from, to, state)
+    where("events.created_at BETWEEN ? AND ? AND events.state_id = ?", start_date, end_date, state)
   end
 
 end
