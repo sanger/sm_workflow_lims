@@ -48,7 +48,8 @@ class Asset < ActiveRecord::Base
   private :set_begun_at
 
   # returns hash: {[study1, project1, cost_code1_id] => assets_count1, [study1, project2, cost_code2_id] => assets_count2 }
-  # can not do .joins(:cost_code) and # .group("cost_codes.name") as often cost_codes are nil
+  # can not do .joins(:cost_code) and .group("cost_codes.name") as often cost_codes are nil
+  # can not do .joins("LEFT JOIN assets cost_codes ON assets.cost_code_id = cost_code.id") and .group("cost_codes.name") for the same reason
   def self.generate_report_data(from, to, workflow)
     where(workflow: workflow)
       .joins(:events)
@@ -57,6 +58,8 @@ class Asset < ActiveRecord::Base
       .group("project")
       .group("cost_code_id")
       .count
+      .to_a
+      .map{|a| a.flatten}
   end
 
   def reportable?

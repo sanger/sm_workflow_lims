@@ -1,6 +1,8 @@
 <div class="admin-view">
 <h3>Admin</h3>
 
+  <%= erb(:"admin/_report") %>
+
   <%= erb(:"admin/_index_workflows", :layout => false, :locals => {:presenter => presenter }) %>
 
   <%= erb(:"admin/_new_workflow",    :layout => false, :locals => {:presenter => presenter }) %>

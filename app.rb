@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'csv'
 require 'sass'
 require 'bootstrap-sass'
 require 'sinatra/assetpack'
@@ -126,6 +127,23 @@ class SmWorkflowLims < Sinatra::Base
     presenter = PipelineDestinationsController.new(params).post
     session[:flash] = ['success',"The pipeline destination was created."]
     redirect to("/admin")
+  end
+
+  get '/reports/new' do
+    presenter = ReportsController.new(params).get_new
+    erb :'reports/new', locals: {presenter: presenter}
+  end
+
+  post '/reports' do
+    presenter = ReportsController.new(params).post
+    session[:flash] = presenter.flash
+    erb presenter.page, locals: {presenter: presenter}
+  end
+
+  get '/reports/csv' do
+    content_type 'application/csv'
+    attachment   'report.csv'
+    params[:csv_file_content]
   end
 
   error Controller::ParameterError do

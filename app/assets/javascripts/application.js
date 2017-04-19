@@ -441,6 +441,13 @@
     attachValidations();
     attachFilters();
     attachTabHandlers();
+
+    $("#start_date").datepicker({
+        orientation: 'top auto'
+    });
+    $("#end_date").datepicker({
+        orientation: 'top auto'
+    });
   });
 
   window.psg = {};
