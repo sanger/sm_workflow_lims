@@ -64,11 +64,11 @@ class Report
 
   class Row
 
-    attr_reader :study, :project, :cost_code_name, :cost_code_id, :assets_count
+    attr_reader :study, :project, :cost_code_name, :assets_count
 
     def initialize(data)
-      @study, @project, @cost_code_id, @assets_count = *data
-      @cost_code_name = cost_code_id.present? ? CostCode.find(cost_code_id).name : 'No cost code'
+      data = data.map {|el| el ? el : 'Not defined'}
+      @study, @project, @cost_code_name, @assets_count = *data
     end
 
     def data_for(column_names)

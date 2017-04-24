@@ -30,7 +30,7 @@ module Presenter::AssetPresenter
     end
 
     def project
-      asset.project
+      asset.project.nil? ? 'Not defined' : asset.project
     end
 
     def workflow

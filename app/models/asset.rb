@@ -47,16 +47,15 @@ class Asset < ActiveRecord::Base
   end
   private :set_begun_at
 
-  # returns hash: {[study1, project1, cost_code1_id] => assets_count1, [study1, project2, cost_code2_id] => assets_count2 }
-  # can not do .joins(:cost_code) and .group("cost_codes.name") as often cost_codes are nil
-  # can not do .joins("LEFT JOIN assets cost_codes ON assets.cost_code_id = cost_code.id") and .group("cost_codes.name") for the same reason
+  # returns an array of arrays: [[study1, project1, cost_code1_name, assets_count1], [study1, project2, cost_code2_name, assets_count2]]
   def self.generate_report_data(start_date, end_date, workflow)
     where(workflow: workflow)
       .joins(:events)
       .merge(Event.completed_between(start_date, end_date))
+      .joins("LEFT JOIN cost_codes ON assets.cost_code_id = cost_codes.id")
       .group("study")
       .group("project")
-      .group("cost_code_id")
+      .group("cost_codes.name")
       .count
       .to_a
       .map{|a| a.flatten}
