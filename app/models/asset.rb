@@ -29,8 +29,7 @@ class Asset < ActiveRecord::Base
   def self.in_state(state)
     if state.present?
       joins(:events)
-        .where(events: {id: Event.latest_per_asset, state: state})
-        .includes(events: :state)
+        .merge(Event.with_last_state(state))
     else
       all
     end
@@ -58,7 +57,7 @@ class Asset < ActiveRecord::Base
   scope :reported,        -> { reportable.completed.where.not(reported_at:nil) }
   scope :latest_first,    -> { order('begun_at DESC') }
 
-  default_scope { includes(:workflow,:asset_type,:comment,:batch) }
+  default_scope { includes(:workflow,:asset_type,:comment,:batch, :pipeline_destination, events: :state) }
 
   def reportable?
     workflow.reportable?

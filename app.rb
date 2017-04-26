@@ -50,9 +50,12 @@ class SmWorkflowLims < Sinatra::Base
   end
 
   get '/assets' do
-    presenter = AssetsController.new(params).get_index
-    # A list of all in progress assets
-    erb :'assets/index', :locals=>{:presenter=>presenter}
+    if params[:state].nil? && params[:identifier].nil?
+      redirect to("/assets?state=in_progress")
+    else
+      presenter = AssetsController.new(params).get_index
+      erb :'assets/index', :locals=>{:presenter=>presenter}
+    end
   end
 
   put '/assets' do
