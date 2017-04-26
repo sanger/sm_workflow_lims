@@ -28,6 +28,11 @@ module Presenter::BatchPresenter
       'Not Applicable'
     end
 
+    def project
+      return first_asset.project if first_asset
+      'Not Applicable'
+    end
+
     def workflow
       return first_asset.workflow.name if first_asset
       'None'

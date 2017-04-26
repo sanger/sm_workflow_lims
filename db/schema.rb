@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170306102500) do
+ActiveRecord::Schema.define(version: 20170411114800) do
 
   create_table "asset_types", force: :cascade do |t|
     t.string   "name",                 limit: 255,                          null: false
@@ -23,20 +23,22 @@ ActiveRecord::Schema.define(version: 20170306102500) do
   end
 
   create_table "assets", force: :cascade do |t|
-    t.string   "identifier",              limit: 255,             null: false
-    t.integer  "asset_type_id",           limit: 4,               null: false
-    t.integer  "workflow_id",             limit: 4,               null: false
+    t.string   "identifier",              limit: 255,                null: false
+    t.integer  "asset_type_id",           limit: 4,                  null: false
+    t.integer  "workflow_id",             limit: 4,                  null: false
     t.integer  "comment_id",              limit: 4
-    t.integer  "batch_id",                limit: 4,               null: false
+    t.integer  "batch_id",                limit: 4,                  null: false
     t.string   "study",                   limit: 255
-    t.integer  "sample_count",            limit: 4,   default: 1, null: false
+    t.integer  "sample_count",            limit: 4,   default: 1,    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
     t.datetime "reported_at"
     t.integer  "pipeline_destination_id", limit: 4
     t.integer  "cost_code_id",            limit: 4
-    t.datetime "begun_at",                                        null: false
+    t.datetime "begun_at",                                           null: false
+    t.boolean  "active",                              default: true
+    t.string   "project",                 limit: 255
   end
 
   add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree

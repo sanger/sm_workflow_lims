@@ -42,5 +42,3 @@ namespace :build do
     `cp -r $(bundle show bootstrap-sass)/vendor/assets/fonts/bootstrap public/assets/stylesheets/`
   end
 end
-
-require './lib/tasks/update_old_assets_and_workflows'

@@ -63,7 +63,7 @@ describe BatchesController do
     let(:request) { BatchesController.new(params).post }
 
     context "with new cost code" do
-      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test', :cost_code => 'S12345',
+      let(:params)  { { workflow_id: 3, asset_type_id: 3, study: 'test', project: 'project', cost_code: 'S12345',
         :assets=>{
           1=>{identifier:'a',sample_count:1},
           2=>{identifier:'b',sample_count:1}
@@ -75,6 +75,7 @@ describe BatchesController do
         Batch::Creator.should_receive(:create!).
           with(
             study:'test',
+            project:'project',
             workflow:'wf',
             pipeline_destination: nil,
             cost_code: CostCode.new({ :id => 1, :name => "S12345"}),
@@ -93,7 +94,7 @@ describe BatchesController do
 
     context "with an existing cost code" do
       let!(:cost_code) { create :cost_code }
-      let(:params)  { { workflow_id: 3, asset_type_id: 3, study: 'test', cost_code: cost_code.name, assets: {
+      let(:params)  { { workflow_id: 3, asset_type_id: 3, study: 'test', project: 'project', cost_code: cost_code.name, assets: {
         1=>{ identifier:'a', sample_count:1 },
         2=>{ identifier:'b', sample_count:1 }
       }, comment: 'comment' } }
@@ -103,6 +104,7 @@ describe BatchesController do
         Batch::Creator.should_receive(:create!).
           with(
             study:'test',
+            project: 'project',
             workflow:'wf',
             pipeline_destination: nil,
             cost_code: CostCode.new({ id: cost_code.id, name: cost_code.name}),
@@ -120,7 +122,7 @@ describe BatchesController do
     end
 
     context "with an incorrect cost code" do
-      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test', :cost_code => 'SS1111', :assets=>{
+      let(:params)  { { workflow_id: 3, asset_type_id: 3, study: 'test', project: 'project', cost_code: 'SS1111', :assets=>{
         1=>{identifier:'a',sample_count:1},
         2=>{identifier:'b',sample_count:1}
       }, :comment => 'comment' } }
@@ -133,7 +135,7 @@ describe BatchesController do
 
     context "with full parameters" do
 
-      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test',:assets=>{
+      let(:params)  { { workflow_id: 3, asset_type_id: 3, study: 'test', project: 'project', :assets=>{
         1=>{identifier:'a',sample_count:1},
         2=>{identifier:'b',sample_count:1}
       }, :comment => 'comment' } }
@@ -146,6 +148,7 @@ describe BatchesController do
         Batch::Creator.should_receive(:create!).
           with(
             study:'test',
+            project: 'project',
             workflow:'wf',
             pipeline_destination: nil,
             cost_code: nil,
@@ -174,7 +177,7 @@ describe BatchesController do
 
     context "with full parameters and a date" do
 
-      let(:params)  { {:workflow_id=>3,:asset_type_id=>3,:study=>'test',:begun_at=>'25/06/2015',:assets=>{
+      let(:params)  { { workflow_id: 3, asset_type_id: 3, study: 'test', project: 'project', begun_at: '25/06/2015',:assets=>{
         1=>{identifier:'a',sample_count:1},
         2=>{identifier:'b',sample_count:1}
       }, :comment => 'comment' } }
@@ -187,6 +190,7 @@ describe BatchesController do
         Batch::Creator.should_receive(:create!).
           with(
             study:'test',
+            project: 'project',
             workflow:'wf',
             pipeline_destination: nil,
             cost_code: nil,
@@ -246,7 +250,7 @@ describe BatchesController do
 
     context "with full parameters" do
 
-      let(:params)  { {:batch_id=>3,:workflow_id=>3,:study=>'test',:comment => 'comment',:begun_at=>'25/06/2015' } }
+      let(:params)  { { batch_id: 3, workflow_id: 3, study: 'test', project: 'project', comment: 'comment', begun_at: '25/06/2015' } }
 
       it "should pass the options to a batch updater" do
         mocked_lookups
@@ -257,6 +261,7 @@ describe BatchesController do
           cost_code: nil,
           begun_at:DateTime.parse('25-06-2015 12:00'),
           study: 'test',
+          project: 'project',
           comment:'comment'
         )
         request

@@ -6,6 +6,7 @@ describe Event do
   let(:event) { Event.new }
   let(:asset) { create :asset }
   let!(:in_progress) { create :state, name: 'in_progress'}
+  let!(:completed) { create :state, name: 'completed'}
 
   it 'should have name' do
     expect(event.valid?).to be false
@@ -21,8 +22,18 @@ describe Event do
     report_required_event_first_asset = Event.create!(state: report_required, asset: asset)
     expect(Event.with_last_state(in_progress).to_a).to eq [in_progress_event_second_asset]
     expect(Event.with_last_state(report_required).to_a).to eq [report_required_event_first_asset]
-
   end
 
+  it 'should find events with completed state for requested period' do
+    new_event = create :event, state: completed
+    Timecop.freeze(Time.local(2017, 3, 7))
+    old_in_progress_events = create_list(:event, 3, state: in_progress)
+    old_completed_events = create_list(:event, 2, state: completed)
+    expect(Event.completed_between(Date.today-1, Date.today+1)).to eq old_completed_events
+  end
+
+  after do
+    Timecop.return
+  end
 
 end

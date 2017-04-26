@@ -16,14 +16,15 @@ class Batch < ActiveRecord::Base
 
   class Creator
 
-    attr_reader :comment, :assets, :study, :workflow, :asset_type, :pipeline_destination, :begun_at, :cost_code
+    attr_reader :comment, :assets, :study, :project, :workflow, :asset_type, :pipeline_destination, :begun_at, :cost_code
 
     def self.create!(*args)
       self.new(*args).do!
     end
 
-    def initialize(study:,assets:,asset_type:,workflow:,pipeline_destination:,cost_code:, comment:nil,begun_at:nil)
+    def initialize(study:,project:,assets:,asset_type:,workflow:,pipeline_destination:,cost_code:, comment:nil,begun_at:nil)
       @study = study
+      @project = project
       @assets = assets
       @asset_type = asset_type
       @workflow = workflow
@@ -54,6 +55,7 @@ class Batch < ActiveRecord::Base
           sample_count:         sample_count,
           asset_type:           asset_type,
           study:                study,
+          project:              project,
           workflow:             workflow,
           begun_at:             begun_at,
           pipeline_destination: pipeline_destination,
@@ -67,15 +69,16 @@ class Batch < ActiveRecord::Base
 
   class Updater
 
-    attr_reader :batch, :new_comment, :study, :workflow, :pipeline_destination, :cost_code, :begun_at
+    attr_reader :batch, :new_comment, :project, :study, :workflow, :pipeline_destination, :cost_code, :begun_at
 
     def self.create!(*args)
       self.new(*args).do!
     end
 
-    def initialize(study:,workflow:,pipeline_destination:,cost_code:,comment:,batch:,begun_at:nil)
+    def initialize(study:,project:,workflow:,pipeline_destination:,cost_code:,comment:,batch:,begun_at:nil)
       @batch = batch
       @study = study
+      @project = project
       @workflow = workflow
       @pipeline_destination = pipeline_destination
       @cost_code = cost_code
@@ -93,7 +96,7 @@ class Batch < ActiveRecord::Base
     private
 
     def asset_params
-      {study:study,workflow_id:workflow,pipeline_destination_id:pipeline_destination,cost_code_id:cost_code,comment_id:comment_object}.tap do |params|
+      {study: study, project: project, workflow_id: workflow, pipeline_destination_id: pipeline_destination, cost_code_id: cost_code, comment_id: comment_object}.tap do |params|
         # Only update begun at if its actually provided
         params.merge!(begun_at:begun_at) if begun_at
       end

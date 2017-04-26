@@ -17,6 +17,7 @@ describe Batch::Creator do
   # )
 
   let(:study) { 'example_study' }
+  let(:project) { 'example_project' }
 
   let(:asset_type) { double('mock_asset_type',has_sample_count?:true) }
 
@@ -57,13 +58,14 @@ describe Batch::Creator do
       Comment.should_receive(:create!).with(comment:comment).once.and_return(mock_comment)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time},
-        {identifier:'b',sample_count:5,asset_type:asset_type,comment:mock_comment,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,begun_at:time}
+        {identifier:'a', sample_count: 1, asset_type: asset_type, comment: mock_comment, study: study, project: project, workflow: workflow, pipeline_destination: nil, cost_code: nil, begun_at: time},
+        {identifier:'b', sample_count: 5, asset_type: asset_type, comment: mock_comment, study: study, project: project, workflow: workflow, pipeline_destination: nil, cost_code: nil, begun_at: time}
       ])
 
       mock_batch.should_receive(:save!).once
       Batch::Creator.create!(
         study:study,
+        project: project,
         workflow:workflow,
         pipeline_destination:nil,
         cost_code:nil,
@@ -88,13 +90,14 @@ describe Batch::Creator do
       Batch.should_receive(:new).once.and_return(mock_batch)
 
       asset_association.should_receive(:build).with([
-        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil},
-        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil}
+        {identifier:'a',sample_count:1,asset_type:asset_type,study:study,project: project,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil},
+        {identifier:'b',sample_count:5,asset_type:asset_type,study:study,project: project,workflow:workflow,pipeline_destination:nil,cost_code:nil,comment:nil,begun_at:nil}
       ])
 
       mock_batch.should_receive(:save!).once
       Batch::Creator.create!(
         study:study,
+        project: project,
         workflow:workflow,
         pipeline_destination:nil,
         cost_code:nil,
@@ -115,6 +118,7 @@ describe Batch::Creator do
 
       batch_creator = Batch::Creator.new(
         study: 'study',
+        project: 'project',
         assets: assets,
         asset_type: (create :asset_type_has_sample_count),
         workflow: workflow,
