@@ -30,6 +30,7 @@ class Asset < ActiveRecord::Base
     if state.present?
       joins(:events)
         .merge(Event.with_last_state(state))
+        .order(batch_id: :asc)
     else
       all
     end
