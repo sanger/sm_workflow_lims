@@ -14,12 +14,14 @@ describe Event do
     expect(event.valid?).to be true
   end
 
-  it 'should know ids for latest events per asset' do
+  it 'should find events with particular last state' do
     report_required = create :state, name: 'report_required'
     in_progress_event_first_asset = Event.create!(state: in_progress, asset: asset)
+    in_progress_event_second_asset = Event.create!(state: in_progress, asset: (create :asset))
     report_required_event_first_asset = Event.create!(state: report_required, asset: asset)
-    in_progress_event_second_asset = Event.create!(state: report_required, asset: (create :asset))
-    expect(Event.latest_per_asset).to eq [report_required_event_first_asset.id, in_progress_event_second_asset.id]
+    expect(Event.with_last_state(in_progress).to_a).to eq [in_progress_event_second_asset]
+    expect(Event.with_last_state(report_required).to_a).to eq [report_required_event_first_asset]
+
   end
 
 
