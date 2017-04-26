@@ -1,5 +1,0 @@
-<%= erb(:"_templates", :layout => false, :locals=>{:presenter=>presenter}) %>
-<div class="batch-view hidden">
-<h3>Batch  <small><strong>Create</strong></small> <span class="badge"><%= presenter.num_assets %></span></h3>
-<%= erb(:"batches/_batch", :layout => false, :locals => {:presenter => presenter, :class_for_table => "with-button-per-row"}) %>
-</div>
