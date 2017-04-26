@@ -30,6 +30,9 @@ describe Event do
     old_in_progress_events = create_list(:event, 3, state: in_progress)
     old_completed_events = create_list(:event, 2, state: completed)
     expect(Event.completed_between(Date.today-1, Date.today+1)).to eq old_completed_events
+  end
+
+  after do
     Timecop.return
   end
 

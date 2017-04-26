@@ -33,6 +33,7 @@ class Asset < ActiveRecord::Base
     if state.present?
       joins(:events)
         .merge(Event.with_last_state(state))
+        .order(batch_id: :asc)
     else
       all
     end
@@ -47,7 +48,7 @@ class Asset < ActiveRecord::Base
   end
   private :set_begun_at
 
-  # returns an array of arrays: [[study1, project1, cost_code1_name, assets_count1], [study1, project2, cost_code2_name, assets_count2]]
+  # returns an array of hashes
   def self.generate_report_data(start_date, end_date, workflow)
     where(workflow: workflow)
       .joins(:events)
@@ -57,8 +58,9 @@ class Asset < ActiveRecord::Base
       .group("project")
       .group("cost_codes.name")
       .count
-      .to_a
-      .map{|a| a.flatten}
+      .map do |key, value|
+        { study: key[0], project: key[1], cost_code_name: key[2], assets_count: value }.with_indifferent_access
+      end
   end
 
   def reportable?

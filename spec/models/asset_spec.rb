@@ -253,8 +253,12 @@ describe Asset do
       asset4.complete
       start_date = Date.today - 1
       end_date = Date.today + 1
-      expect(Asset.generate_report_data(start_date, end_date, workflow1)).to eq([["Study1", "Project1", nil, 1], ["Study1", "Project2", cost_code.name, 1]])
-      expect(Asset.generate_report_data(start_date, end_date, workflow2)).to eq([["Study1", "Project2", nil, 2]])
+      expect(Asset.generate_report_data(start_date, end_date, workflow1)).to eq([{"study"=>"Study1", "project"=>"Project1", "cost_code_name"=>nil, "assets_count"=>1},
+                                                                                  {"study"=>"Study1", "project"=>"Project2", "cost_code_name"=>"A2", "assets_count"=>1}])
+      expect(Asset.generate_report_data(start_date, end_date, workflow2)).to eq([{"study"=>"Study1", "project"=>"Project2", "cost_code_name"=>nil, "assets_count"=>2}])
+    end
+
+    after do
       Timecop.return
     end
 

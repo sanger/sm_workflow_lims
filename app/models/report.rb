@@ -29,7 +29,7 @@ class Report
   end
 
   def workflow_id=(workflow_id)
-    @workflow = Workflow.find(workflow_id) if workflow_id.present?
+    @workflow = Workflow.find_by(id: workflow_id)
   end
 
   def start_date=(start_date)
@@ -64,15 +64,14 @@ class Report
 
   class Row
 
-    attr_reader :study, :project, :cost_code_name, :assets_count
+    attr_reader :data
 
     def initialize(data)
-      data = data.map {|el| el ? el : 'Not defined'}
-      @study, @project, @cost_code_name, @assets_count = *data
+      @data = data
     end
 
     def data_for(column_names)
-      instance_values.values_at(*column_names)
+      data.values_at(*column_names).map {|el| el ? el : 'Not defined'}
     end
 
   end
