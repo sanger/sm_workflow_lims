@@ -88,7 +88,7 @@ class Asset < ActiveRecord::Base
   end
 
   class AssetAction
-    attr_reader :action, :assets, :state, :asset_state
+    attr_reader :action, :assets, :flash_status, :asset_state
 
     def self.create!(*args)
       self.new(*args).tap {|action| action.do! }
@@ -98,13 +98,13 @@ class Asset < ActiveRecord::Base
       @action = action
       @assets = assets
       @asset_state = assets.first.current_state
-      @state = 'incomplete'
+      @flash_status = 'error'
     end
 
     private
 
     def done?
-      state == 'success'
+      flash_status == 'notice'
     end
 
     def identifiers
@@ -117,7 +117,7 @@ class Asset < ActiveRecord::Base
     def do!
       ActiveRecord::Base.transaction do
         assets.each { |a| a.perform_action(action) }
-        @state = 'success'
+        @flash_status = 'notice'
       end
       true
     end

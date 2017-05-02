@@ -48,7 +48,7 @@ describe Presenter::ReportPresenter::New do
       expect(presenter.workflow).to eq 'Workflow'
       expect(presenter.start_date).to eq "01/04/2017"
       expect(presenter.end_date).to be nil
-      expect(presenter.flash).to eq ["danger", "End date can't be blank"]
+      expect(presenter.flash).to eq "End date can't be blank"
     end
   end
 end
