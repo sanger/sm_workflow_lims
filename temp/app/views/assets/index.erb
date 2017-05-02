@@ -1,0 +1,85 @@
+<div class="search-view">
+<% if (presenter.is_search?) %>
+<% presenter.search_parameters do |param| %>
+  <div class="alert alert-info">Search results where <%= param %></div>
+<% end %>
+<% end %>
+<h3>Filter by:</h3>
+<form class="form-inline" role="form" action="/assets" method="POST">
+  <input type="hidden" name="_method" value="PUT"/>
+
+  <div class="row">
+  <div class="form-group col-sm-6">
+    <label for="filter-study" class="col-sm-3 control-label">Study</label>
+    <div class="col-sm-9">
+      <input type="text" id="filter-study" class="form-control" style="width: 100%" name="study" placeholder="Enter a study or abbreviation" autocomplete="off">
+    </div>
+  </div>
+  <div class="form-group col-sm-6">
+    <label for="filter-workflow" class="col-sm-4 control-label">Workflow</label>
+    <div class="col-sm-8">
+<select id="filter-workflow" name="workflow_id" style="width: 100%" class="form-control">
+  <option value="" default>Any workflow</option>
+<% presenter.each_workflow do |name, comment, id| %>
+  <option value="<%= name %>" <%= (presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
+<% end %>
+</select>
+    </div>
+  </div>
+  </div>
+
+<% presenter.with_each_asset_type do |asset_type| %>
+
+  <% has_sample_count = asset_type.asset_type.has_sample_count? %>
+
+  <div class="asset-group-view row">
+    <h3><%= asset_type.name %> <span class="badge"><%= presenter.num_assets(asset_type.name) %></span>
+     </h3>
+
+    <% if presenter.has_assets?(asset_type.name) %>
+       <% if (!presenter.is_search?) %>
+         <small><span><a class="selectable">Select all</a> | <a class="selectable">Unselect</a></small>
+       <% end %>
+
+      <table class="table table-striped table-bordered filter-table with-button-per-row table-condensed">
+      <thead>
+      <tr>
+        <th>Batch</th>
+        <th><%= asset_type.identifier %></th>
+        <th>Study</th>
+        <th>Project</th>
+        <% asset_type.sample_count? do %>
+          <th>Num. Samples</th>
+        <% end %>
+        <th>Workflow</th>
+        <th>Pipeline Destination</th>
+        <th>Cost Code</th>
+        <th>Created at</th>
+        <th>Completed?</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= erb(:"assets/_asset_group", :layout => false, :locals => {:presenter => presenter, :asset_type => asset_type }) %>
+      </tbody>
+      </table>
+
+    <% else %>
+      <p>This group is empty</p>
+    <% end %>
+  </div>
+<% end %>
+
+  <input type="hidden" name="action" value=<%= presenter.action %> >
+  <% presenter.action_button do |button_text| %>
+    <div class="form-group center-block">
+        <button type="submit" class="btn btn-default"><%= button_text %></button>
+    </div>
+  <% end %>
+</form>
+
+
+  </div>
+  <div class="container" id="footer">
+  </div>
+</body>
+</html>

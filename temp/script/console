@@ -1,0 +1,3 @@
+#!/bin/bash -l
+echo "Starting Console..."
+pry -r './app'
