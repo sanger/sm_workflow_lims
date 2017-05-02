@@ -1,3 +1,6 @@
+require './app/presenters/report/new'
+require './app/presenters/report/show'
+
 class ReportsController < ApplicationController
 
   def new

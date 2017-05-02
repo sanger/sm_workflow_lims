@@ -1,3 +1,5 @@
+require './app/presenters/admin/index'
+
 class AdminController < ApplicationController
 
   def index

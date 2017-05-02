@@ -1,3 +1,5 @@
+require './app/presenters/workflow/show'
+
 class WorkflowsController < ApplicationController
 
 # Validate everything/most part on model level?
@@ -8,13 +10,13 @@ class WorkflowsController < ApplicationController
 
   # required_parameters_for :create, [:name], 'You must specify a name.'
   # validate_parameters_for :create, :check_name,   'The name of the new workflow must be unique.'
-  validate_parameters_for :create, :check_turn_around, 'Turn around time must be an integer of zero or higher.'
+  # validate_parameters_for :create, :check_turn_around, 'Turn around time must be an integer of zero or higher.'
 
   # required_parameters_for :show,   [:workflow_id], 'You must specify a workflow.'
 
   # required_parameters_for :update, [:name], 'You must specify a name.'
   # required_parameters_for :update, [:workflow_id], 'You must specify a workflow.'
-  validate_parameters_for :update, :check_turn_around, 'Turn around time must be an integer of zero or higher.'
+  # validate_parameters_for :update, :check_turn_around, 'Turn around time must be an integer of zero or higher.'
 
   def create
     @presenter = Workflow::Creator.create!(

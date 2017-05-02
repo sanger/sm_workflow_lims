@@ -1,3 +1,6 @@
+require './app/presenters/batch/new'
+require './app/presenters/batch/show'
+
 class BatchesController < ApplicationController
 
 # Validate everything/most part on model level?

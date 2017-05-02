@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :reports, only: [:index] do
+  resources :reports, only: [:new] do
     collection do
       post :create
       get :csv

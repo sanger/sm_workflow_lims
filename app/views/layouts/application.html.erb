@@ -8,7 +8,19 @@
 </head>
 <body>
 
-<%= yield %>
+  <%= render partial: 'menu', layout: false, locals: {presenter: @presenter} %>
+
+  <div class="container" id="body">
+      <div id="alerts-box">
+        <%= render "flashes" %>
+      </div>
+
+    <%= yield %>
+
+  </div>
+  <div class="container" id="footer">
+    <p class="muted"><%= @presenter.version_information %></p>
+  </div>
 
 </body>
 </html>

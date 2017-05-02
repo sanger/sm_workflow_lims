@@ -1,3 +1,5 @@
+require './app/presenters/asset/index'
+
 class AssetsController < ApplicationController
 
   before_action :assets_provided, only: [:update]
