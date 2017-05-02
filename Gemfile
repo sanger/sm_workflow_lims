@@ -50,11 +50,12 @@ group :development do
 end
 
 group :test do
-  gem "rspec"
-  gem "timecop"
-  gem "database_cleaner"
+  gem 'rspec-rails', '~> 3.5.0'
+  gem 'rspec-collection_matchers'
+  gem 'timecop'
+  gem 'database_cleaner'
   gem 'factory_girl'
-  gem "capybara"
-  gem "poltergeist"
+  gem 'capybara'
+  gem 'poltergeist'
 end
 
