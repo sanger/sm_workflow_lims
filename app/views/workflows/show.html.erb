@@ -1,11 +1,11 @@
 <div class="admin-view">
   <h3>Workflow <small>Edit</small></h3>
 
-  <form method="post" action="<%= presenter.action %>">
+  <form method="post" action="<%= @presenter.action %>">
     <input type="hidden" name="_method" value="PUT"/>
     <div class="form-group">
       <label class="control-label" for="name">Name</label>
-      <input type="textbox" name="name" id="name" value="<%= presenter.name %>" class="form-control"  placeholder="Enter a workflow name" required />
+      <input type="textbox" name="name" id="name" value="<%= @presenter.name %>" class="form-control"  placeholder="Enter a workflow name" required />
     </div>
     <div class="form-group">
       <label class="control-label" for="turn_around_days">Turn around time</label>
@@ -17,7 +17,7 @@
           class="form-control"
           min="0"
           step="1"
-          value="<%= presenter.turn_around %>"
+          value="<%= @presenter.turn_around %>"
           placeholder="Turn around time"
           aria-describedby="turn_around_days_indicator"
         />
@@ -36,17 +36,17 @@
           <li>Enabling/disabling multi team will not change behavior of old assets, only behavior of new assets will be changed.</li>
         </ul>
         <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-primary <%= presenter.has_comment ? 'active' : '' %>" for="hasComment">
-            <input type="checkbox" autocomplete="off" name="hasComment" id="hasComment" <%= presenter.has_comment ? 'checked' : '' %> > Has comment
+          <label class="btn btn-primary <%= @presenter.has_comment ? 'active' : '' %>" for="hasComment">
+            <input type="checkbox" autocomplete="off" name="hasComment" id="hasComment" <%= @presenter.has_comment ? 'checked' : '' %> > Has comment
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
-          <label class="btn btn-primary <%= presenter.reportable ? 'active' : '' %>" for="reportable">
-            <input type="checkbox" autocomplete="off" name="reportable" id="reportable" <%= presenter.reportable ? 'checked' : '' %> > Reportable
+          <label class="btn btn-primary <%= @presenter.reportable ? 'active' : '' %>" for="reportable">
+            <input type="checkbox" autocomplete="off" name="reportable" id="reportable" <%= @presenter.reportable ? 'checked' : '' %> > Reportable
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
-          <label class="btn btn-primary <%= presenter.multi_team_quant_essential ? 'active' : '' %>" for="initial_state_name">
+          <label class="btn btn-primary <%= @presenter.multi_team_quant_essential ? 'active' : '' %>" for="initial_state_name">
             <input type="hidden" name="initial_state_name" value="in_progress" >
-            <input type="checkbox" autocomplete="off" value="volume_check" name="initial_state_name" id="initial_state_name" <%= presenter.multi_team_quant_essential ? 'checked' : '' %> > Multi team quant essential
+            <input type="checkbox" autocomplete="off" value="volume_check" name="initial_state_name" id="initial_state_name" <%= @presenter.multi_team_quant_essential ? 'checked' : '' %> > Multi team quant essential
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
         </div>

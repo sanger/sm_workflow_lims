@@ -8,13 +8,18 @@ class ReportsController < ApplicationController
   end
 
   def create
-    report = Report.new(params)
+    report = Report.new(params.except(:controller, :action))
     if report.valid?
       @presenter = Presenter::ReportPresenter::Show.new(report)
+      render :show
     else
       @presenter = Presenter::ReportPresenter::New.new(report)
       flash[:error] = @presenter.flash
+      render :new
     end
+  end
+
+  def show
   end
 
   def csv

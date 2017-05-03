@@ -7,10 +7,10 @@
   <table id="report" class="table table-striped table-hover">
     <thead>
       <th></th>
-      <%= @presenter.column_names %>
+      <%= @presenter.column_names.html_safe %>
     </thead>
     <tbody>
-      <%= @presenter.rows %>
+      <%= @presenter.rows.html_safe %>
     </tbody>
   </table>
 </div>

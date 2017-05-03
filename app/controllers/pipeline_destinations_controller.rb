@@ -1,7 +1,7 @@
 class PipelineDestinationsController < ApplicationController
 
-  before_action :check_name, only: [:create]
-  before_action :name_present?, only: [:create]
+  # before_action :check_name, only: [:create]
+  # before_action :name_present?, only: [:create]
 
   # required_parameters_for :create, [:name],       'You must provide a name for the new pipeline'
   # validate_parameters_for :create, :check_name,   'The name of the new pipeline must be unique'

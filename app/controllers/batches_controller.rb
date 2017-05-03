@@ -5,12 +5,12 @@ class BatchesController < ApplicationController
 
 # Validate everything/most part on model level?
 
-  before_action :valid_date_provided, only: [:update, :create]
-  before_action :batch_id_present?, only: [:show, :update, :delete]
-  before_action :workflow_id_present?, only: [:create, :update]
-  before_action :study_present?, only: [:create]
-  before_action :asset_type_id_present?, only: [:create]
-  before_action :assets_provided, only: [:create]
+  # before_action :valid_date_provided, only: [:update, :create]
+  # before_action :batch_id_present?, only: [:show, :update, :delete]
+  # before_action :workflow_id_present?, only: [:create, :update]
+  # before_action :study_present?, only: [:create]
+  # before_action :asset_type_id_present?, only: [:create]
+  # before_action :assets_provided, only: [:create]
 
   # required_parameters_for :create, [:workflow_id], 'You must specify a workflow.'
   # required_parameters_for :create, [:asset_type_id], 'You must specify an asset type.'
@@ -48,7 +48,7 @@ class BatchesController < ApplicationController
       )
     @presenter = Presenter::BatchPresenter::Show.new(updated_batch)
     flash[:notice] = "The batch was updated."
-    redirect_to("/batches/#{params[:batch_id]}")
+    redirect_to("/batches/#{params[:id]}")
   end
 
   def destroy
@@ -58,7 +58,7 @@ class BatchesController < ApplicationController
   end
 
   def create
-    updated_batch = Batch::Creator.create!(
+    created_batch = Batch::Creator.create!(
       study: params[:study],
       project: params[:project],
       workflow: workflow,
@@ -69,7 +69,7 @@ class BatchesController < ApplicationController
       assets: params[:assets].values,
       comment: params[:comment]
     )
-    @presenter = Presenter::BatchPresenter::Show.new(updated_batch)
+    @presenter = Presenter::BatchPresenter::Show.new(created_batch)
     flash[:notice] = "The batch was created."
     redirect_to("/batches/#{@presenter.id}")
   end
@@ -121,7 +121,7 @@ class BatchesController < ApplicationController
   end
 
   def batch
-    Batch.find_by_id(params[:batch_id])||user_error("There is no batch with the id #{params[:batch_id]}.")
+    Batch.find_by_id(params[:id])||user_error("There is no batch with the id #{params[:batch_id]}.")
   end
 
   def assets_provided

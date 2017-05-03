@@ -2,14 +2,13 @@ require './app/presenters/asset/index'
 
 class AssetsController < ApplicationController
 
-  before_action :assets_provided, only: [:update]
+  # before_action :assets_provided, only: [:update]
   # validate_parameters_for :update, :assets_provided, 'No assets selected'
 
   def update
-    #is presenter used in a view? rename presenter to updater?
-    @presenter = Asset::Updater.create!(assets: assets_to_be_updated, action: params[:action])
-    flash[@presenter.flash_status] = @presenter.message
-    redirect to("/assets?state=#{@presenter.redirect_state}")
+    @presenter = Asset::Updater.create!(assets: assets_to_be_updated, action: params[:asset_action])
+    flash[:notice] = @presenter.message
+    redirect_to("/assets?state=#{@presenter.redirect_state}")
   end
 
   def index

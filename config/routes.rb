@@ -5,11 +5,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'batches#new'
 
-  resources :assets, only: [:index] do
-    collection do
-      put :update
-    end
-  end
+  resources :assets, only: [:index]
+  get 'assets/update'
 
   resources :batches, except: [:index, :edit]
 
@@ -23,6 +20,7 @@ Rails.application.routes.draw do
   resources :reports, only: [:new] do
     collection do
       post :create
+      get :show
       get :csv
     end
   end

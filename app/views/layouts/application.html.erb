@@ -11,9 +11,11 @@
   <%= render partial: 'menu', layout: false, locals: {presenter: @presenter} %>
 
   <div class="container" id="body">
-      <div id="alerts-box">
-        <%= render "flashes" %>
-      </div>
+    <div id="alerts-box">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, class: "alert alert-#{name}"%>
+      <% end %>
+    </div>
 
     <%= yield %>
 

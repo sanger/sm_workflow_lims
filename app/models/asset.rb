@@ -98,13 +98,13 @@ class Asset < ActiveRecord::Base
       @action = action
       @assets = assets
       @asset_state = assets.first.current_state
-      @flash_status = 'error'
+      @flash_status = :alert
     end
 
     private
 
     def done?
-      flash_status == 'notice'
+      flash_status == :notice
     end
 
     def identifiers
@@ -117,7 +117,7 @@ class Asset < ActiveRecord::Base
     def do!
       ActiveRecord::Base.transaction do
         assets.each { |a| a.perform_action(action) }
-        @flash_status = 'notice'
+        @flash_status = :notice
       end
       true
     end

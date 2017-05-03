@@ -5,8 +5,7 @@
 <% end %>
 <% end %>
 <h3>Filter by:</h3>
-<form class="form-inline" role="form" action="/assets" method="POST">
-  <input type="hidden" name="_method" value="PUT"/>
+<form class="form-inline" role="form" action="/assets/update" method="GET">
 
   <div class="row">
   <div class="form-group col-sm-6">
@@ -69,7 +68,7 @@
   </div>
 <% end %>
 
-  <input type="hidden" name="action" value=<%= @presenter.action %> >
+  <input type="hidden" name="asset_action" value=<%= @presenter.action %> >
   <% @presenter.action_button do |button_text| %>
     <div class="form-group center-block">
         <button type="submit" class="btn btn-default"><%= button_text %></button>

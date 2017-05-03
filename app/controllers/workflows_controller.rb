@@ -3,10 +3,10 @@ require './app/presenters/workflow/show'
 class WorkflowsController < ApplicationController
 
 # Validate everything/most part on model level?
-  before_action :check_name, only: [:create]
-  before_action :name_present?, only: [:create, :update]
-  before_action :workflow_id_present?, only: [:show, :update]
-  before_action :check_turn_around, only: [:create, :update]
+  # before_action :check_name, only: [:create]
+  # before_action :name_present?, only: [:create, :update]
+  # before_action :workflow_id_present?, only: [:show, :update]
+  # before_action :check_turn_around, only: [:create, :update]
 
   # required_parameters_for :create, [:name], 'You must specify a name.'
   # validate_parameters_for :create, :check_name,   'The name of the new workflow must be unique.'
@@ -26,7 +26,7 @@ class WorkflowsController < ApplicationController
       initial_state_name:    params[:initial_state_name],
       turn_around_days: params[:turn_around_days]
     )
-    flash[:notice] = ['success',"The workflow was created."]
+    flash[:notice] = "The workflow was created."
     redirect_to("/admin")
   end
 
@@ -43,7 +43,7 @@ class WorkflowsController < ApplicationController
       initial_state_name:    params[:initial_state_name],
       turn_around_days: turn_around_days
     )
-    flash[:notice] = ["The workflow was updated."]
+    flash[:notice] = "The workflow was updated."
     redirect_to("/admin")
   end
 
@@ -56,7 +56,7 @@ class WorkflowsController < ApplicationController
   end
 
   def workflow
-    Workflow.find_by_id(params[:workflow_id])||user_error("There is no workflow with the id #{params[:workflow_id]}.")
+    Workflow.find_by_id(params[:id])||user_error("There is no workflow with the id #{params[:workflow_id]}.")
   end
 
   def check_turn_around
