@@ -1,6 +1,5 @@
 class Batch < ActiveRecord::Base
 
-
   has_many :assets
   has_many :comments, :through => :assets
 
@@ -14,25 +13,14 @@ class Batch < ActiveRecord::Base
 
   class Creator
 
-    attr_reader :comment, :assets, :study, :project, :workflow, :asset_type, :pipeline_destination, :begun_at, :cost_code
+    include ActiveModel::Model
 
-    def self.create!(*args)
-      self.new(*args).do!
-    end
+    validates_presence_of :workflow, :assets, :asset_type, :study
+    validate :valid_date_provided
 
-    def initialize(study:,project:,assets:,asset_type:,workflow:,pipeline_destination:,cost_code:, comment:nil,begun_at:nil)
-      @study = study
-      @project = project
-      @assets = assets
-      @asset_type = asset_type
-      @workflow = workflow
-      @pipeline_destination = pipeline_destination
-      @cost_code = cost_code
-      @comment = comment
-      @begun_at = begun_at
-    end
+    attr_accessor :comment, :assets, :study, :project, :workflow, :asset_type, :pipeline_destination, :begun_at, :cost_code, :date
 
-    def do!
+    def create!
       ActiveRecord::Base.transaction do
         Batch.new.tap do |batch|
           batch.assets.build(assets_map)
@@ -55,7 +43,7 @@ class Batch < ActiveRecord::Base
           study:                study,
           project:              project,
           workflow:             workflow,
-          begun_at:             begun_at,
+          begun_at:             date,
           pipeline_destination: pipeline_destination,
           cost_code:     cost_code,
           comment:       comment_object
@@ -63,28 +51,31 @@ class Batch < ActiveRecord::Base
       end
     end
 
+    #now in 2 places, should be moved somewhere
+    def valid_date_provided
+      @date = nil
+      return true unless begun_at.present?
+      begin
+        @date = DateTime.strptime(begun_at,'%d/%m/%Y') + 12.hours
+        @date < DateTime.now
+      rescue ArgumentError
+        errors.add(:dates, 'must be in the format DD/MM/YYYY and cannot be in the future.')
+        false
+      end
+    end
   end
 
   class Updater
 
-    attr_reader :batch, :new_comment, :project, :study, :workflow, :pipeline_destination, :cost_code, :begun_at
+    include ActiveModel::Model
 
-    def self.create!(*args)
-      self.new(*args).do!
-    end
+    #Workflow is needed for comment?
+    validates_presence_of :batch, :workflow
+    validate :valid_date_provided
 
-    def initialize(study:,project:,workflow:,pipeline_destination:,cost_code:,comment:,batch:,begun_at:nil)
-      @batch = batch
-      @study = study
-      @project = project
-      @workflow = workflow
-      @pipeline_destination = pipeline_destination
-      @cost_code = cost_code
-      @new_comment = comment
-      @begun_at = begun_at
-    end
+    attr_accessor :batch, :new_comment, :project, :study, :workflow, :pipeline_destination, :cost_code, :begun_at, :comment, :date
 
-    def do!
+    def update!
       ActiveRecord::Base.transaction do
         batch.assets.update_all(asset_params)
       end
@@ -96,7 +87,7 @@ class Batch < ActiveRecord::Base
     def asset_params
       {study: study, project: project, workflow_id: workflow, pipeline_destination_id: pipeline_destination, cost_code_id: cost_code, comment_id: comment_object}.tap do |params|
         # Only update begun at if its actually provided
-        params.merge!(begun_at:begun_at) if begun_at
+        params.merge!(begun_at:date) if date.present?
       end
     end
 
@@ -108,6 +99,19 @@ class Batch < ActiveRecord::Base
       keep, reject = batch.comments.partition {|c| workflow.has_comment? && c.comment == new_comment}
       reject.each(&:destroy)
       keep.first
+    end
+
+    #now in 2 places, should be moved somewhere
+    def valid_date_provided
+      @date = nil
+      return true unless begun_at.present?
+      begin
+        @date = DateTime.strptime(begun_at,'%d/%m/%Y') + 12.hours
+        @date < DateTime.now
+      rescue ArgumentError
+        errors.add(:dates, 'must be in the format DD/MM/YYYY and cannot be in the future.')
+        false
+      end
     end
 
   end

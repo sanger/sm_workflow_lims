@@ -10,7 +10,7 @@ class CostCode < ActiveRecord::Base
   include ClientSideValidations
 
   validate_with_regexp :name, :with => /^[A-Za-z]\d+$/, :allow_blank => true,
-    :error_msg => "The cost code should should be one letter followed by digits"
+    :error_msg => "The cost code should be one letter followed by digits"
 
   has_many :assets
 

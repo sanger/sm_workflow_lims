@@ -41,7 +41,7 @@ describe Batch::Creator do
       comment: 'some comment'
     )
     expect(Asset.count).to eq 0
-    batch_creator.do!
+    batch_creator.create!
     expect(Asset.count).to eq 3
     expect(Asset.last.current_state). to eq state.name
   end
