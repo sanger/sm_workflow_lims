@@ -17,6 +17,9 @@
 #
 # require 'database_cleaner'
 require 'factory_girl'
+require "capybara/rails"
+require "capybara/rspec"
+require "capybara/poltergeist"
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
@@ -43,6 +46,8 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  Capybara.javascript_driver = :poltergeist
+
   config.include FactoryGirl::Syntax::Methods
 
   config.before(:suite) do
@@ -66,6 +71,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
+    Capybara.reset_sessions!
     DatabaseCleaner.clean
   end
 
