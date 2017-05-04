@@ -2,13 +2,15 @@ require './app/presenters/asset/index'
 
 class AssetsController < ApplicationController
 
-  # before_action :assets_provided, only: [:update]
-  # validate_parameters_for :update, :assets_provided, 'No assets selected'
-
   def update
-    @presenter = Asset::Updater.create!(assets: assets_to_be_updated, action: params[:asset_action])
-    flash[:notice] = @presenter.message
-    redirect_to("/assets?state=#{@presenter.redirect_state}")
+    if assets_provided
+      @presenter = Asset::Updater.create!(assets: assets_to_be_updated, action: params[:asset_action])
+      flash[@presenter.flash_status] = @presenter.message
+      redirect_to("/assets?state=#{@presenter.redirect_state}")
+    else
+      flash[:error] = 'No assets selected'
+      redirect_to :back
+    end
   end
 
   def index
@@ -32,10 +34,7 @@ class AssetsController < ApplicationController
   end
 
   def assets_provided
-    unless params[:assets].is_a?(Hash) && params[:assets].keys.present?
-      flash[:error] = 'No assets selected'
-      # redirect_to :back
-    end
+    params[:assets].is_a?(Hash) && params[:assets].keys.present?
   end
 
   def assets_to_be_updated
