@@ -30,7 +30,7 @@ class BatchesController < ApplicationController
       flash[:notice] = "The batch was updated."
       redirect_to("/batches/#{params[:id]}")
     else
-      flash[:error] = batch_updater.errors.full_messages
+      flash[:error] = batch_updater.errors.full_messages.join('; ')
       redirect_to :back
     end
   end
@@ -59,7 +59,7 @@ class BatchesController < ApplicationController
       flash[:notice] = "The batch was created."
       redirect_to("/batches/#{@presenter.id}")
     else
-      flash[:error] = batch_creator.errors.full_messages
+      flash[:error] = batch_creator.errors.full_messages.join('; ')
       redirect_to :back
     end
   end

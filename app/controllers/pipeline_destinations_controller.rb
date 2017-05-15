@@ -7,7 +7,7 @@ class PipelineDestinationsController < ApplicationController
       flash[:notice] = "The pipeline destination was created."
       redirect_to("/admin")
     else
-      flash[:error] = @pipeline_destination.errors.full_messages
+      flash[:error] = @pipeline_destination.errors.full_messages.join('; ')
       redirect_to :back
     end
   end

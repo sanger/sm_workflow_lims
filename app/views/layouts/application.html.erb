@@ -13,7 +13,7 @@
   <div class="container" id="body">
     <div id="alerts-box">
       <% flash.each do |name, msg| %>
-        <%= content_tag :div, msg, class: "alert alert-#{name}"%>
+        <%= content_tag :div, msg, class: "alert alert-#{ name.to_s == 'notice' ? 'success' : 'danger'}"%>
       <% end %>
     </div>
 

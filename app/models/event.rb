@@ -1,5 +1,3 @@
-require 'active_record'
-
 class Event < ActiveRecord::Base
   belongs_to :asset
   belongs_to :state

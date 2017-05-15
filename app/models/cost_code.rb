@@ -1,5 +1,3 @@
-require 'active_record'
-
 require './lib/client_side_validations'
 
 class CostCode < ActiveRecord::Base

@@ -8,12 +8,10 @@ class WorkflowsController < ApplicationController
     @workflow = Workflow.new(workflow_params)
     if @workflow.valid?
       @workflow.save
-      #flash does not appear on page, feature test fails
       flash[:notice] = "The workflow was created."
-      #if I add notice, flash still does not appear on page, but feature test passes
-      redirect_to("/admin", notice: "The workflow was created.")
+      redirect_to("/admin")
     else
-      flash[:error] = @workflow.errors.full_messages
+      flash[:error] = @workflow.errors.full_messages.join('; ')
       redirect_to :back
     end
   end
@@ -29,7 +27,7 @@ class WorkflowsController < ApplicationController
       flash[:notice] = "The workflow was updated."
       redirect_to("/admin")
     else
-      flash[:error] = workflow.errors.full_messages
+      flash[:error] = workflow.errors.full_messages.join('; ')
       redirect_to :back
     end
   end
