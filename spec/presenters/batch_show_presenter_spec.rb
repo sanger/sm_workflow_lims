@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require './app/presenters/batch/show'
 require './spec/presenters/shared_presenter_behaviour'
 

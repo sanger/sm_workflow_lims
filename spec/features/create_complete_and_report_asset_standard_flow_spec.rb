@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'create complete and report assets within standard flow', js: true do
 

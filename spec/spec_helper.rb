@@ -17,8 +17,8 @@
 #
 # require 'database_cleaner'
 require 'factory_girl'
-require "capybara/rails"
 require "capybara/rspec"
+require "capybara/rails"
 require "capybara/poltergeist"
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
