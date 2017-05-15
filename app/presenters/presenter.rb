@@ -20,8 +20,6 @@ class Presenter
 
   module SharedBehaviour
 
-    require './app/models/asset_type'
-    require './app/models/workflow'
     require './app/presenters/asset_type/asset_type'
 
     def each_asset_type

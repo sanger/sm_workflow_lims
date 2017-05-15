@@ -6,8 +6,7 @@ class WorkflowsController < ApplicationController
 
   def create
     @workflow = Workflow.new(workflow_params)
-    if @workflow.valid?
-      @workflow.save
+    if @workflow.save
       flash[:notice] = "The workflow was created."
       redirect_to("/admin")
     else
@@ -22,8 +21,7 @@ class WorkflowsController < ApplicationController
 
   def update
     workflow.assign_attributes(workflow_params)
-    if workflow.valid?
-      workflow.save
+    if workflow.save
       flash[:notice] = "The workflow was updated."
       redirect_to("/admin")
     else
@@ -49,6 +47,5 @@ class WorkflowsController < ApplicationController
   def turn_around_days
     params[:turn_around_days].to_i if params[:turn_around_days].present?
   end
-
 
 end
