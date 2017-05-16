@@ -16,7 +16,7 @@ module Presenter::BatchPresenter
     end
 
     def workflow
-      'None'
+      ''
     end
 
     def pipeline_destination

@@ -34,8 +34,8 @@ module Presenter::BatchPresenter
     end
 
     def workflow
-      return first_asset.workflow.name if first_asset
-      'None'
+      return first_asset.workflow if first_asset
+      ''
     end
 
     def pipeline_destination

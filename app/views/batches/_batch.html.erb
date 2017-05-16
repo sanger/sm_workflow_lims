@@ -44,8 +44,13 @@
     <div class="col-sm-10">
       <select id="workflow_id" name="workflow_id" data-psg-regexp="^(?!None).+$" class="form-control" autocomplete="off">
         <option value="None" default>Select a workflow</option>
-      <% presenter.each_workflow do |name, comment, id| %>
-        <option value="<%= id %>" <%= (presenter.workflow==name) ? 'selected' : '' %> data-workflow-has-comment="<%= comment ? 1 : 0 %>"><%= name %></option>
+      <% presenter.each_workflow do |name, comment, id, reportable, multi_team_quant_essential| %>
+        <option value="<%= id %>"
+          <%= (presenter.workflow.present? && presenter.workflow.name==name) ? 'selected' : '' %>
+          <%= (presenter.workflow.present? && presenter.workflow.multi_team_quant_essential != multi_team_quant_essential) ? 'disabled' : ''  %>
+          data-workflow-has-comment="<%= comment ? 1 : 0 %>">
+            <%= name %>
+        </option>
       <% end %>
       </select>
     </div>

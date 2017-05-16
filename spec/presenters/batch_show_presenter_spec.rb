@@ -33,7 +33,7 @@ describe Presenter::BatchPresenter::Show do
     end
 
     it "should return the workflow (of the first asset) for workflow" do
-      presenter.workflow.should eq('Work')
+      presenter.workflow.should eq(mock_workflow)
     end
 
     it "should return the comment (of the first asset) for comment" do
