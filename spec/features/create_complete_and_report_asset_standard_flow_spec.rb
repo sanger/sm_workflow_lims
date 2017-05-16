@@ -24,6 +24,8 @@ feature 'create complete and report assets within standard flow', js: true do
     end
     click_on 'Append to batch'
     expect(page).to have_content "Asset added to the batch"
+    click_on 'Save'
+    expect(page).to have_content "The batch provided contains some errors"
     fill_in 'Study', with: 'STDY'
     select('Workflow', from: 'Workflow')
     click_on 'Save'
