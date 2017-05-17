@@ -46,8 +46,8 @@
         <option value="None" default>Select a workflow</option>
       <% presenter.each_workflow do |name, comment, id, reportable, multi_team_quant_essential| %>
         <option value="<%= id %>"
-          <%= (presenter.workflow.present? && presenter.workflow.name==name) ? 'selected' : '' %>
-          <%= (presenter.workflow.present? && presenter.workflow.multi_team_quant_essential != multi_team_quant_essential) ? 'disabled' : ''  %>
+          <%= presenter.workflow_name==name ? 'selected' : '' %>
+          <%= presenter.prohibited_workflow(reportable, multi_team_quant_essential) ? 'disabled' : '' %>
           data-workflow-has-comment="<%= comment ? 1 : 0 %>">
             <%= name %>
         </option>
@@ -128,7 +128,7 @@
         </div>
         <div class="input-group">
           <span class="input-group-addon">Workflow</span>
-          <span class="form-control"><%= presenter.workflow %></span>
+          <span class="form-control"><%= presenter.workflow.name %></span>
         </div>
         <div class="input-group">
           <span class="input-group-addon">Pipeline Destination</span>

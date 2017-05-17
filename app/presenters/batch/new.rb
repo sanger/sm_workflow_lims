@@ -16,7 +16,6 @@ module Presenter::BatchPresenter
     end
 
     def workflow
-      ''
     end
 
     def pipeline_destination
@@ -45,6 +44,13 @@ module Presenter::BatchPresenter
 
     def placeholder_date
       'Today'
+    end
+
+    def prohibited_workflow(_reportable, _multi_team_quant_essential)
+    end
+
+    def workflow_name
+      ''
     end
 
   end

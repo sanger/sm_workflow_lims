@@ -34,8 +34,19 @@ module Presenter::BatchPresenter
     end
 
     def workflow
-      return first_asset.workflow if first_asset
-      ''
+      @workflow ||= (first_asset.workflow if first_asset.present?) || ''
+    end
+
+    def prohibited_workflow(reportable, multi_team_quant_essential)
+      if workflow.present?
+        (workflow.reportable != reportable) || (workflow.multi_team_quant_essential != multi_team_quant_essential)
+      end
+    end
+
+    def workflow_name
+      if workflow.present?
+        workflow.name
+      end
     end
 
     def pipeline_destination
