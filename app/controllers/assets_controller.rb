@@ -31,7 +31,7 @@ class AssetsController < ApplicationController
   end
 
   def search
-    params[:identifier] && "identifier matches '#{params[:identifier]}'"
+    params[:identifier] && "batch id or asset identifier matches '#{params[:identifier]}'"
   end
 
   def assets_provided

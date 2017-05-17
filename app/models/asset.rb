@@ -38,7 +38,11 @@ class Asset < ActiveRecord::Base
   end
 
   def self.with_identifier(search_string)
-    search_string.nil? ? all : where(identifier: search_string)
+    if search_string.present?
+      where("identifier = :search_string or batch_id = :search_string", search_string: search_string)
+    else
+      all
+    end
   end
 
   def set_begun_at
