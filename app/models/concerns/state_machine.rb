@@ -1,4 +1,3 @@
-# require './app/models/state'
 
 module StateMachine
 

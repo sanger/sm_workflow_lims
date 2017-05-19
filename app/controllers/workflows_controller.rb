@@ -2,8 +2,6 @@ require './app/presenters/workflow/show'
 
 class WorkflowsController < ApplicationController
 
-  # before_action :workflow, only: [:show, :update]
-
   def create
     @workflow = Workflow.new(workflow_params)
     if @workflow.save

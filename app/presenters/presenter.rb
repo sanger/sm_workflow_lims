@@ -50,9 +50,6 @@ class Presenter
       CostCode.all.each do |cost_code|
         yield cost_code.name, cost_code.id
       end
-      #[1,2,3].each do |val|
-      #  yield val, "cost_code#{val}"
-      #end
     end
 
   end
