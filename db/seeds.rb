@@ -1,7 +1,7 @@
-require './config/asset_types'
-require './config/states'
-require './config/workflows'
-require './config/pipeline_destinations'
+require './config/data/asset_types'
+require './config/data/states'
+require './config/data/workflows'
+require './config/data/pipeline_destinations'
 
 AssetTypeFactory.seed
 PipelineDestinationFactory.seed

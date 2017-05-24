@@ -1,5 +1,4 @@
-require 'spec_helper'
-require './app/models/state'
+require 'rails_helper'
 
 describe State do
 
@@ -12,7 +11,7 @@ describe State do
   end
 
   it 'should know if it is default' do
-    expect(state.default?).to be_false
+    expect(state.default?).to be_falsey
   end
 
 

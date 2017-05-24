@@ -1,7 +1,4 @@
-require 'spec_helper'
-require './app/models/state'
-require './app/models/workflow'
-
+require 'rails_helper'
 
 describe Workflow do
 

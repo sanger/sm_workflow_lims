@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'create complete and report assets within multi team flow', js: true do
 
@@ -34,13 +34,13 @@ feature 'create complete and report assets within multi team flow', js: true do
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
     expect(page).to have_selector('table tr', count: 3)
-    check 'assets[1]'
+    check "assets[#{Asset.first.id}]"
     click_on 'Volume checked selected'
     expect(page).to have_content "Volume check is done for 123"
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 2)
-    check 'assets[1]'
+    check "assets[#{Asset.first.id}]"
     click_on 'Completed selected'
     expect(page).to have_content "Quant is done for 123"
     expect(page).not_to have_selector('table tr')
@@ -73,20 +73,20 @@ feature 'create complete and report assets within multi team flow', js: true do
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
     expect(page).to have_selector('table tr', count: 4)
-    check 'assets[1]'
-    check 'assets[3]'
+    check "assets[#{Asset.first.id}]"
+    check "assets[#{Asset.third.id}]"
     click_on 'Volume checked selected'
     expect(page).to have_content "Volume check is done for 123 and 789"
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 3)
-    check 'assets[3]'
+    check "assets[#{Asset.third.id}]"
     click_on 'Completed selected'
     expect(page).to have_content "Quant is done for 789"
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Report Required'
     expect(page).to have_selector('table tr', count: 2)
-    check 'assets[3]'
+    check "assets[#{Asset.third.id}]"
     click_on 'Reported selected'
     expect(page).to have_content "Report required is done for 789"
     expect(page).not_to have_selector('table tr')

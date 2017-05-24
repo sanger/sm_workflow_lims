@@ -28,9 +28,25 @@ module Presenter::BatchPresenter
       'Not Applicable'
     end
 
+    def project
+      return first_asset.project if first_asset
+      'Not Applicable'
+    end
+
     def workflow
-      return first_asset.workflow.name if first_asset
-      'None'
+      @workflow ||= (first_asset.workflow if first_asset.present?) || ''
+    end
+
+    def prohibited_workflow(reportable, multi_team_quant_essential)
+      if workflow.present?
+        (workflow.reportable != reportable) || (workflow.multi_team_quant_essential != multi_team_quant_essential)
+      end
+    end
+
+    def workflow_name
+      if workflow.present?
+        workflow.name
+      end
     end
 
     def pipeline_destination

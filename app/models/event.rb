@@ -1,10 +1,8 @@
-require 'active_record'
-
 class Event < ActiveRecord::Base
   belongs_to :asset
   belongs_to :state
 
-  validates_presence_of :asset_id, :state_id
+  validates_presence_of :asset, :state
 
   attr_accessor :state_name
 
@@ -17,7 +15,12 @@ class Event < ActiveRecord::Base
   end
 
   def self.with_last_state(state)
-    where(id: latest_event_per_asset, state_id: state.id)
+    where(id: latest_event_per_asset, state: state)
+  end
+
+  def self.completed_between(start_date, end_date)
+    state = State.find_by(name: 'completed')
+    where(created_at: start_date..end_date, state: state)
   end
 
 end

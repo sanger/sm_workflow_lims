@@ -1,6 +1,4 @@
-require 'spec_helper'
-require 'support/active_record'
-require './app/models/asset_type'
+require 'rails_helper'
 
 describe AssetType do
 

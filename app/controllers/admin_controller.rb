@@ -1,9 +1,9 @@
-require './app/controllers/controller'
+require './app/presenters/admin/index'
 
-class AdminController < Controller
+class AdminController < ApplicationController
 
   def index
-    Presenter::AdminPresenter::Index.new
+    @presenter = Presenter::AdminPresenter::Index.new
   end
 
 end
