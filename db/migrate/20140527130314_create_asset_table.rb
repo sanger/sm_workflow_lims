@@ -11,8 +11,6 @@ class CreateAssetTable < ActiveRecord::Migration
       t.integer     :sample_count, :null=> false, :default => 1
       t.timestamps
       t.datetime    :completed_at
-
-      t.index :batch_id
     end
   end
 end

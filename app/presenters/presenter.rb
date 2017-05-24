@@ -20,8 +20,6 @@ class Presenter
 
   module SharedBehaviour
 
-    require './app/models/asset_type'
-    require './app/models/workflow'
     require './app/presenters/asset_type/asset_type'
 
     def each_asset_type
@@ -52,9 +50,6 @@ class Presenter
       CostCode.all.each do |cost_code|
         yield cost_code.name, cost_code.id
       end
-      #[1,2,3].each do |val|
-      #  yield val, "cost_code#{val}"
-      #end
     end
 
   end

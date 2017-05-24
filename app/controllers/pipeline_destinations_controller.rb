@@ -1,16 +1,15 @@
-require './app/controllers/controller'
-
-class PipelineDestinationsController < Controller
-
-  required_parameters_for :create, [:name],       'You must provide a name for the new pipeline'
-  validate_parameters_for :create, :check_name,   'The name of the new pipeline must be unique'
-
-  def check_name
-    ! PipelineDestination.where(name:params[:name]).exists?
-  end
+class PipelineDestinationsController < ApplicationController
 
   def create
-    PipelineDestination::Creator.create!(params[:name])
+    @pipeline_destination = PipelineDestination.new(name: params[:name])
+    if @pipeline_destination.valid?
+      @pipeline_destination.save
+      flash[:notice] = "The pipeline destination was created."
+      redirect_to("/admin")
+    else
+      flash[:error] = @pipeline_destination.errors.full_messages.join('; ')
+      redirect_to :back
+    end
   end
 
 end

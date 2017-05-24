@@ -1,5 +1,3 @@
-require 'active_record'
-
 class State < ActiveRecord::Base
   has_many :events
   has_many :workflows

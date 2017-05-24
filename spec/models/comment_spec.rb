@@ -1,5 +1,4 @@
-require 'spec_helper'
-require './app/models/comment'
+require 'rails_helper'
 
 describe Comment do
 

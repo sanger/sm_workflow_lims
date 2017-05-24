@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require './app/presenters/asset/index'
 require './spec/presenters/shared_presenter_behaviour'
 

@@ -1,0 +1,34 @@
+<form id="form-report" class="form-horizontal" role="form" method="POST"
+  action="<%= @presenter.action %>">
+
+  <div class="form-group">
+    <label for="workflow_id" class="col-sm-2 control-label">Workflow</label>
+    <div class="col-sm-10">
+      <select id="workflow_id" name="workflow_id" class="form-control" autocomplete="off">
+        <% @presenter.each_workflow do |name, comment, id| %>
+          <option value="<%= id %>" <%= (@presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="start_date" class="col-sm-2 control-label">Start date</label>
+    <div class="col-sm-10">
+      <input type="text" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-end-date="+0d" data-date-week-start=1 data-date-today-btn="linked" data-date-today-highlight="true" class="form-control" id="start_date" name="start_date" autocomplete="off" value="<%=@presenter.start_date%>", required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="end_date" class="col-sm-2 control-label">End date</label>
+    <div class="col-sm-10">
+      <input type="text" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-end-date="+0d" data-date-week-start=1 data-date-today-btn="linked" data-date-today-highlight="true" class="form-control" id="end_date" name="end_date" autocomplete="off" value="<%=@presenter.end_date%>" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Create report</button>
+    </div>
+  </div>
+</form>

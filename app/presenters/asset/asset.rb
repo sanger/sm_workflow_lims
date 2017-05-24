@@ -29,6 +29,10 @@ module Presenter::AssetPresenter
       asset.study
     end
 
+    def project
+      asset.project.nil? ? 'Not defined' : asset.project
+    end
+
     def workflow
       asset.workflow.name
     end

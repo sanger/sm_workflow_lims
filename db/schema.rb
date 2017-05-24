@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170306102500) do
+ActiveRecord::Schema.define(version: 20170411114800) do
 
   create_table "asset_types", force: :cascade do |t|
     t.string   "name",                 limit: 255,                          null: false
@@ -35,16 +35,16 @@ ActiveRecord::Schema.define(version: 20170306102500) do
     t.datetime "completed_at"
     t.datetime "reported_at"
     t.integer  "pipeline_destination_id", limit: 4
-    t.integer  "cost_code_id",            limit: 4
     t.datetime "begun_at",                                        null: false
+    t.integer  "cost_code_id",            limit: 4
+    t.string   "project",                 limit: 255
   end
 
-  add_index "assets", ["asset_type_id"], name: "fk_assets_to_asset_types", using: :btree
+  add_index "assets", ["asset_type_id"], name: "index_assets_on_asset_type_id", using: :btree
   add_index "assets", ["batch_id"], name: "index_assets_on_batch_id", using: :btree
-  add_index "assets", ["comment_id"], name: "fk_assets_to_comments", using: :btree
-  add_index "assets", ["completed_at"], name: "index_assets_on_completed_at", using: :btree
+  add_index "assets", ["comment_id"], name: "index_assets_on_comment_id", using: :btree
   add_index "assets", ["identifier"], name: "index_assets_on_identifier", using: :btree
-  add_index "assets", ["workflow_id"], name: "fk_assets_to_workflows", using: :btree
+  add_index "assets", ["workflow_id"], name: "index_assets_on_workflow_id", using: :btree
 
   create_table "batches", force: :cascade do |t|
     t.datetime "created_at"
@@ -88,7 +88,10 @@ ActiveRecord::Schema.define(version: 20170306102500) do
     t.integer  "initial_state_id", limit: 4
   end
 
-  add_index "workflows", ["initial_state_id"], name: "fk_rails_e3fad0d986", using: :btree
+  add_index "workflows", ["initial_state_id"], name: "index_workflows_on_initial_state_id", using: :btree
 
-  add_foreign_key "workflows", "states", column: "initial_state_id"
+  add_foreign_key "assets", "asset_types"
+  add_foreign_key "assets", "batches"
+  add_foreign_key "assets", "comments"
+  add_foreign_key "assets", "workflows"
 end
