@@ -2,7 +2,7 @@ class Batch
   class Updater
 
     include ActiveModel::Model
-    include Batch::DateValidator
+    include DateValidator
 
     validates_presence_of :batch, :workflow
     validate :valid_date_provided

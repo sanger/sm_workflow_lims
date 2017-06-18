@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-feature 'create complete and report assets within multi team flow', js: true do
+feature 'create complete and report assets within dna team', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:workflow1) { create(:dna_workflow, name: 'Dna workflow') }

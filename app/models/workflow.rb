@@ -1,6 +1,7 @@
 class Workflow < ActiveRecord::Base
 
   has_many :assets
+  #initial_state column should be removed after adding teams to production database
   belongs_to :initial_state, class_name: 'State'
   belongs_to :team
 
