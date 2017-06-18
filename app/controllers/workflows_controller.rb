@@ -34,12 +34,16 @@ class WorkflowsController < ApplicationController
     { name:             params[:name],
     has_comment:      params[:hasComment] || false,
     reportable:       params[:reportable] || false,
-    initial_state_name:    params[:initial_state_name],
+    team: team,
     turn_around_days: turn_around_days }
   end
 
   def workflow
-    @workflow ||= Workflow.find_by_id(params[:id])
+    @workflow ||= Workflow.find_by(id: params[:id])
+  end
+
+  def team
+    @team ||= Team.find_by(id: params[:team])
   end
 
   def turn_around_days

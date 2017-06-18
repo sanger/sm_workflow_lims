@@ -7,15 +7,4 @@ class State < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
 
-  def default?
-    name == 'in_progress'
-  end
-
-  # Multi-Team quant essential is hopefully a temporary
-  # situation, and should be replaced soon with something
-  # less hard-coded. 15/03/2017
-  def multi_team_quant_essential?
-    !default?
-  end
-
 end

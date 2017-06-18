@@ -44,10 +44,8 @@
             <input type="checkbox" autocomplete="off" name="reportable" id="reportable" <%= @presenter.reportable ? 'checked' : '' %> > Reportable
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
-          <label class="btn btn-primary <%= @presenter.multi_team_quant_essential ? 'active' : '' %>" for="initial_state_name">
-            <input type="hidden" name="initial_state_name" value="in_progress" >
-            <input type="checkbox" autocomplete="off" value="volume_check" name="initial_state_name" id="initial_state_name" <%= @presenter.multi_team_quant_essential ? 'checked' : '' %> > Multi team quant essential
-            <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+          <label class="btn btn-primary" style="color:black" for="team">
+            <%= select_tag "team", options_from_collection_for_select(@presenter.teams, "id", "humanized_name", @presenter.team_id) %>
           </label>
         </div>
       </div>

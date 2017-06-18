@@ -37,7 +37,7 @@ describe Workflow do
     it 'requires a name and a team' do
       workflow = Workflow.new()
       expect(workflow).to have(1).errors_on(:name)
-      # expect(workflow).to have(1).errors_on(:team)
+      expect(workflow).to have(1).errors_on(:team)
       workflow.valid?.should eq(false)
     end
 
