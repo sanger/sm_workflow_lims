@@ -16,8 +16,8 @@ describe Presenter::ReportPresenter::Show do
 
   it 'should generte correct html for report' do
     Timecop.freeze(Time.local(2017, 4, 7))
-    asset1.complete
-    asset2.complete
+    asset1.move_to(completed)
+    asset2.move_to(completed)
     expect(presenter.title).to eq "Report for 'Workflow' workflow from 01/04/2017 to 15/04/2017"
     expect(presenter.column_names).to eq "<th class='text-center'>Study</th>" +
                                           "<th class='text-center'>Project</th>" +

@@ -7,29 +7,21 @@ module StateMachine
     delegate :in_progress?, :volume_check?, :quant?, :report_required?, :reported?, to: :current_state
   end
 
-  StateMachineError = Class.new(StandardError)
-
-  VALID_ACTIONS = ['check_volume', 'complete', 'report']
-
-  def perform_action(action)
-    if VALID_ACTIONS.include? action
-      send(action)
-    else
-      raise StateMachineError, "#{action} is not a recognised action"
+  # this method moves asset to the next state (like 'quant', 'report_required')
+  def move_to_next(state)
+    if !completed? || reportable?
+      move_to(state)
     end
   end
 
-  def complete
-    events.create! state_name: 'completed' if (in_progress? || quant?)
-    events.create! state_name: 'report_required' if reportable?
+  # this method marks asset as 'completed' or 'reported'
+  def update(state)
+    return unless state.present?
+    move_to(state)
   end
 
-  def check_volume
-    events.create! state_name: 'quant' if volume_check?
-  end
-
-  def report
-    events.create! state_name: 'reported' if report_required?
+  def move_to(state)
+    events.create! state: state
   end
 
   def current_state

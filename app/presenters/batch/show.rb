@@ -37,9 +37,9 @@ module Presenter::BatchPresenter
       @workflow ||= (first_asset.workflow if first_asset.present?) || ''
     end
 
-    def prohibited_workflow(reportable, multi_team_quant_essential)
+    def prohibited_workflow(reportable, humanized_team_name)
       if workflow.present?
-        (workflow.reportable != reportable) || (workflow.multi_team_quant_essential != multi_team_quant_essential)
+        (workflow.reportable != reportable) || (workflow.humanized_team_name != humanized_team_name)
       end
     end
 

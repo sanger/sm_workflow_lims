@@ -4,7 +4,7 @@ require './app/presenters/asset/asset'
 module Presenter::AssetPresenter
   class Index < Presenter
 
-    attr_reader :search, :assets, :total
+    attr_reader :search, :assets, :total, :state
 
     def initialize(found_assets,search=nil,state=nil)
       @assets = found_assets.group_by {|a| a.asset_type.name}.tap {|h| h.default = [] }
@@ -50,7 +50,7 @@ module Presenter::AssetPresenter
       'None'
     end
 
-    def state
+    def humanized_state
       @state.humanize
     end
 

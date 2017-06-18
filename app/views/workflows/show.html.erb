@@ -33,7 +33,7 @@
           <li>Enabling reporting will cause <strong>all</strong> existing assets in the workflow to appear in the reportable page.</li>
           <li>Enabling reporting will also distort report turn around times for the initial set of assets in the workflow.</li>
           <li>Disabling comments can cause loss of existing comments if an existing batch is edited.</li>
-          <li>Enabling/disabling multi team will not change behavior of old assets, only behavior of new assets will be changed.</li>
+          <li>Changing team might make old assets disappear (if asset was on stage, that does not exist in a new team), behavior of new assets will correspond to a new team.</li>
         </ul>
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-primary <%= @presenter.has_comment ? 'active' : '' %>" for="hasComment">
@@ -44,10 +44,8 @@
             <input type="checkbox" autocomplete="off" name="reportable" id="reportable" <%= @presenter.reportable ? 'checked' : '' %> > Reportable
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
-          <label class="btn btn-primary <%= @presenter.multi_team_quant_essential ? 'active' : '' %>" for="initial_state_name">
-            <input type="hidden" name="initial_state_name" value="in_progress" >
-            <input type="checkbox" autocomplete="off" value="volume_check" name="initial_state_name" id="initial_state_name" <%= @presenter.multi_team_quant_essential ? 'checked' : '' %> > Multi team quant essential
-            <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+          <label class="btn btn-primary" style="color:black" for="team">
+            <%= select_tag "team", options_from_collection_for_select(@presenter.teams, "id", "humanized_name", @presenter.team_id) %>
           </label>
         </div>
       </div>
