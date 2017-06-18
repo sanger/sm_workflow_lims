@@ -132,8 +132,8 @@ describe Asset do
   context 'in_state' do
 
     let!(:state) { create :state, name: 'in_progress' }
-    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state_name: 'in_progress' ) }
-    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state_name: 'in_progress' ) }
+    let!(:reportable_workflow)    { create :workflow_reportable, name: 'reportable' }
+    let!(:nonreportable_workflow) { create :workflow, name: 'nonreportable' }
     let!(:in_progress) { create :state, name: 'in_progress' }
     let!(:completed) { create :state, name: 'completed' }
     let!(:report_required) { create :state, name: 'report_required' }
