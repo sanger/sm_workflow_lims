@@ -34,9 +34,9 @@ describe Report do
     end
 
     it "should create the right csv" do
-      asset1.complete
-      asset2.complete
-      asset3.complete
+      asset1.create_event(completed)
+      asset2.create_event(completed)
+      asset3.create_event(completed)
       asset4 = create :asset, workflow: workflow
       report = Report.new(workflow: workflow, start_date: "01/04/2017", end_date: "15/04/2017")
       expect(report.to_csv).to eq "Report for 'Workflow' workflow from 01/04/2017 to 15/04/2017\nStudy,Project,Cost code name,Assets count\nStudy1,Project1,Not defined,1\nStudy1,Project2,Not defined,2\n"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411114800) do
+ActiveRecord::Schema.define(version: 20170622114805) do
 
   create_table "asset_types", force: :cascade do |t|
     t.string   "name",                 limit: 255,                          null: false
@@ -72,10 +72,29 @@ ActiveRecord::Schema.define(version: 20170411114800) do
     t.string "name", limit: 255
   end
 
+  create_table "procedures", force: :cascade do |t|
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "team_id",        limit: 4
+    t.integer  "state_id",       limit: 4, null: false
+    t.integer  "final_state_id", limit: 4
+    t.integer  "order",          limit: 4, null: false
+  end
+
+  add_index "procedures", ["final_state_id"], name: "index_procedures_on_final_state_id", using: :btree
+  add_index "procedures", ["state_id"], name: "index_procedures_on_state_id", using: :btree
+  add_index "procedures", ["team_id"], name: "index_procedures_on_team_id", using: :btree
+
   create_table "states", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "workflows", force: :cascade do |t|
@@ -86,9 +105,11 @@ ActiveRecord::Schema.define(version: 20170411114800) do
     t.boolean  "reportable",                   default: false, null: false
     t.integer  "turn_around_days", limit: 4
     t.integer  "initial_state_id", limit: 4
+    t.integer  "team_id",          limit: 4
   end
 
   add_index "workflows", ["initial_state_id"], name: "index_workflows_on_initial_state_id", using: :btree
+  add_index "workflows", ["team_id"], name: "index_workflows_on_team_id", using: :btree
 
   add_foreign_key "assets", "asset_types"
   add_foreign_key "assets", "batches"

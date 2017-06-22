@@ -2,7 +2,7 @@ class Batch
   class Creator
 
     include ActiveModel::Model
-    include Batch::DateValidator
+    include DateValidator
 
     validates_presence_of :workflow, :assets, :asset_type, :study
     validate :valid_date_provided

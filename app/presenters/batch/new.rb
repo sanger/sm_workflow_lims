@@ -46,7 +46,7 @@ module Presenter::BatchPresenter
       'Today'
     end
 
-    def prohibited_workflow(_reportable, _multi_team_quant_essential)
+    def prohibited_workflow(_reportable, _humanized_team_name)
     end
 
     def workflow_name

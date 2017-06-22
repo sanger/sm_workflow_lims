@@ -132,8 +132,8 @@ describe Asset do
   context 'in_state' do
 
     let!(:state) { create :state, name: 'in_progress' }
-    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state_name: 'in_progress' ) }
-    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state_name: 'in_progress' ) }
+    let!(:reportable_workflow)    { create :workflow_reportable, name: 'reportable' }
+    let!(:nonreportable_workflow) { create :workflow, name: 'nonreportable' }
     let!(:in_progress) { create :state, name: 'in_progress' }
     let!(:completed) { create :state, name: 'completed' }
     let!(:report_required) { create :state, name: 'report_required' }
@@ -142,12 +142,12 @@ describe Asset do
     let(:basics) { { identifier:'one', asset_type_id: 1, batch_id: 1, workflow_id: reportable_workflow.id } }
 
     it 'in_progress filters on last event' do
-      incomplete = create :asset
-      completed = create :asset
-      completed.complete
+      incompleted_asset = create :asset
+      completed_asset = create :asset
+      completed_asset.create_event(completed)
 
-      Asset.in_state(in_progress).should include(incomplete)
-      Asset.in_state(in_progress).should_not include(completed)
+      Asset.in_state(in_progress).should include(incompleted_asset)
+      Asset.in_state(in_progress).should_not include(completed_asset)
     end
 
     it 'should return all if scope nil' do
@@ -158,14 +158,16 @@ describe Asset do
       asset_incomplete_reportable = create :asset, workflow: (create :workflow_reportable)
 
       asset_completed_reportable = create :asset, workflow: (create :workflow_reportable)
-      asset_completed_reportable.complete
+      asset_completed_reportable.create_event(completed)
+      asset_completed_reportable.create_event(report_required)
 
       asset_completed_nonreportable = create :asset
-      asset_completed_nonreportable.complete
+      asset_completed_nonreportable.create_event(completed)
 
       asset_reported_reportable = create :asset, workflow: (create :workflow_reportable)
-      asset_reported_reportable.complete
-      asset_reported_reportable.report
+      asset_reported_reportable.create_event(completed)
+      asset_completed_reportable.create_event(report_required)
+      asset_reported_reportable.create_event(reported)
 
       Asset.in_state(report_required).should     include(asset_completed_reportable)
       Asset.in_state(report_required).should_not include(asset_incomplete_reportable)
@@ -201,9 +203,9 @@ describe Asset do
   end
 
   context 'state machine' do
-    let!(:state1) { create :state, name: 'in_progress' }
-    let!(:state2) { create :state, name: 'completed' }
-    let!(:state3) { create :state, name: 'report_required' }
+    let!(:in_progress) { create :state, name: 'in_progress' }
+    let!(:completed) { create :state, name: 'completed' }
+    let!(:report_required) { create :state, name: 'report_required' }
     let(:asset) { create :asset }
     let(:reportable_asset) { create :asset, workflow: (create :workflow_reportable) }
 
@@ -214,20 +216,17 @@ describe Asset do
 
     it 'should create the right events' do
       expect(asset.events.count).to eq 1
-      asset.complete
+      asset.create_event(completed)
       expect(asset.events.count).to eq 2
       expect(asset.completed?).to be_truthy
 
       expect(reportable_asset.events.count).to eq 1
-      reportable_asset.complete
+      reportable_asset.create_event(completed)
+      reportable_asset.next(report_required)
       expect(reportable_asset.events.count).to eq 3
       expect(reportable_asset.report_required?).to be_truthy
     end
 
-    it 'should not perform actions that are not valid' do
-      expect { asset.perform_action('complete') }.to_not raise_error
-      expect { asset.perform_action('some_action') }.to raise_error(StateMachine::StateMachineError)
-    end
   end
 
   context 'for report' do
@@ -245,10 +244,10 @@ describe Asset do
 
     it 'should generate the right data for reports' do
       Timecop.freeze(Time.local(2017, 3, 7))
-      asset1.complete
-      asset2.complete
-      asset3.complete
-      asset4.complete
+      asset1.create_event(completed)
+      asset2.create_event(completed)
+      asset3.create_event(completed)
+      asset4.create_event(completed)
       start_date = Date.today - 1
       end_date = Date.today + 1
       expect(Asset.generate_report_data(start_date, end_date, workflow1)).to eq([{"study"=>"Study1", "project"=>"Project1", "cost_code_name"=>nil, "assets_count"=>1},

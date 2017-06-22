@@ -10,7 +10,7 @@ module Presenter::WorkflowPresenter
       @workflow = workflow
     end
 
-    delegate :name, :has_comment, :reportable, :multi_team_quant_essential, to: :workflow
+    delegate :name, :has_comment, :reportable, :team, to: :workflow
 
     def turn_around
       workflow.turn_around_days
@@ -18,6 +18,10 @@ module Presenter::WorkflowPresenter
 
     def action
       "/admin/workflows/#{workflow.id}"
+    end
+
+    def team_id
+      team.id
     end
 
   end

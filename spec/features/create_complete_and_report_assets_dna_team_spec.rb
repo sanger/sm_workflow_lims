@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-feature 'create complete and report assets within multi team flow', js: true do
+feature 'create complete and report assets within dna team', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
-  let!(:workflow1) { create(:multi_team_workflow, name: 'Multi team workflow') }
-  let!(:workflow2) { create(:multi_team_workflow_reportable, name: 'Reportable multi team workflow') }
+  let!(:workflow1) { create(:dna_workflow, name: 'Dna workflow') }
+  let!(:workflow2) { create(:dna_workflow_reportable, name: 'Reportable dna workflow') }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
   let!(:quant) { create :state, name: 'quant' }
@@ -27,7 +27,7 @@ feature 'create complete and report assets within multi team flow', js: true do
     click_on 'Append to batch'
     expect(page).to have_content "Asset added to the batch"
     fill_in 'Study', with: 'STDY'
-    select('Multi team workflow', from: 'Workflow')
+    select('Dna workflow', from: 'Workflow')
     click_on 'Save'
     expect(page).to have_content "The batch was created."
     click_on 'In Progress'
@@ -66,7 +66,7 @@ feature 'create complete and report assets within multi team flow', js: true do
     click_on 'Append to batch'
     expect(page).to have_content "Asset added to the batch"
     fill_in 'Study', with: 'STDY'
-    select('Reportable multi team workflow', from: 'Workflow')
+    select('Reportable dna workflow', from: 'Workflow')
     click_on 'Save'
     expect(page).to have_content "The batch was created."
     click_on 'In Progress'
