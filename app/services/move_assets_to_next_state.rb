@@ -22,9 +22,9 @@ class MoveAssetsToNextState
     ActiveRecord::Base.transaction do
       assets.each do |asset|
         # finish current procedure by marking asset as 'completed' or 'reported' if required
-        asset.update(current_procedure.finishing_state)
+        asset.finalize(current_procedure.final_state)
         # move asset to the state of the next procedure
-        asset.move_to_next(next_procedure.state) if next_procedure.present?
+        asset.next(next_procedure.state) if next_procedure.present?
       end
       @flash_status = :notice
     end

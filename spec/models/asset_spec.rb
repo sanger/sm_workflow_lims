@@ -144,7 +144,7 @@ describe Asset do
     it 'in_progress filters on last event' do
       incompleted_asset = create :asset
       completed_asset = create :asset
-      completed_asset.move_to(completed)
+      completed_asset.create_event(completed)
 
       Asset.in_state(in_progress).should include(incompleted_asset)
       Asset.in_state(in_progress).should_not include(completed_asset)
@@ -158,16 +158,16 @@ describe Asset do
       asset_incomplete_reportable = create :asset, workflow: (create :workflow_reportable)
 
       asset_completed_reportable = create :asset, workflow: (create :workflow_reportable)
-      asset_completed_reportable.move_to(completed)
-      asset_completed_reportable.move_to(report_required)
+      asset_completed_reportable.create_event(completed)
+      asset_completed_reportable.create_event(report_required)
 
       asset_completed_nonreportable = create :asset
-      asset_completed_nonreportable.move_to(completed)
+      asset_completed_nonreportable.create_event(completed)
 
       asset_reported_reportable = create :asset, workflow: (create :workflow_reportable)
-      asset_reported_reportable.move_to(completed)
-      asset_completed_reportable.move_to(report_required)
-      asset_reported_reportable.move_to(reported)
+      asset_reported_reportable.create_event(completed)
+      asset_completed_reportable.create_event(report_required)
+      asset_reported_reportable.create_event(reported)
 
       Asset.in_state(report_required).should     include(asset_completed_reportable)
       Asset.in_state(report_required).should_not include(asset_incomplete_reportable)
@@ -216,13 +216,13 @@ describe Asset do
 
     it 'should create the right events' do
       expect(asset.events.count).to eq 1
-      asset.move_to(completed)
+      asset.create_event(completed)
       expect(asset.events.count).to eq 2
       expect(asset.completed?).to be_truthy
 
       expect(reportable_asset.events.count).to eq 1
-      reportable_asset.move_to(completed)
-      reportable_asset.move_to_next(report_required)
+      reportable_asset.create_event(completed)
+      reportable_asset.next(report_required)
       expect(reportable_asset.events.count).to eq 3
       expect(reportable_asset.report_required?).to be_truthy
     end
@@ -244,10 +244,10 @@ describe Asset do
 
     it 'should generate the right data for reports' do
       Timecop.freeze(Time.local(2017, 3, 7))
-      asset1.move_to(completed)
-      asset2.move_to(completed)
-      asset3.move_to(completed)
-      asset4.move_to(completed)
+      asset1.create_event(completed)
+      asset2.create_event(completed)
+      asset3.create_event(completed)
+      asset4.create_event(completed)
       start_date = Date.today - 1
       end_date = Date.today + 1
       expect(Asset.generate_report_data(start_date, end_date, workflow1)).to eq([{"study"=>"Study1", "project"=>"Project1", "cost_code_name"=>nil, "assets_count"=>1},

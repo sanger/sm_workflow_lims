@@ -8,19 +8,19 @@ module StateMachine
   end
 
   # this method moves asset to the next state (like 'quant', 'report_required')
-  def move_to_next(state)
+  def next(state)
     if !completed? || reportable?
-      move_to(state)
+      create_event(state)
     end
   end
 
   # this method marks asset as 'completed' or 'reported'
-  def update(state)
+  def finalize(state)
     return unless state.present?
-    move_to(state)
+    create_event(state)
   end
 
-  def move_to(state)
+  def create_event(state)
     events.create! state: state
   end
 

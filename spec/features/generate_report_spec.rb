@@ -17,9 +17,9 @@ feature 'can generate report', js: true do
   end
 
   scenario 'can generate report' do
-    asset1.move_to(completed)
-    asset2.move_to(completed)
-    asset3.move_to(completed)
+    asset1.create_event(completed)
+    asset2.create_event(completed)
+    asset3.create_event(completed)
     visit '/'
     click_on 'Admin'
     click_on 'Create a new report'
