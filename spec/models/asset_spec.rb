@@ -154,7 +154,7 @@ describe Asset do
       expect(Asset.in_state(nil)).to eq(Asset.all)
     end
 
-    it 'reporting_required lists appropriate assets' do
+    it 'report_required lists appropriate assets' do
       asset_incomplete_reportable = create :asset, workflow: (create :workflow_reportable)
 
       asset_completed_reportable = create :asset, workflow: (create :workflow_reportable)
@@ -175,31 +175,6 @@ describe Asset do
       Asset.in_state(report_required).should_not include(asset_reported_reportable)
     end
 
-  end
-
-  context 'removal of an asset' do
-    let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
-    let(:identifier) { 'name' }
-    let(:batch) { Batch.new }
-    let(:workflow) { Workflow.new }
-
-    it 'keeps comment if there are more assets using the same comment' do
-      comment = Comment.new
-      comment.assets.new(:identifier=>'test1')
-      comment.assets.new(:identifier=>'test2')
-      comment.assets.size.should eq(2)
-      comment.assets.first.destroy!
-      comment.destroyed?.should eq(false)
-    end
-
-    it 'destroys comment if there are no more assets using it' do
-      comment = Comment.new
-      comment.assets.new(:identifier=>'test1')
-      comment.assets.new(:identifier=>'test2')
-      comment.assets.size.should eq(2)
-      comment.assets.each(&:destroy!)
-      comment.destroyed?.should eq(true)
-    end
   end
 
   context 'state machine' do
@@ -225,6 +200,36 @@ describe Asset do
       reportable_asset.next(report_required)
       expect(reportable_asset.events.count).to eq 3
       expect(reportable_asset.report_required?).to be_truthy
+    end
+
+  end
+
+  context 'held by team' do
+
+    let(:sample_management_team) { create :sample_management_team}
+    let(:dna_team) { create :dna_team }
+    let(:sm_workflow)    { create :workflow }
+    let(:sm_reportable_workflow)    { create :workflow_reportable }
+    let(:dna_workflow)    { create :dna_workflow }
+
+
+    it 'returns the assets belonging to the right team' do
+      sm_assets = create_list(:asset, 2, workflow: sm_workflow)
+      sm_reportable_assets = create_list(:asset, 3, workflow: sm_reportable_workflow)
+      dna_asset = create :asset, workflow: dna_workflow
+
+      assets_held_by_sm_team = Asset.held_by_team(sample_management_team)
+      assets_held_by_dna_team = Asset.held_by_team(dna_team)
+
+      expect(assets_held_by_sm_team).to match_array(sm_assets + sm_reportable_assets)
+      expect(assets_held_by_sm_team).not_to include(dna_asset)
+      expect(assets_held_by_sm_team.length).to eq 5
+      expect(assets_held_by_dna_team).to include(dna_asset)
+      expect(assets_held_by_dna_team.length).to eq 1
+    end
+
+    it 'should return all if team nil' do
+      expect(Asset.held_by_team(nil)).to eq(Asset.all)
     end
 
   end
@@ -259,6 +264,31 @@ describe Asset do
       Timecop.return
     end
 
+  end
+
+  context 'removal of an asset' do
+    let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let(:identifier) { 'name' }
+    let(:batch) { Batch.new }
+    let(:workflow) { Workflow.new }
+
+    it 'keeps comment if there are more assets using the same comment' do
+      comment = Comment.new
+      comment.assets.new(:identifier=>'test1')
+      comment.assets.new(:identifier=>'test2')
+      comment.assets.size.should eq(2)
+      comment.assets.first.destroy!
+      comment.destroyed?.should eq(false)
+    end
+
+    it 'destroys comment if there are no more assets using it' do
+      comment = Comment.new
+      comment.assets.new(:identifier=>'test1')
+      comment.assets.new(:identifier=>'test2')
+      comment.assets.size.should eq(2)
+      comment.assets.each(&:destroy!)
+      comment.destroyed?.should eq(true)
+    end
   end
 
 end

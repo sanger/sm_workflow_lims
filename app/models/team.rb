@@ -3,7 +3,8 @@ class Team < ActiveRecord::Base
   accepts_nested_attributes_for :procedures
 
   has_many :states, through: :procedures
-  has_many :workfows
+  has_many :workflows
+  has_many :assets, through: :workflows
 
   validates :name, presence: true
 

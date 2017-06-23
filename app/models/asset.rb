@@ -31,6 +31,15 @@ class Asset < ActiveRecord::Base
     end
   end
 
+  def self.held_by_team(team)
+    if team.present?
+      joins(:workflow)
+        .where(workflows: {team_id: team.id})
+    else
+      all
+    end
+  end
+
   def self.with_identifier(search_string)
     if search_string.present?
       where("identifier = :search_string or batch_id = :search_string", search_string: search_string)
