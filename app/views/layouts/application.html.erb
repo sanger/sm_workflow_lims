@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>SmWorkflowLims</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>MiniLims</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
 
-  <%= render partial: 'menu', layout: false, locals: {presenter: @presenter} %>
+    <%= render partial: 'menu', layout: false, locals: {presenter: @presenter} %>
 
-  <div class="container" id="body">
-    <div id="alerts-box">
-      <% flash.each do |name, msg| %>
-        <%= content_tag :div, msg, class: "alert alert-#{ name.to_s == 'notice' ? 'success' : 'danger'}"%>
-      <% end %>
+    <div class="container" id="body">
+      <div id="alerts-box">
+        <% flash.each do |name, msg| %>
+          <%= content_tag :div, msg, class: "alert alert-#{ name.to_s == 'notice' ? 'success' : 'danger'}"%>
+        <% end %>
+      </div>
+
+      <%= yield %>
+
+    </div>
+    <div class="container" id="footer">
+      <p class="muted"><%= @presenter.version_information %></p>
     </div>
 
-    <%= yield %>
-
-  </div>
-  <div class="container" id="footer">
-    <p class="muted"><%= @presenter.version_information %></p>
-  </div>
-
-</body>
+  </body>
 </html>

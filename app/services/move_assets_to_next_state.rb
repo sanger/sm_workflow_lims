@@ -9,10 +9,6 @@ class MoveAssetsToNextState
 
   def initialize(attributes={})
     super
-    # this is not right and should be removed as soon as frontend is changed
-    # team should always be passed to the service
-    # it should always be the same team for all assets
-    @team ||= assets.first.workflow.team
     @flash_status = :alert
   end
 

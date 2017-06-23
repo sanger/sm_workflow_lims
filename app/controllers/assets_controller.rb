@@ -3,12 +3,13 @@ require './app/presenters/asset/index'
 class AssetsController < ApplicationController
 
   def index
-    if params[:state].nil? && params[:identifier].nil?
-      redirect_to("/assets?state=in_progress")
+    if params[:state_name].nil? && params[:identifier].nil?
+      redirect_to root_path
     else
-      assets = Asset.in_state(state)
+      assets = Asset.held_by_team(team)
+                    .in_state(state)
                     .with_identifier(params[:identifier])
-      @presenter = Presenter::AssetPresenter::Index.new(assets, search, state)
+      @presenter = Presenter::AssetPresenter::Index.new(assets, search, state, team)
     end
   end
 
@@ -17,7 +18,7 @@ class AssetsController < ApplicationController
       updater = MoveAssetsToNextState.new(assets: assets_to_be_updated, team: team, current_state: state)
       updater.call
       flash[updater.flash_status] = updater.message
-      redirect_to("/assets?state=#{updater.redirect_state}")
+      redirect_to team_assets_path(team.id, state_name: updater.redirect_state)
     else
       flash[:error] = 'No assets selected'
       redirect_to :back
@@ -27,11 +28,11 @@ class AssetsController < ApplicationController
   private
 
   def team
-    Team.find_by(name: params[:team])
+    @team ||= Team.find_by(id: params[:team_id])
   end
 
   def state
-    State.find_by(name: params[:state])
+    @state ||= State.find_by(name: params[:state_name])
   end
 
   def search

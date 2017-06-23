@@ -19,7 +19,7 @@ class Asset < ActiveRecord::Base
   validates_presence_of :workflow, :batch, :identifier, :asset_type
 
   delegate :identifier_type, to: :asset_type
-  default_scope { includes(:workflow,:asset_type,:comment,:batch, :pipeline_destination, events: :state) }
+  default_scope { preload(:asset_type,:comment,:batch, :pipeline_destination, events: :state, workflow: :team) }
 
   def self.in_state(state)
     if state.present?

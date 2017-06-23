@@ -12,7 +12,8 @@ describe Presenter::AssetPresenter::Index do
     let(:asset2) { double('asset_2',identifier:'asset_2',asset_type:mock_type2,workflow:mock_workflow,study:'study') }
     let(:assets) { [asset1,asset2] }
     let!(:state) { create :state, name: 'in_progress'}
-    let(:presenter) { Presenter::AssetPresenter::Index.new(assets,search,state)}
+    let(:team) { create :dna_team }
+    let(:presenter) { Presenter::AssetPresenter::Index.new(assets,search,state,team)}
   end
 
   shared_examples "standard behaviour" do
@@ -70,41 +71,26 @@ describe Presenter::AssetPresenter::Index do
 
     context 'all' do
       let(:state)  { nil }
-
       it "should have no action button" do
-        expect { |b| presenter.action_button(&b) }.not_to yield_control
-      end
-    end
-    context 'in_progress' do
-      let(:state) { create :state, name: 'in_progress'}
-
-      it "should have complete actions" do
-        expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
-        expect(presenter.action).to eq ('complete')
+        expect(presenter.action_button).to be nil
       end
     end
     context 'volume_check' do
       let(:state)  { create :state, name: 'volume_check'}
-
       it "should have volume_check actions" do
-        expect { |b| presenter.action_button(&b) }.to yield_with_args('Volume checked selected')
-        expect(presenter.action).to eq ('check_volume')
+        expect(presenter.action_button).to eq "Mark selected assets as Volume checked"
       end
     end
     context 'quant' do
       let(:state)  { create :state, name: 'quant'}
-
       it "should have quant actions" do
-        expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
-        expect(presenter.action).to eq ('complete')
+        expect(presenter.action_button).to eq "Mark selected assets as completed"
       end
     end
     context 'report_required' do
       let(:state)  { create :state, name: 'report_required'}
-
       it "should have reporting actions" do
-        expect { |b| presenter.action_button(&b) }.to yield_with_args('Reported selected')
-        expect(presenter.action).to eq ('report')
+        expect(presenter.action_button).to eq "Mark selected assets as reported"
       end
     end
   end

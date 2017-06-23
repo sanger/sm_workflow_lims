@@ -56,6 +56,9 @@ class Presenter
       @teams ||= Team.all
     end
 
+    def team
+    end
+
   end
   include SharedBehaviour
 
