@@ -6,7 +6,9 @@ module StateFactory
       {name: 'quant'},
       {name: 'completed'},
       {name: 'report_required'},
-      {name: 'reported'}
+      {name: 'reported'},
+      {name: 'cross_charge'},
+      {name: 'charged'}
     ]
   end
 
