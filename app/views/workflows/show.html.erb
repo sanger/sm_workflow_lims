@@ -30,10 +30,10 @@
       <div class="panel-body">
         <p>Changing these options on an existing workflow is not recommended and can have unpredictable effects.</p>
         <ul>
-          <li>Enabling reporting will cause <strong>all</strong> existing assets in the workflow to appear in the reportable page.</li>
-          <li>Enabling reporting will also distort report turn around times for the initial set of assets in the workflow.</li>
+          <li>Enabling reporting will be applicable only to not completed assets, completed assets <strong>will not</strong> appear in the report required page.</li>
+          <li>Disabling reporting <strong>will not</strong> make existing assets disappear from report required page</li>
           <li>Disabling comments can cause loss of existing comments if an existing batch is edited.</li>
-          <li>Changing team might make old assets disappear (if an asset was on stage, that does not exist in a new team), behavior of new assets will correspond to a new team.</li>
+          <li>Changing team can make existing assets disappear (if an asset was in process, that does not exist in a new team), behavior of newly created assets will correspond to a new team.</li>
         </ul>
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-primary <%= @presenter.has_comment ? 'active' : '' %>" for="hasComment">
