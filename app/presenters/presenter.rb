@@ -1,23 +1,5 @@
 class Presenter
 
-  module DeploymentInfo
-
-    begin
-      require './lib/deployed_version'
-    rescue LoadError
-        module Deployed
-          VERSION_ID = 'LOCAL'
-          VERSION_STRING = "Sample Management Workflow Lims LOCAL [#{ENV['RACK_ENV']}]"
-        end
-    end
-
-    def version_information
-      # Provides a quick means of checking the deployed version
-      Deployed::VERSION_STRING
-    end
-  end
-  include DeploymentInfo
-
   module SharedBehaviour
 
     require './app/presenters/asset_type/asset_type'
@@ -46,17 +28,8 @@ class Presenter
       end
     end
 
-    def each_cost_code
-      CostCode.all.each do |cost_code|
-        yield cost_code.name, cost_code.id
-      end
-    end
-
     def teams
       @teams ||= Team.all
-    end
-
-    def team
     end
 
   end

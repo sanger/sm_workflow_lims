@@ -2,7 +2,7 @@
   <div class="tab-content">
     <ul class="nav nav-tabs" id="state_tabs" style="border-bottom:0px" >
       <% @presenter.team.states.each do |state|%>
-        <li <%= state == @presenter.state ? "class=active":"" %> > <%= link_to state.name.humanize, team_assets_path(@presenter.team, state_name: state.name), 'class'=>"tab-pane", 'style'=>"color:#777"%> </li>
+        <li <%= state.name == params[:state_name] ? "class=active":"" %> > <%= link_to state.name.humanize, team_assets_path(@presenter.team, state_name: state.name), 'class'=>"tab-pane", 'style'=>"color:#777"%> </li>
       <% end %>
     </ul>
   </div>

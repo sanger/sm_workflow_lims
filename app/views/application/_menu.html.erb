@@ -18,7 +18,6 @@
               <a class="navbar-brand center-block" href="/"><span>MiniLIMS</span></a>
             </div>
             <br>
-
             <div class="collapse navbar-collapse" id="sm_workflow_menu">
               <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown"><a href="#"
@@ -30,7 +29,7 @@
                     <% end %>
                   </ul></li>
                 <% presenter.teams.each do |team|%>
-                  <li <%= team == presenter.team ? "class=active":"" %> > <%= link_to team.humanized_name, team_assets_path(team.id, state_name: team.first_state.name) %> </li>
+                  <li <%= team.id.to_s == params[:team_id] ? "class=active":"" %> > <%= link_to team.humanized_name, team_assets_path(team.id, state_name: team.first_state.name) %> </li>
                 <%end%>
                 <li><a href="/admin">Admin</a></li>
               </ul>
