@@ -3,6 +3,7 @@ namespace :workflows do
   task add_teams: :environment do
 
     def add_teams_to_workflows
+      StateFactory.seed
       TeamFactory.seed unless Team.any?
       Workflow.all.each do |workflow|
         if workflow.initial_state == State.find_by(name: 'in_progress')
