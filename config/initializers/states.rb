@@ -1,3 +1,7 @@
 require './config/data/states'
 
-StateFactory.seed
+DependentLoader.start(:states) do |on|
+  on.success do
+    StateFactory.seed
+  end
+end
