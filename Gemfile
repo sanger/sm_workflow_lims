@@ -62,7 +62,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl'
   gem 'capybara'
-  gem 'poltergeist'
+  gem 'capybara-selenium'
   gem 'launchy'
 end
 

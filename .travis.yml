@@ -1,15 +1,23 @@
 language: ruby
 # We don't specify a list of ruby versions, as Travis will fall back to .ruby-version
-# This is the behaviour we want, so no sense in overriding it
-bundler_args: --without deployment
-sudo: false
-cache: bundler
+dist: xenial
+bundler_args: "--without deployment"
+sudo: required
+addons:
+  apt:
+    packages:
+    - haveged
+    - google-chrome-stable
+    - chromium-chromedriver
+cache:
+  bundler: true
+env:
+  global:
+  - TZ=Europe/London
+  - PATH=$PATH:/usr/lib/chromium-browser/
+  - DISPLAY=:99.0
 before_install:
-  - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
-  - "if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
-  - "if [ $(phantomjs --version) != '2.1.1' ]; then wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi"
-  - "if [ $(phantomjs --version) != '2.1.1' ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
-  - "phantomjs --version"
+- sh -e /etc/init.d/xvfb start
 before_script:
   - bundle exec rake db:setup
 script:

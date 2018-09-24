@@ -24,13 +24,13 @@ feature 'can generate report', js: true do
     click_on 'Admin'
     click_on 'Create a new report'
     select('Workflow1', from: 'Workflow')
-    fill_in 'start_date', with: '31/03/2017'
-    fill_in 'end_date', with: '01/03/2017'
-    find("button", text: "Create report").trigger('click')
+    fill_in('start_date', with: '31/03/2017').send_keys(:escape)
+    fill_in('end_date', with: '01/03/2017').send_keys(:escape)
+    find("button", text: "Create report").click
     expect(page).to have_content("Start date should be earlier than the end date.")
-    fill_in 'start_date', with: '01/03/2017'
-    fill_in 'end_date', with: '31/03/2017'
-    find("button", text: "Create report").trigger('click')
+    fill_in('start_date', with: '01/03/2017').send_keys(:escape)
+    fill_in('end_date', with: '31/03/2017').send_keys(:escape)
+    find("button", text: "Create report").click
     expect(page).to have_content("Report for 'Workflow1' workflow from 01/03/2017 to 31/03/2017")
     within('table#report') do
       expect(page).to have_xpath(".//tr", count: 3)

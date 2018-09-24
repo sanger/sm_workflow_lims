@@ -36,8 +36,8 @@ feature 'can create workflow', js: true do
     fill_in 'Name', with: 'Workflow2'
     click_on 'Update Workflow'
     expect(page).to have_content("Name has already been taken")
-    find('#reportable', visible: :all).trigger('click')
-    find('#hasComment', visible: :all).trigger('click')
+    find('#reportable', visible: :all).first(:xpath, './/..').click
+    find('#hasComment', visible: :all).first(:xpath, './/..').click
     click_on 'Update Workflow'
     expect(page).to have_content("The workflow was updated.")
     expect(Workflow.count).to eq 2
