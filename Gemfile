@@ -27,8 +27,6 @@ gem "bootstrap-sass", '=3.2.0.2'
 
 gem 'puma'
 
-gem "psd_logger", github: 'sanger/psd_logger'
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
