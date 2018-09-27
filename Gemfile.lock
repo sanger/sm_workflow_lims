@@ -1,9 +1,3 @@
-GIT
-  remote: git://github.com/sanger/psd_logger.git
-  revision: dd2d634114df75b1d8535715c169a7fc99521389
-  specs:
-    psd_logger (0.1.6)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -244,7 +238,6 @@ DEPENDENCIES
   launchy
   mysql2 (< 0.5)
   pry
-  psd_logger!
   puma
   rack-mini-profiler
   rails (= 4.2.6)

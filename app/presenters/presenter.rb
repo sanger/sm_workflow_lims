@@ -1,19 +1,27 @@
 class Presenter
 
   module DeploymentInfo
-
-    begin
-      require './lib/deployed_version'
-    rescue LoadError
-        module Deployed
-          VERSION_ID = 'LOCAL'
-          VERSION_STRING = "Sample Management Workflow Lims LOCAL [#{ENV['RACK_ENV']}]"
-        end
-    end
+    require './lib/deployed_version'
 
     def version_information
       # Provides a quick means of checking the deployed version
       Deployed::VERSION_STRING
+    end
+
+    def commit_information
+      Deployed::VERSION_COMMIT
+    end
+
+    def repo_url
+      Deployed::REPO_URL
+    end
+
+    def host_name
+      Deployed::HOSTNAME
+    end
+
+    def release_name
+      Deployed::RELEASE_NAME
     end
   end
   include DeploymentInfo

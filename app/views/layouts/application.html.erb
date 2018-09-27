@@ -27,7 +27,8 @@
 
   </div>
   <div class="container" id="footer">
-    <p class="muted"><%= @presenter.version_information %></p>
+    <p class="muted"><%= @presenter.version_information %> <%= @presenter.release_name %> <%= link_to @presenter.commit_information, @presenter.repo_url %></p>
+    <p class="muted"><%= @presenter.host_name %></p>
   </div>
 
 </body>
