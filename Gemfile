@@ -27,6 +27,9 @@ gem "bootstrap-sass", '=3.2.0.2'
 
 gem 'puma'
 
+# Exception Notification to send exception emails
+gem 'exception_notification'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
