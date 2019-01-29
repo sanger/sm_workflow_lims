@@ -16,12 +16,10 @@ env:
   - TZ=Europe/London
   - PATH=$PATH:/usr/lib/chromium-browser/
   - DISPLAY=:99.0
-before_install:
-- sh -e /etc/init.d/xvfb start
 before_script:
 - bundle exec rake db:setup
 script:
-- bundle exec rspec
+- xvfb-run bundle exec rspec
 before_deploy: "./compile-build"
 deploy:
   provider: releases
