@@ -25,12 +25,12 @@ feature 'create and edit batch', js: true do
       expect(page).to have_content "The batch was created."
       options  = page.all('select#workflow_id option')
       expect(options.length).to eq 4
-      expect(options[1].text).to eq 'Workflow'
-      expect(options[1].disabled?).to be false
+      expect(options[1].text).to eq 'Multi team workflow'
+      expect(options[1].disabled?).to be true
       expect(options[2].text).to eq 'Reportable workflow'
       expect(options[2].disabled?).to be true
-      expect(options[3].text).to eq 'Multi team workflow'
-      expect(options[3].disabled?).to be true
+      expect(options[3].text).to eq 'Workflow'
+      expect(options[3].disabled?).to be false
       fill_in 'Study', with: 'STDY2'
       click_on 'Save'
       expect(page).to have_content "The batch was updated."

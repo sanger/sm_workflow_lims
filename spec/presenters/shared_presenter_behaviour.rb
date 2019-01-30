@@ -1,21 +1,23 @@
 shared_examples "shared presenter behaviour" do
-  it "should yield each asset_type and its identifier in turn for each_asset_type" do
-    asset_type_1 = double("asset_type_1", :name=>'type1',:identifier_type=>'id1',:has_sample_count=>true,:id=>1)
-    asset_type_2 = double("asset_type_2", :name=>'type2',:identifier_type=>'id2',:has_sample_count=>false,:id=>2)
-    AssetType.stub(:all) {[asset_type_1,asset_type_2]}
+  let!(:asset_type_1) { create :asset_type, name: 'type1', identifier_type: 'id1', has_sample_count: true }
+  let!(:asset_type_2) { create :asset_type, name: 'type2', identifier_type: 'id2', has_sample_count: false }
+  let!(:workflow_1) { create :multi_team_workflow, name: 'wf1', has_comment: true, reportable: true, turn_around_days: 1 }
+  let!(:workflow_2) { create :non_multi_team_workflow, name: 'wf2', has_comment: false, reportable: false, turn_around_days: nil, active: false }
 
-    expect { |b| presenter.each_asset_type(&b) }.to yield_successive_args(['type1', 'id1', true,1], ['type2', 'id2', false,2])
+  it "should yield each asset_type and its identifier in turn for each_asset_type" do
+    yielded = []
+    presenter.each_asset_type do |name, identifier_type, has_sample_count, _id|
+      yielded << [name, identifier_type, has_sample_count]
+    end
+    expect(yielded).to eq([['type1', 'id1', true], ['type2', 'id2', false]])
 
   end
 
   it "should yield each workflow and its comment_requirement in turn for each_workflow" do
-    flow = double("flow", name: 'flow_name')
-    workflow_1 = double("workflow_1", :name=>'wf1', :has_comment=>true, :id=>1, :reportable => true, multi_team_quant_essential: false, :turn_around_days=>1 )
-    workflow_2 = double("workflow_2", :name=>'wf2', :has_comment=>false, :id=>2, :reportable => false, multi_team_quant_essential: false, :turn_around_days=>nil)
-    relation = double("relation")
-    Workflow.stub(:all) {relation}
-    allow(relation).to receive(:includes).and_return([workflow_1,workflow_2])
-
-    expect { |b| presenter.each_workflow(&b) }.to yield_successive_args(['wf1', true,1, true, false, 1], ['wf2', false,2, false, false, nil])
+    yielded = []
+    presenter.each_workflow do |name, has_comment, _id, reportable, multi_team, turn_around_days, active|
+      yielded << [name, has_comment, reportable, multi_team, turn_around_days, active]
+    end
+    expect(yielded).to eq([['wf1', true, true, true, 1, true], ['wf2', false, false, false, nil, false]])
   end
 end

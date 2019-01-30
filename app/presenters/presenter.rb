@@ -32,7 +32,10 @@ class Presenter
 
     def each_asset_type
       AssetType.all.each do |asset_type|
-        yield(asset_type.name,asset_type.identifier_type,asset_type.has_sample_count,asset_type.id)
+        yield(asset_type.name,
+              asset_type.identifier_type,
+              asset_type.has_sample_count,
+              asset_type.id)
       end
     end
 
