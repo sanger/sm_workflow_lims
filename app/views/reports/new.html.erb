@@ -5,7 +5,7 @@
     <label for="workflow_id" class="col-sm-2 control-label">Workflow</label>
     <div class="col-sm-10">
       <select id="workflow_id" name="workflow_id" class="form-control" autocomplete="off">
-        <% @presenter.each_workflow do |name, comment, id| %>
+        <% @presenter.active_workflows do |name, comment, id| %>
           <option value="<%= id %>" <%= (@presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
         <% end %>
       </select>

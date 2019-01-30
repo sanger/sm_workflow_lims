@@ -19,7 +19,7 @@
     <div class="col-sm-8">
 <select id="filter-workflow" name="workflow_id" style="width: 100%" class="form-control">
   <option value="" default>Any workflow</option>
-<% @presenter.each_workflow do |name, comment, id| %>
+<% @presenter.active_workflows do |name, comment, id| %>
   <option value="<%= name %>" <%= (@presenter.workflow==name) ? 'selected' : '' %> ><%= name %></option>
 <% end %>
 </select>
