@@ -43,8 +43,26 @@ class Presenter
     end
 
     def each_workflow
-      Workflow.all.includes(:initial_state).each do |workflow|
-        yield(workflow.name, workflow.has_comment, workflow.id, workflow.reportable, workflow.multi_team_quant_essential, workflow.turn_around_days)
+      Workflow.all.includes(:initial_state).order(active: :desc, name: :asc).each do |workflow|
+        yield(workflow.name,
+              workflow.has_comment,
+              workflow.id,
+              workflow.reportable,
+              workflow.multi_team_quant_essential,
+              workflow.turn_around_days,
+              workflow.active)
+      end
+    end
+
+    def active_workflows
+      Workflow.where(active: true).includes(:initial_state).order(:name).each do |workflow|
+        yield(workflow.name,
+              workflow.has_comment,
+              workflow.id,
+              workflow.reportable,
+              workflow.multi_team_quant_essential,
+              workflow.turn_around_days,
+              workflow.active)
       end
     end
 

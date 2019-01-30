@@ -36,6 +36,10 @@
           <li>Enabling/disabling multi team will not change behavior of old assets, only behavior of new assets will be changed.</li>
         </ul>
         <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary <%= @presenter.active ? 'active' : '' %>" for="initial_state_name">
+            <input type="checkbox" autocomplete="off" name="active" id="active" <%= @presenter.active ? 'checked' : '' %> > Active
+            <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+          </label>
           <label class="btn btn-primary <%= @presenter.has_comment ? 'active' : '' %>" for="hasComment">
             <input type="checkbox" autocomplete="off" name="hasComment" id="hasComment" <%= @presenter.has_comment ? 'checked' : '' %> > Has comment
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
