@@ -7,6 +7,7 @@ feature 'create and edit batch', js: true do
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
   let!(:workflow2) { create(:workflow_reportable, name: 'Reportable workflow') }
   let!(:workflow3) { create(:multi_team_workflow, name: 'Multi team workflow') }
+  let!(:workflow4) { create(:workflow, name: 'Deactivated workflow', active: false) }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
 
