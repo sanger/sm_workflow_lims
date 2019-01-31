@@ -1,7 +1,7 @@
 Sample Management Workflow
 ==========================
 
-[![Build Status](https://travis-ci.org/radome/sm_workflow_lims.svg?branch=test_openstack)](https://travis-ci.org/radome/sm_workflow_lims)
+[![Build Status](https://travis-ci.org/sanger/sm_workflow_lims.svg?branch=master)](https://travis-ci.org/sanger/sm_workflow_lims)
 
 Description
 -----------
