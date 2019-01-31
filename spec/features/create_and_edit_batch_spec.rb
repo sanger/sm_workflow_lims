@@ -45,4 +45,15 @@ feature 'create and edit batch', js: true do
       expect(Batch.count).to eq count-1
   end
 
+  scenario 'can create a batch with an Aker barcode' do
+	      create(:asset_type, name: 'Plate with Name', identifier_type: 'Name')
+	      visit '/'
+	      click_link 'New Batch'
+	      click_on 'Plate with Name'
+	      within("div#plate_with_name-template") do
+	        fill_in 'identifier', with: "AKER-123"
+	      end
+	      click_on 'Append to batch'
+	      expect(page).to have_content "Asset added to the batch"
+	  end
 end
