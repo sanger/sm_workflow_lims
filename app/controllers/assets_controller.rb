@@ -1,7 +1,6 @@
 require './app/presenters/asset/index'
 
 class AssetsController < ApplicationController
-
   #Assets updater creates new events for assets and moves assets to the next state
   def update
     if assets_provided
@@ -39,7 +38,6 @@ class AssetsController < ApplicationController
   end
 
   def assets_to_be_updated
-    @assets||=Asset.find(params[:assets].keys)
+    @assets ||= Asset.find(params[:assets].keys)
   end
-
 end

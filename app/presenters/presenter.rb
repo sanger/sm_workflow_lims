@@ -46,7 +46,7 @@ class Presenter
     end
 
     def each_workflow
-      Workflow.all.includes(:initial_state).order(active: :desc, name: :asc).each do |workflow|
+      Workflow.all.includes(:initial_state).order(active: :desc).each do |workflow|
         yield(workflow.name,
               workflow.has_comment,
               workflow.id,
@@ -58,7 +58,7 @@ class Presenter
     end
 
     def active_workflows
-      Workflow.where(active: true).includes(:initial_state).order(:name).each do |workflow|
+      Workflow.where(active: true).includes(:initial_state).each do |workflow|
         yield(workflow.name,
               workflow.has_comment,
               workflow.id,
