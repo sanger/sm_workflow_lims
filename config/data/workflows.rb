@@ -6,7 +6,7 @@ module WorkflowFactory
       {name: 'DNA and RNA Extraction Q3',        has_comment: false, reportable: false, initial_state_name: 'in_progress' },
       {name: 'DNA Extraction Q3',                has_comment: false, reportable: false, initial_state_name: 'in_progress' },
       {name: 'RNA Extraction Q3',                has_comment: false, reportable: false, initial_state_name: 'in_progress' },
-      {name: 'DNA Extraction BioRobot',          has_comment: false, reportable: false, initial_state_name: 'in_progress' },
+      {name: 'DNA Extraction BioRobot',          has_comment: false, reportable: false, initial_state_name: 'in_progress', active: false },
       {name: 'FP lysis',                         has_comment: false, reportable: false, initial_state_name: 'in_progress' },
       {name: 'Human DNA QC',                     has_comment: false, reportable: true, initial_state_name: 'in_progress'  },
       {name: 'Model DNA QC',                     has_comment: false, reportable: true, initial_state_name: 'in_progress'  },
@@ -24,7 +24,7 @@ module WorkflowFactory
       {name: 'Other',                            has_comment: true,  reportable: false, initial_state_name: 'in_progress' },
       {name: 'Volume Check',                     has_comment: false, reportable: false, initial_state_name: 'in_progress' },
       {name: 'Fluidigm DDD 96:96',               has_comment: false, reportable: false, initial_state_name: 'in_progress' },
-      {name: 'DNA extraction QS',                has_comment: false, reportable: false, initial_state_name: 'in_progress' }
+      {name: 'DNA extraction QS',                has_comment: false, reportable: false, initial_state_name: 'in_progress', active: false }
     ]
   end
 

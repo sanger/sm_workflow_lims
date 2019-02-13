@@ -31,11 +31,14 @@ class WorkflowsController < ApplicationController
   private
 
   def workflow_params
-    { name:             params[:name],
-    has_comment:      params[:hasComment] || false,
-    reportable:       params[:reportable] || false,
-    initial_state_name:    params[:initial_state_name],
-    turn_around_days: turn_around_days }
+    {
+      name:               params[:name],
+      has_comment:        params[:hasComment] || false,
+      reportable:         params[:reportable] || false,
+      active:             params[:active] || false,
+      initial_state_name: params[:initial_state_name],
+      turn_around_days:   turn_around_days
+    }
   end
 
   def workflow

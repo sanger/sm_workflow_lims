@@ -4,6 +4,12 @@
   <title>SmWorkflowLims</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <% if Rails.application.config.disable_animations %>
+    <%= stylesheet_link_tag  'disable_animations' %>
+
+    <!-- Turn off animations in jQuery -->
+    <script>$.fx.off = true;</script>
+  <% end %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -21,7 +27,8 @@
 
   </div>
   <div class="container" id="footer">
-    <p class="muted"><%= @presenter.version_information %></p>
+    <p class="muted"><%= @presenter.version_information %> <%= @presenter.release_name %> <%= link_to @presenter.commit_information, @presenter.repo_url %></p>
+    <p class="muted"><%= @presenter.host_name %></p>
   </div>
 
 </body>

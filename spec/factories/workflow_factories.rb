@@ -20,11 +20,15 @@ FactoryGirl.define do
     factory :workflow_with_comment, traits: [:has_comment]
 
     factory :multi_team_workflow do
-
       association :initial_state, factory: :state, name: 'volume_check'
       factory :multi_team_workflow_reportable, traits: [:reportable]
-
     end
+
+    factory :non_multi_team_workflow do
+      association :initial_state, factory: :state, name: 'in_progress'
+      factory :non_multi_team_workflow_reportable, traits: [:reportable]
+    end
+
   end
 
 end

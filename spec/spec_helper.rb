@@ -19,7 +19,25 @@
 require 'factory_girl'
 require "capybara/rspec"
 require "capybara/rails"
-require "capybara/poltergeist"
+require 'selenium/webdriver'
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.register_driver :headless_chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+
+  options.add_argument('--headless')
+  options.add_argument('--disable_gpu')
+  # options.add_argument('--disable-popup-blocking')
+  options.add_argument('--window-size=1600,3200')
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.javascript_driver = :headless_chrome
+Capybara.default_max_wait_time = 5
+
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
@@ -45,8 +63,6 @@ RSpec.configure do |config|
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
   end
-
-  Capybara.javascript_driver = :poltergeist
 
   config.include FactoryGirl::Syntax::Methods
 

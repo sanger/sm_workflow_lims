@@ -7,6 +7,7 @@ feature 'create and edit batch', js: true do
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
   let!(:workflow2) { create(:workflow_reportable, name: 'Reportable workflow') }
   let!(:workflow3) { create(:multi_team_workflow, name: 'Multi team workflow') }
+  let!(:workflow4) { create(:workflow, name: 'Deactivated workflow', active: false) }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
 
@@ -44,4 +45,15 @@ feature 'create and edit batch', js: true do
       expect(Batch.count).to eq count-1
   end
 
+  scenario 'can create a batch with an Aker barcode' do
+	      create(:asset_type, name: 'Plate with Name', identifier_type: 'Name')
+	      visit '/'
+	      click_link 'New Batch'
+	      click_on 'Plate with Name'
+	      within("div#plate_with_name-template") do
+	        fill_in 'identifier', with: "AKER-123"
+	      end
+	      click_on 'Append to batch'
+	      expect(page).to have_content "Asset added to the batch"
+	  end
 end

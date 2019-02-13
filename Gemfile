@@ -1,10 +1,10 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 # Use mysql2 as the database for Active Record
-gem "mysql2"
+gem "mysql2", '< 0.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -27,7 +27,8 @@ gem "bootstrap-sass", '=3.2.0.2'
 
 gem 'puma'
 
-gem "psd_logger", github: 'sanger/psd_logger'
+# Exception Notification to send exception emails
+gem 'exception_notification'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -62,7 +63,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl'
   gem 'capybara'
-  gem 'poltergeist'
+  gem 'capybara-selenium'
   gem 'launchy'
 end
 

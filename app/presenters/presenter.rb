@@ -1,19 +1,27 @@
 class Presenter
 
   module DeploymentInfo
-
-    begin
-      require './lib/deployed_version'
-    rescue LoadError
-        module Deployed
-          VERSION_ID = 'LOCAL'
-          VERSION_STRING = "Sample Management Workflow Lims LOCAL [#{ENV['RACK_ENV']}]"
-        end
-    end
+    require './lib/deployed_version'
 
     def version_information
       # Provides a quick means of checking the deployed version
       Deployed::VERSION_STRING
+    end
+
+    def commit_information
+      Deployed::VERSION_COMMIT
+    end
+
+    def repo_url
+      Deployed::REPO_URL
+    end
+
+    def host_name
+      Deployed::HOSTNAME
+    end
+
+    def release_name
+      Deployed::RELEASE_NAME
     end
   end
   include DeploymentInfo
@@ -24,7 +32,10 @@ class Presenter
 
     def each_asset_type
       AssetType.all.each do |asset_type|
-        yield(asset_type.name,asset_type.identifier_type,asset_type.has_sample_count,asset_type.id)
+        yield(asset_type.name,
+              asset_type.identifier_type,
+              asset_type.has_sample_count,
+              asset_type.id)
       end
     end
 
@@ -35,8 +46,26 @@ class Presenter
     end
 
     def each_workflow
-      Workflow.all.includes(:initial_state).each do |workflow|
-        yield(workflow.name, workflow.has_comment, workflow.id, workflow.reportable, workflow.multi_team_quant_essential, workflow.turn_around_days)
+      Workflow.all.includes(:initial_state).order(active: :desc).each do |workflow|
+        yield(workflow.name,
+              workflow.has_comment,
+              workflow.id,
+              workflow.reportable,
+              workflow.multi_team_quant_essential,
+              workflow.turn_around_days,
+              workflow.active)
+      end
+    end
+
+    def active_workflows
+      Workflow.where(active: true).includes(:initial_state).each do |workflow|
+        yield(workflow.name,
+              workflow.has_comment,
+              workflow.id,
+              workflow.reportable,
+              workflow.multi_team_quant_essential,
+              workflow.turn_around_days,
+              workflow.active)
       end
     end
 
