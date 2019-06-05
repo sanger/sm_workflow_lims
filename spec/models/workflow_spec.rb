@@ -11,18 +11,18 @@ describe Workflow do
 
     it 'can be created' do
       workflow = Workflow.new(:name=>test_name,:has_comment=>has_comment,:turn_around_days=>2, initial_state: volume_check)
-      workflow.valid?.should eq(true)
+      expect(workflow).to be_valid
       expect(workflow).to have(0).errors_on(:name)
       expect(workflow).to have(0).errors_on(:has_comment)
       expect(workflow).to have(0).errors_on(:turn_around_days)
-      workflow.name.should eq(test_name)
-      workflow.has_comment?.should eq(has_comment)
+      expect(workflow.name).to eq(test_name)
+      expect(workflow.has_comment?).to eq(has_comment)
     end
 
     it 'has many assets' do
       workflow.assets.new(:identifier=>'test')
-      workflow.assets.size.should eq(1)
-      workflow.assets.first.identifier.should eq('test')
+      expect(workflow.assets.size).to eq(1)
+      expect(workflow.assets.first.identifier).to eq('test')
     end
 
     it 'should know its initial state' do
@@ -36,20 +36,20 @@ describe Workflow do
     it 'requires a name' do
       workflow = Workflow.new()
       expect(workflow).to have(1).errors_on(:name)
-      workflow.valid?.should eq(false)
+      expect(workflow).to_not be_valid
     end
 
     it 'requires a unique name' do
       workflow = Workflow.create!(:name=>'test1', initial_state: volume_check)
       workflow = Workflow.create(:name=>'test1')
       expect(workflow).to have(1).errors_on(:name)
-      workflow.valid?.should eq(false)
+      expect(workflow).to_not be_valid
     end
 
     it 'can not have a negative turn around time' do
-      workflow = Workflow.new(:name=>'test',:turn_around_days=>-1)
+      workflow = Workflow.new(:name=>'test',:turn_around_days => -1)
       expect(workflow).to have(1).errors_on(:turn_around_days)
-      workflow.valid?.should eq(false)
+      expect(workflow).to_not be_valid
     end
 
   end

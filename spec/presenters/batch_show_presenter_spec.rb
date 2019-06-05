@@ -22,22 +22,21 @@ describe Presenter::BatchPresenter::Show do
 
     it "should yield each asset in the batch in turn for each_asset" do
 
-      Presenter::AssetPresenter::Asset.should_receive(:new).with(asset1).and_call_original
-      Presenter::AssetPresenter::Asset.should_receive(:new).with(asset2).and_call_original
-
+      expect(Presenter::AssetPresenter::Asset).to receive(:new).with(asset1).and_call_original
+      expect(Presenter::AssetPresenter::Asset).to receive(:new).with(asset2).and_call_original
       expect { |b| presenter.each_asset(&b) }.to yield_successive_args(Presenter::AssetPresenter::Asset,Presenter::AssetPresenter::Asset)
     end
 
     it "should return the study_name (of the first asset) for study" do
-      presenter.study.should eq('study')
+      expect(presenter.study).to eq('study')
     end
 
     it "should return the workflow (of the first asset) for workflow" do
-      presenter.workflow.should eq(mock_workflow)
+      expect(presenter.workflow).to eq(mock_workflow)
     end
 
     it "should return the comment (of the first asset) for comment" do
-      presenter.comment.should eq('A comment')
+      expect(presenter.comment).to eq('A comment')
     end
   end
 end

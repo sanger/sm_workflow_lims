@@ -5,8 +5,8 @@ describe Batch do
   it 'has many assets' do
     batch = Batch.new
     batch.assets.new(:identifier=>'test')
-    batch.assets.size.should eq(1)
-    batch.assets.first.identifier.should eq('test')
+    expect(batch.assets.size).to eq(1)
+    expect(batch.assets.first.identifier).to eq('test')
   end
 
   it 'destroy assets when destroyed' do
@@ -15,7 +15,7 @@ describe Batch do
     batch.assets.new(:identifier=>'test2')
     assets = batch.assets
     batch.destroy!
-    assets.map(&:destroyed?).all?.should eq(true)
+    expect(assets.map(&:destroyed?).all?).to be_truthy
   end
 
 end

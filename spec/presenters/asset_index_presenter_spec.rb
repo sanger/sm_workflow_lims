@@ -21,11 +21,13 @@ describe Presenter::AssetPresenter::Index do
     include_examples("shared mocks")
 
     it "should return a count of assets for total" do
-      presenter.total.should eq(2)
+      expect(presenter.total).to eq(2)
     end
     it "should yield each asset of type x in turn for each_asset(x)" do
       expect { |b| presenter.each_asset('Type',&b) }.to yield_with_args(Presenter::AssetPresenter::Asset)
-      presenter.each_asset('Type') {|a| a.identifier.should eq('asset_1')}
+      presenter.each_asset('Type') do |a|
+        expect(a.identifier).to eq('asset_1')
+      end
     end
 
   end
@@ -42,7 +44,7 @@ describe Presenter::AssetPresenter::Index do
     # Eg. presenter.search_parameters {|sp| puts sp }
     # -> identifier matches 'my plate'
     it "should return true for is_search?" do
-      presenter.is_search?.should eq(true)
+      expect(presenter.is_search?).to be_truthy
     end
 
   end
@@ -58,7 +60,7 @@ describe Presenter::AssetPresenter::Index do
     end
     # Eg. presenter.search_parameters {|sp| puts "Never called" }
     it "should return false for is_search?" do
-      presenter.is_search?.should eq(false)
+      expect(presenter.is_search?).to be_falsey
     end
 
   end

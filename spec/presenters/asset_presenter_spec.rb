@@ -14,27 +14,27 @@ describe Presenter::AssetPresenter::Asset do
 
 
     it "should return the identifier type for identifier_type" do
-      presenter.identifier_type.should eq('id')
+      expect(presenter.identifier_type).to eq('id')
     end
 
     it "should return the identifier for identifier" do
-      presenter.identifier.should eq('asset_1')
+      expect(presenter.identifier).to eq('asset_1')
     end
 
     it "should return the sample count for sample_count" do
-      presenter.sample_count.should eq(2)
+      expect(presenter.sample_count).to eq(2)
     end
 
     it "should return the study_name for study" do
-      presenter.study.should eq('study')
+      expect(presenter.study).to eq('study')
     end
 
     it "should return the workflow for workflow" do
-      presenter.workflow.should eq('Work')
+      expect(presenter.workflow).to eq('Work')
     end
 
     it "should return the created at time as a formatted string for created_at" do
-      presenter.created_at.should eq('01/02/2012')
+      expect(presenter.created_at).to eq('01/02/2012')
     end
   end
 
@@ -44,7 +44,7 @@ describe Presenter::AssetPresenter::Asset do
     include_examples "shared behaviour"
 
     it "should return the comment for comments" do
-      presenter.comments.should eq('A comment')
+      expect(presenter.comments).to eq('A comment')
     end
   end
 
@@ -54,7 +54,7 @@ describe Presenter::AssetPresenter::Asset do
     include_examples "shared behaviour"
 
     it "should return an empty string for comments"do
-      presenter.comments.should eq('')
+      expect(presenter.comments).to eq('')
     end
   end
 
@@ -69,7 +69,7 @@ describe Presenter::AssetPresenter::Asset do
       let(:mock_workflow)  { double('mock_wf',  name:'Work',has_comment:true,turn_around_days:nil)}
 
       it "should return 'in progress' for completed_at" do
-        presenter.completed_at.should eq('In progress')
+        expect(presenter.completed_at).to eq('In progress')
       end
 
       it "should have no styling" do
@@ -83,7 +83,7 @@ describe Presenter::AssetPresenter::Asset do
       let(:age) { (DateTime.parse('01-02-2012 15:15') - date).to_i }
 
       it "should return 'in progress' for completed_at" do
-        presenter.completed_at.should eq('In progress (2 days left)')
+        expect(presenter.completed_at).to eq('In progress (2 days left)')
       end
 
       it "should have 'success' styling" do
@@ -96,7 +96,7 @@ describe Presenter::AssetPresenter::Asset do
       let(:age) { today - date }
       let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:nil,age:age, time_without_completion: age) }
       it "should return 'Due today' for completed_at" do
-        presenter.completed_at.should eq('Due today')
+        expect(presenter.completed_at).to eq('Due today')
       end
       it "should be warning" do
         expect(presenter.status_code).to eq('warning')
@@ -108,7 +108,7 @@ describe Presenter::AssetPresenter::Asset do
       let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:nil,age:age, time_without_completion: age) }
       let(:age) { today - date }
       it "should return 'Overdue (1 day)' for completed_at" do
-        presenter.completed_at.should eq('Overdue (1 day)')
+        expect(presenter.completed_at).to eq('Overdue (1 day)')
       end
       it "should be danger" do
         expect(presenter.status_code).to eq('danger')
@@ -120,7 +120,7 @@ describe Presenter::AssetPresenter::Asset do
     include_examples "shared behaviour"
     let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:date, time_without_completion: 0, age: 0) }
     it "should return its completed date for completed_at" do
-      presenter.completed_at.should eq('01/02/2012 (Early 2 days)')
+      expect(presenter.completed_at).to eq('01/02/2012 (Early 2 days)')
     end
   end
 

@@ -33,20 +33,20 @@ describe Asset do
 
       expect(asset).to have(0).errors_on(:begun_at)
 
-      expect(asset.valid?).to eq(true)
-      expect(asset.save).to eq(true)
+      expect(asset).to be_valid
+      expect(asset.save).to be_truthy
 
       expect(asset.identifier).to eq(identifier)
       expect(asset.batch).to eq(batch)
       expect(asset.asset_type).to eq(asset_type)
       expect(asset.workflow).to eq(workflow)
-      expect(asset.current_state).to eq 'in_progress'
+      expect(asset.current_state).to eq('in_progress')
 
-      asset.begun_at.should eq(asset.created_at)
+      expect(asset.begun_at).to eq(asset.created_at)
     end
 
     it 'should delegate identifier_type to asset_type' do
-      asset.identifier_type.should eq('example')
+      expect(asset.identifier_type).to eq('example')
     end
 
     it 'can have events' do
@@ -79,10 +79,10 @@ describe Asset do
           :begun_at   => begun_at
         )
 
-        asset.begun_at.should eq(begun_at)
+        expect(asset.begun_at).to eq(begun_at)
 
-        Timecop.freeze(begun_at+2.day) do
-          asset.age.should == 2
+        Timecop.freeze(begun_at + 2.day) do
+          expect(asset.age).to eq(2)
         end
 
       end
@@ -106,7 +106,7 @@ describe Asset do
       expect(asset).to have(1).errors_on(:study)
       expect(asset).to have(1).errors_on(:asset_type)
       expect(asset).to have(1).errors_on(:workflow)
-      asset.valid?.should eq(false)
+      expect(asset).to_not be_valid
     end
 
     it 'requires study to follow convention format (no spaces)' do
@@ -146,8 +146,8 @@ describe Asset do
       completed = create :asset
       completed.complete
 
-      Asset.in_state(in_progress).should include(incomplete)
-      Asset.in_state(in_progress).should_not include(completed)
+      expect(Asset.in_state(in_progress)).to include(incomplete)
+      expect(Asset.in_state(in_progress)).to_not include(completed)
     end
 
     it 'should return all if scope nil' do
@@ -167,10 +167,10 @@ describe Asset do
       asset_reported_reportable.complete
       asset_reported_reportable.report
 
-      Asset.in_state(report_required).should     include(asset_completed_reportable)
-      Asset.in_state(report_required).should_not include(asset_incomplete_reportable)
-      Asset.in_state(report_required).should_not include(asset_completed_nonreportable)
-      Asset.in_state(report_required).should_not include(asset_reported_reportable)
+      expect(Asset.in_state(report_required)).to include(asset_completed_reportable)
+      expect(Asset.in_state(report_required)).to_not include(asset_incomplete_reportable)
+      expect(Asset.in_state(report_required)).to_not include(asset_completed_nonreportable)
+      expect(Asset.in_state(report_required)).to_not include(asset_reported_reportable)
     end
 
   end
@@ -185,18 +185,20 @@ describe Asset do
       comment = Comment.new
       comment.assets.new(:identifier=>'test1')
       comment.assets.new(:identifier=>'test2')
-      comment.assets.size.should eq(2)
+      expect(comment.assets.size).to eq(2)
+
       comment.assets.first.destroy!
-      comment.destroyed?.should eq(false)
+      expect(comment.destroyed?).to be_falsey
     end
 
     it 'destroys comment if there are no more assets using it' do
       comment = Comment.new
       comment.assets.new(:identifier=>'test1')
       comment.assets.new(:identifier=>'test2')
-      comment.assets.size.should eq(2)
+      expect(comment.assets.size).to eq(2)
+
       comment.assets.each(&:destroy!)
-      comment.destroyed?.should eq(true)
+      expect(comment.destroyed?).to be_truthy
     end
   end
 
