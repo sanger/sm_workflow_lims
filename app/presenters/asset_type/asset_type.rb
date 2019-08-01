@@ -26,7 +26,7 @@ module Presenter::AssetTypePresenter
     end
 
     def type
-      asset_type.name.split.first
+      asset_type.labware_type
     end
 
     def template_name
