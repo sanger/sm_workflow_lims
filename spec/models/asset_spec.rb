@@ -4,7 +4,7 @@ describe Asset do
 
   context "with valid parameters" do
 
-    let!(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let!(:asset_type) { create :asset_type, identifier_type: 'example', name: 'test' }
     let!(:identifier) { 'name' }
     let!(:study) { 'study_A'}
     let!(:project) { 'project'}
