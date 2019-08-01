@@ -1,11 +1,37 @@
+# frozen_string_literal: true
+
 module AssetTypeFactory
 
   def self.asset_types
     [
-      {:name =>'Plate with Name', :identifier_type => 'Name',   :has_sample_count=>true, :identifier_data_type=>'alphanumeric'},
-      {:name =>'Plate with Id',   :identifier_type => 'ID'  ,   :has_sample_count=>true, :identifier_data_type=>'numeric'},
-      {:name =>'Tube',            :identifier_type => 'ID'  ,   :has_sample_count=>false, :identifier_data_type=>'alphanumeric'},
-      {:name =>'Sample',          :identifier_type => 'Name'  , :has_sample_count=>false, :identifier_data_type=>'alphanumeric'}
+      {
+        name: 'High Througput',
+        identifier_type: 'Name',
+        has_sample_count: true,
+        identifier_data_type: 'alphanumeric',
+        labware_type: 'Plate'
+      },
+      {
+        name: 'Sample Management',
+        identifier_type: 'ID',
+        has_sample_count: true,
+        identifier_data_type: 'numeric',
+        labware_type: 'Plate'
+      },
+      {
+        name: 'Tube',
+        identifier_type: 'ID',
+        has_sample_count: false,
+        identifier_data_type: 'alphanumeric',
+        labware_type: 'Tube'
+      },
+      {
+        name: 'Extraction Sample Tube',
+        identifier_type: 'Name',
+        has_sample_count: false,
+        identifier_data_type: 'alphanumeric',
+        labware_type: 'Tube'
+      }
     ]
   end
 
