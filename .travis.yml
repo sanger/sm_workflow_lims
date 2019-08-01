@@ -8,16 +8,15 @@ addons:
     packages:
     - haveged
     - google-chrome-stable
-    - chromium-chromedriver
 cache:
   bundler: true
 env:
   global:
   - TZ=Europe/London
-  - PATH=$PATH:/usr/lib/chromium-browser/
   - DISPLAY=:99.0
 before_script:
 - bundle exec rake db:setup
+- RAILS_ENV=test bundle exec rails webdrivers:chromedriver:update
 script:
 - xvfb-run bundle exec rspec
 before_deploy: "./compile-build"

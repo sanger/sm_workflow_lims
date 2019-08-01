@@ -16,6 +16,9 @@
 # users commonly want.
 #
 # require 'database_cleaner'
+require 'webdrivers/chromedriver'
+Webdrivers::Chromedriver.update
+
 require 'factory_girl'
 require "capybara/rspec"
 require "capybara/rails"

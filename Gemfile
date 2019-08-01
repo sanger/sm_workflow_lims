@@ -44,7 +44,6 @@ gem 'coveralls', require: false
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
   gem 'pry'
-
 end
 
 group :development do
@@ -65,5 +64,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-selenium'
   gem 'launchy'
+  # Keep webdriver in sync with chrome to prevent frustrating CI failures
+	gem 'webdrivers', require: false
 end
 
