@@ -65,6 +65,6 @@ group :test do
   gem 'capybara-selenium'
   gem 'launchy'
   # Keep webdriver in sync with chrome to prevent frustrating CI failures
-	gem 'webdrivers', require: false
+  gem 'webdrivers'
 end
 

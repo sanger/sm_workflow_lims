@@ -16,7 +16,7 @@ env:
   - DISPLAY=:99.0
 before_script:
 - bundle exec rake db:setup
-- RAILS_ENV=test bundle exec rails webdrivers:chromedriver:update
+- RAILS_ENV=test bundle exec rake webdrivers:chromedriver:update
 script:
 - xvfb-run bundle exec rspec
 before_deploy: "./compile-build"
