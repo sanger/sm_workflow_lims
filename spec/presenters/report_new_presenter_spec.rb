@@ -24,7 +24,7 @@ describe Presenter::ReportPresenter::New do
   context "with valid report" do
 
     let!(:workflow) { create(:workflow, name: "Workflow") }
-    let!(:report) {Report.new(workflow: workflow, start_date: "01/04/2017", end_date: "15/04/2017")}
+    let!(:report) { Report.new(workflow: workflow, start_date: "01/04/2017", end_date: "15/04/2017") }
     let(:presenter) { Presenter::ReportPresenter::New.new(report) }
 
     it 'should have report data' do
@@ -40,7 +40,7 @@ describe Presenter::ReportPresenter::New do
   context "with invalid report" do
 
     let!(:workflow) { create(:workflow, name: "Workflow") }
-    let!(:report) {Report.new(workflow: workflow, start_date: "01/04/2017")}
+    let!(:report) { Report.new(workflow: workflow, start_date: "01/04/2017") }
     let(:presenter) { Presenter::ReportPresenter::New.new(report) }
 
     it 'should have flash' do

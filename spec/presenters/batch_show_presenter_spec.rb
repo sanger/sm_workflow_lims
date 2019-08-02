@@ -18,7 +18,6 @@ describe Presenter::BatchPresenter::Show do
              study: 'study',
              comment: comment)
     end
-
     let(:asset2) do
       double('asset_2',
              identifier: 'asset_2',
@@ -27,7 +26,6 @@ describe Presenter::BatchPresenter::Show do
              study: 'study',
              comment: comment)
     end
-
     let(:comment) { double('comment', comment: 'A comment') }
     let(:test_batch) { double('batch', assets: [asset1,asset2]) }
     let(:presenter) { Presenter::BatchPresenter::Show.new(test_batch) }
