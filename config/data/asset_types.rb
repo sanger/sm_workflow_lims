@@ -5,7 +5,7 @@ module AssetTypeFactory
   def self.asset_types
     [
       {
-        name: 'High Througput',
+        name: 'High Throughput',
         identifier_type: 'Name',
         has_sample_count: true,
         identifier_data_type: 'alphanumeric',
