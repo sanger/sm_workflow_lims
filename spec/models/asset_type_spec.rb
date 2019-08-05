@@ -5,21 +5,20 @@ describe AssetType do
   context "with valid parameters" do
     let(:test_name) { 'test' }
     let(:test_identifier_type) { 'type' }
+    let(:asset_type) { create :asset_type, name: test_name, identifier_type: test_identifier_type }
+    let(:asset_type_with_asset) { create :asset_type_with_asset, asset_identifier: 'test' }
 
     it 'can be created' do
-      asset_type = AssetType.new(:name=>test_name,:identifier_type=>test_identifier_type)
-      asset_type.valid?.should eq(true)
+      expect(asset_type).to be_valid
       expect(asset_type).to have(0).errors_on(:name)
       expect(asset_type).to have(0).errors_on(:identifier_type)
-      asset_type.name.should eq(test_name)
-      asset_type.identifier_type.should eq(test_identifier_type)
+      expect(asset_type.name).to eq(test_name)
+      expect(asset_type.identifier_type).to eq(test_identifier_type)
     end
 
     it 'has many assets' do
-      asset_type = AssetType.new(:name=>test_name,:identifier_type=>test_identifier_type)
-      asset_type.assets.new(:identifier=>'test')
-      asset_type.assets.size.should eq(1)
-      asset_type.assets.first.identifier.should eq('test')
+      expect(asset_type_with_asset.assets.size).to eq(1)
+      expect(asset_type_with_asset.assets.first.identifier).to eq('test')
     end
 
   end
@@ -27,10 +26,11 @@ describe AssetType do
   context "with invalid parameters" do
 
     it 'requires a name and identifier_type' do
-      asset_type = AssetType.new()
-      expect(asset_type).to have(1).errors_on(:name)
-      expect(asset_type).to have(1).errors_on(:identifier_type)
-      asset_type.valid?.should eq(false)
+      invalid_asset_type = AssetType.new()
+      expect(invalid_asset_type).to have(1).errors_on(:name)
+      expect(invalid_asset_type).to have(1).errors_on(:identifier_type)
+      expect(invalid_asset_type).to have(1).errors_on(:labware_type)
+      expect(invalid_asset_type).to_not be_valid
     end
 
   end
