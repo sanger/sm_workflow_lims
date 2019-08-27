@@ -28,6 +28,6 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    repo: radome/sm_workflow_lims
+    repo: sanger/sm_workflow_lims
   api_key:
-    secure: RZRxB/PjhNiy+hXsVvGqM/BW1lnLQRYGInXHC7XavDV5WyPbS44+PeUQJhy2/4+rEc76RlGqnDnLX9WytVtV9zkCtOkesW9OuHDV3ohsKmfXprSCR5nz+/PDT3I07d7x87ChPgi5Cdovj+K8Q5oJ9pH3h4KB0ugeAeqCtrUT64zqJE/MOlZrR+VwUS6uaRsOa49x2NGbLo6EEVdJ/uN/iU+d9hsfs4l0d4TEIQR4N0UeHzHUu8VWTPkyZzCk0XteR9BikT+8ARSbB71czy53HDIL0n5WUTTKe4GpP20JKV7JE/bJ2HOtDyXsC9hQ7CQ4ViFz488S2liiHfE+LUm+dGEvA1kw3WSAer4dD5vpOcsIPlDgPXW095JfSK3sO3Yh9sMfYg5z5h5eO2xyjKZTMBw5RrNE7js5ABjWKHxuVVtkAIuv5NPpyXQdt07S/ySgyNC+3x3cDm7p0osS8CxkZU/E4/D1gzXCGmBPgfDXkrNA9nYe85qsuDDTBawk2MEfRprAzNu4ht0umoQDpjJ5Ev0pXD+RikZxgGAH+1jMmfFvlPvAum5a52KO8aOL6ndohVykmgjsUKy+kO7NUrsAnyTTlNnsCLOuP8Myd5FFDxleduRWRcv5JxmsN/KoT7RBraueoUKYUpTfujenNmSIVIsbP4upDoExdSe1A4h1OYE=
+    secure: HfqMocrfgmbGqiRbVoXQDhsfK2bB0+yjksZW1G+hvAEE3eHVbMbQntorkuC9tkW5uat3Qpw5RvS/78gFopS4nonPQZUQkM5dWZmLxSRHK1bATJV7MAfZuCnjGFODlxPhykTvfW4S37lhYxNLRSZzmERxvQs8rljKCuUSxjC/EsM=
