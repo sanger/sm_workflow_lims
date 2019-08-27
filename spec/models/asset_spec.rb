@@ -35,14 +35,14 @@ describe Asset do
 
       expect(asset).to have(0).errors_on(:begun_at)
 
-      expect(asset.valid?).to be_truthy
+      expect(asset).to be_valid
       expect(asset.save).to be_truthy
 
       expect(asset.identifier).to eq(identifier)
       expect(asset.batch).to eq(batch)
       expect(asset.asset_type).to eq(asset_type)
       expect(asset.workflow).to eq(workflow)
-      expect(asset.current_state).to eq 'in_progress'
+      expect(asset.current_state).to eq('in_progress')
 
       expect(asset.begun_at).to eq(asset.created_at)
     end
@@ -188,6 +188,7 @@ describe Asset do
       comment.assets.new(:identifier=>'test1')
       comment.assets.new(:identifier=>'test2')
       expect(comment.assets.size).to eq(2)
+
       comment.assets.first.destroy!
       expect(comment.destroyed?).to be_falsey
     end
@@ -197,6 +198,7 @@ describe Asset do
       comment.assets.new(:identifier=>'test1')
       comment.assets.new(:identifier=>'test2')
       expect(comment.assets.size).to eq(2)
+
       comment.assets.each(&:destroy!)
       expect(comment.destroyed?).to be_truthy
     end

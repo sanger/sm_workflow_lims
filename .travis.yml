@@ -4,6 +4,7 @@ bundler_args: "--without deployment"
 sudo: required
 services: mysql
 addons:
+  chrome: stable
   apt:
     packages:
     - haveged
@@ -18,7 +19,7 @@ before_script:
 - bundle exec rake db:setup
 - bundle exec rake webdrivers:chromedriver:update
 script:
-- xvfb-run bundle exec rspec
+- xvfb-run -a bundle exec rspec
 before_deploy: "./compile-build"
 deploy:
   provider: releases

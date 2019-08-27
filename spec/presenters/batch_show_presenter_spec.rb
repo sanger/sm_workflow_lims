@@ -34,7 +34,6 @@ describe Presenter::BatchPresenter::Show do
 
       expect(Presenter::AssetPresenter::Asset).to receive(:new).with(asset1).and_call_original
       expect(Presenter::AssetPresenter::Asset).to receive(:new).with(asset2).and_call_original
-
       expect { |b| presenter.each_asset(&b) }.to yield_successive_args(Presenter::AssetPresenter::Asset,Presenter::AssetPresenter::Asset)
     end
 
