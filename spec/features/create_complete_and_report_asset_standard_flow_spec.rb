@@ -5,7 +5,7 @@ feature 'create complete and report assets within standard flow', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
-  let!(:workflow2) { create(:workflow_reportable, name: 'Reportable workflow') }
+  let!(:workflow2) { create(:workflow, name: 'Reportable workflow', reportable: true) }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
   let!(:quant) { create :state, name: 'quant' }

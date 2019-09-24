@@ -35,8 +35,9 @@ class WorkflowsController < ApplicationController
       name:               params[:name],
       has_comment:        params[:hasComment] || false,
       reportable:         params[:reportable] || false,
+      qc_flow:            params[:qc_flow] || false,
       active:             params[:active] || false,
-      initial_state_name: params[:initial_state_name],
+      initial_state_name: initial_state_name,
       turn_around_days:   turn_around_days
     }
   end
@@ -49,4 +50,13 @@ class WorkflowsController < ApplicationController
     params[:turn_around_days].to_i if params[:turn_around_days].present?
   end
 
+  def initial_state_name
+    return params[:initial_state_name] if params[:initial_state_name].present?
+
+    if params[:qc_flow]
+      'volume_check'
+    else
+      'in_progress'
+    end
+  end
 end

@@ -51,7 +51,7 @@ class Presenter
               workflow.has_comment,
               workflow.id,
               workflow.reportable,
-              workflow.multi_team_quant_essential,
+              workflow.qc_flow,
               workflow.turn_around_days,
               workflow.active)
       end
@@ -63,7 +63,7 @@ class Presenter
               workflow.has_comment,
               workflow.id,
               workflow.reportable,
-              workflow.multi_team_quant_essential,
+              workflow.qc_flow,
               workflow.turn_around_days,
               workflow.active)
       end

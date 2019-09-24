@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-feature 'create complete and report assets within multi team flow', js: true do
+feature 'create complete and report assets within QC flow', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
-  let!(:workflow1) { create(:multi_team_workflow, name: 'Multi team workflow') }
-  let!(:workflow2) { create(:multi_team_workflow_reportable, name: 'Reportable multi team workflow') }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
   let!(:quant) { create :state, name: 'quant' }
   let!(:report_required) { create :state, name: 'report_required' }
   let!(:completed) { create :state, name: 'completed' }
   let!(:reported) { create :state, name: 'reported' }
+  let!(:workflow1) { create(:qc_workflow, name: 'QC workflow') }
+  let!(:workflow2) { create(:qc_workflow, name: 'Reportable QC workflow', reportable: true) }
 
   scenario 'can create and complete a non-reportable asset' do
     visit '/'
@@ -27,7 +27,7 @@ feature 'create complete and report assets within multi team flow', js: true do
     click_on 'Append to batch'
     expect(page).to have_content "Asset added to the batch"
     fill_in 'Study', with: 'STDY'
-    select('Multi team workflow', from: 'Workflow')
+    select('QC workflow', from: 'Workflow')
     click_on 'Save'
     expect(page).to have_content "The batch was created."
     click_on 'In Progress'
@@ -66,7 +66,7 @@ feature 'create complete and report assets within multi team flow', js: true do
     click_on 'Append to batch'
     expect(page).to have_content "Asset added to the batch"
     fill_in 'Study', with: 'STDY'
-    select('Reportable multi team workflow', from: 'Workflow')
+    select('Reportable QC workflow', from: 'Workflow')
     click_on 'Save'
     expect(page).to have_content "The batch was created."
     click_on 'In Progress'

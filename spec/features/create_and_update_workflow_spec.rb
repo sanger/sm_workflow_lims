@@ -12,7 +12,7 @@ feature 'can create workflow', js: true do
       fill_in 'Name', with: 'New workflow'
       # find('#hasComment', visible: :all).trigger('click')
       # find('#reportable', visible: :all).trigger('click')
-      # find('#multi_team_quant_essential', visible: :all).trigger('click')
+      # find('#qc_flow', visible: :all).trigger('click')
       find("button", text: "Create").click
     end
     expect(page).to have_content("The workflow was created.")

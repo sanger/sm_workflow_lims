@@ -16,6 +16,10 @@
               <input type="number" name="turn_around_days" id="turn_around_days" class="form-control" min="0" step="1"/>
             </div>
             <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-primary" for="active">
+                <input type="checkbox" autocomplete="off" name="active" id="active"> Active
+                <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+              </label>
               <label class="btn btn-primary" for="hasComment">
                 <input type="checkbox" autocomplete="off" name="hasComment" id="hasComment"> Has comment
                 <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
@@ -24,9 +28,8 @@
                 <input type="checkbox" autocomplete="off" name="reportable" id="reportable"> Reportable
                 <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
               </label>
-              <label class="btn btn-primary" for="initial_state_name">
-                <input type="hidden" name="initial_state_name" value='in_progress' >
-                <input type="checkbox" autocomplete="off" name="initial_state_name" id="initial_state_name" value='volume_check'> Multi team quant essential
+              <label class="btn btn-primary" for="qc_flow">
+                <input type="checkbox" autocomplete="off" name="qc_flow" id="qc_flow"> QC Flow
                 <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
               </label>
             </div>
