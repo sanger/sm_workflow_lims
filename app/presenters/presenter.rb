@@ -53,7 +53,8 @@ class Presenter
               workflow.reportable,
               workflow.qc_flow,
               workflow.turn_around_days,
-              workflow.active)
+              workflow.active,
+              workflow.cherrypick_flow)
       end
     end
 
@@ -65,7 +66,8 @@ class Presenter
               workflow.reportable,
               workflow.qc_flow,
               workflow.turn_around_days,
-              workflow.active)
+              workflow.active,
+              workflow.cherrypick_flow)
       end
     end
 

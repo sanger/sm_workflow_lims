@@ -10,7 +10,7 @@ module Presenter::WorkflowPresenter
       @workflow = workflow
     end
 
-    delegate :name, :has_comment, :reportable, :qc_flow, :active, to: :workflow
+    delegate :name, :has_comment, :reportable, :qc_flow, :cherrypick_flow, :active, to: :workflow
 
     def turn_around
       workflow.turn_around_days

@@ -34,7 +34,7 @@
           <li>Enabling reporting will cause <strong>all</strong> existing assets in the workflow to appear in the reportable page.</li>
           <li>Enabling reporting will also distort report turn around times for the initial set of assets in the workflow.</li>
           <li>Disabling comments can cause loss of existing comments if an existing batch is edited.</li>
-          <li>Enabling/disabling QC Flow will not change behavior of old assets, only behavior of new assets will be changed.</li>
+          <li>Enabling/disabling QC or Cherrypick will not change behavior of old assets, only behavior of new assets will be changed.</li>
         </ul>
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-primary <%= @presenter.active ? 'active' : '' %>" for="active">
@@ -50,7 +50,11 @@
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
           <label class="btn btn-primary <%= @presenter.qc_flow ? 'active' : '' %>" for="qc_flow">
-            <input type="checkbox" autocomplete="off" name="qc_flow" id="qc_flow" <%= @presenter.qc_flow ? 'checked' : '' %> > QC Flow
+            <input type="checkbox" autocomplete="off" name="qc_flow" id="qc_flow" <%= @presenter.qc_flow ? 'checked' : '' %> > QC
+            <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+          </label>
+          <label class="btn btn-primary <%= @presenter.cherrypick_flow ? 'active' : '' %>" for="cherrypick_flow">
+            <input type="checkbox" autocomplete="off" name="cherrypick_flow" id="qc_flow" <%= @presenter.cherrypick_flow ? 'checked' : '' %> > Cherrypick
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
         </div>
