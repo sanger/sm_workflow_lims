@@ -65,9 +65,9 @@ class Presenter
               workflow.id,
               workflow.reportable,
               workflow.qc_flow,
+              workflow.cherrypick_flow,
               workflow.turn_around_days,
-              workflow.active,
-              workflow.cherrypick_flow)
+              workflow.active)
       end
     end
 

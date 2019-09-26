@@ -31,16 +31,16 @@ shared_examples "shared presenter behaviour" do
 
   it "should yield each workflow and its comment_requirement in turn for each_workflow" do
     yielded = []
-    presenter.each_workflow do |name, has_comment, _id, reportable, multi_team, turn_around_days, active|
-      yielded << [name, has_comment, reportable, multi_team, turn_around_days, active]
+    presenter.each_workflow do |name, has_comment, _id, reportable, qc_flow, turn_around_days, active|
+      yielded << [name, has_comment, reportable, qc_flow, turn_around_days, active]
     end
     expect(yielded).to eq([['wf1', true, true, true, 1, true], ['wf2', false, false, false, nil, false]])
   end
 
   it "should yield only active workflows" do
     yielded = []
-    presenter.active_workflows do |name, has_comment, _id, reportable, multi_team, turn_around_days, active|
-      yielded << [name, has_comment, reportable, multi_team, turn_around_days, active]
+    presenter.active_workflows do |name, has_comment, _id, reportable, qc_flow, _cherrypick_flow, turn_around_days, active|
+      yielded << [name, has_comment, reportable, qc_flow, turn_around_days, active]
     end
     expect(yielded).to eq([['wf1', true, true, true, 1, true]])
   end

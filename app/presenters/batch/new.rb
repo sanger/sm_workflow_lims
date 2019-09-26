@@ -46,7 +46,7 @@ module Presenter::BatchPresenter
       'Today'
     end
 
-    def prohibited_workflow(_reportable, _qc_flow)
+    def prohibited_workflow(_reportable, _qc_flow, _cherrypick_flow)
     end
 
     def workflow_name

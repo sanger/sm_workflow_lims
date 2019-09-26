@@ -37,10 +37,11 @@ module Presenter::BatchPresenter
       @workflow ||= (first_asset.workflow if first_asset.present?) || ''
     end
 
-    def prohibited_workflow(reportable, qc_flow)
+    def prohibited_workflow(reportable, qc_flow, cherrypick_flow)
       if workflow.present?
         (workflow.reportable != reportable) ||
-        (workflow.qc_flow != qc_flow)
+        (workflow.qc_flow != qc_flow) ||
+        (workflow.cherrypick_flow != cherrypick_flow)
       end
     end
 
