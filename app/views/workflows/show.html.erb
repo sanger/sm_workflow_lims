@@ -49,12 +49,12 @@
             <input type="checkbox" autocomplete="off" name="reportable" id="reportable" <%= @presenter.reportable ? 'checked' : '' %> > Reportable
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
-          <label class="btn btn-primary <%= @presenter.qc_flow ? 'active' : '' %>" for="qc_flow">
-            <input type="checkbox" autocomplete="off" name="qc_flow" id="qc_flow" <%= @presenter.qc_flow ? 'checked' : '' %> > QC
+          <label class="btn btn-primary <%= @presenter.qc_flow ? 'active' : '' %>" for="qcFlow">
+            <input type="checkbox" autocomplete="off" name="qcFlow" id="qcFlow" <%= @presenter.qc_flow ? 'checked' : '' %> > QC
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
-          <label class="btn btn-primary <%= @presenter.cherrypick_flow ? 'active' : '' %>" for="cherrypick_flow">
-            <input type="checkbox" autocomplete="off" name="cherrypick_flow" id="qc_flow" <%= @presenter.cherrypick_flow ? 'checked' : '' %> > Cherrypick
+          <label class="btn btn-primary <%= @presenter.cherrypick_flow ? 'active' : '' %>" for="cherrypickFlow">
+            <input type="checkbox" autocomplete="off" name="cherrypickFlow" id="cherrypickFlow" <%= @presenter.cherrypick_flow ? 'checked' : '' %> > Cherrypick
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
         </div>

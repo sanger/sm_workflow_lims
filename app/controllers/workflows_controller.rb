@@ -36,8 +36,8 @@ class WorkflowsController < ApplicationController
       name:               params[:name],
       has_comment:        params[:hasComment] || false,
       reportable:         params[:reportable] || false,
-      qc_flow:            params[:qc_flow] || false,
-      cherrypick_flow:    params[:cherrypick_flow] || false,
+      qc_flow:            params[:qcFlow] || false,
+      cherrypick_flow:    params[:cherrypickFlow] || false,
       active:             params[:active] || false,
       initial_state_name: initial_state_name,
       turn_around_days:   turn_around_days
