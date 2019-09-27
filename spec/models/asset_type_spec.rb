@@ -9,7 +9,6 @@ describe AssetType do
     let(:asset_type_with_asset) { create :asset_type_with_asset, asset_identifier: 'test' }
 
     it 'can be created' do
-      asset_type = AssetType.new(:name=>test_name,:identifier_type=>test_identifier_type)
       expect(asset_type).to be_valid
       expect(asset_type).to have(0).errors_on(:name)
       expect(asset_type).to have(0).errors_on(:identifier_type)
@@ -18,10 +17,8 @@ describe AssetType do
     end
 
     it 'has many assets' do
-      asset_type = AssetType.new(:name=>test_name,:identifier_type=>test_identifier_type)
-      asset_type.assets.new(:identifier=>'test')
-      expect(asset_type.assets.size).to eq(1)
-      expect(asset_type.assets.first.identifier).to eq('test')
+      expect(asset_type_with_asset.assets.size).to eq(1)
+      expect(asset_type_with_asset.assets.first.identifier).to eq('test')
     end
 
   end
