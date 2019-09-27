@@ -6,29 +6,26 @@ FactoryGirl.define do
 
   factory :workflow do
     name { generate :workflow_name }
+    has_comment { false }
+    reportable { false }
+    turn_around_days { nil }
+    active { true }
+    qc_flow { false }
+    cherrypick_flow { false }
     association :initial_state, factory: :state, name: 'in_progress'
 
-    trait :has_comment do
-      has_comment true
-    end
-
-    trait :reportable do
-      reportable true
-    end
-
-    factory :workflow_reportable, traits: [:reportable]
-    factory :workflow_with_comment, traits: [:has_comment]
-
-    factory :multi_team_workflow do
+    factory :qc_workflow do
+      qc_flow { true }
       association :initial_state, factory: :state, name: 'volume_check'
-      factory :multi_team_workflow_reportable, traits: [:reportable]
     end
 
-    factory :non_multi_team_workflow do
-      association :initial_state, factory: :state, name: 'in_progress'
-      factory :non_multi_team_workflow_reportable, traits: [:reportable]
-    end
+    factory :cherrypick_workflow do
+      cherrypick_flow { true }
+      association :initial_state, factory: :state, name: 'cherrypick'
 
+      factory :cherrypick_qc_workflow do
+        qc_flow { true }
+      end
+    end
   end
-
 end

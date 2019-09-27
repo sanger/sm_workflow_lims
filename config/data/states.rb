@@ -2,6 +2,7 @@ module StateFactory
   def self.states
     [
       {name: 'in_progress'},
+      {name: 'cherrypick'},
       {name: 'volume_check'},
       {name: 'quant'},
       {name: 'completed'},

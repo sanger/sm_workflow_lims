@@ -34,10 +34,10 @@
           <li>Enabling reporting will cause <strong>all</strong> existing assets in the workflow to appear in the reportable page.</li>
           <li>Enabling reporting will also distort report turn around times for the initial set of assets in the workflow.</li>
           <li>Disabling comments can cause loss of existing comments if an existing batch is edited.</li>
-          <li>Enabling/disabling multi team will not change behavior of old assets, only behavior of new assets will be changed.</li>
+          <li>Enabling/disabling QC or Cherrypick will not change behavior of old assets, only behavior of new assets will be changed.</li>
         </ul>
         <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-primary <%= @presenter.active ? 'active' : '' %>" for="initial_state_name">
+          <label class="btn btn-primary <%= @presenter.active ? 'active' : '' %>" for="active">
             <input type="checkbox" autocomplete="off" name="active" id="active" <%= @presenter.active ? 'checked' : '' %> > Active
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
@@ -49,9 +49,12 @@
             <input type="checkbox" autocomplete="off" name="reportable" id="reportable" <%= @presenter.reportable ? 'checked' : '' %> > Reportable
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
-          <label class="btn btn-primary <%= @presenter.multi_team_quant_essential ? 'active' : '' %>" for="initial_state_name">
-            <input type="hidden" name="initial_state_name" value="in_progress" >
-            <input type="checkbox" autocomplete="off" value="volume_check" name="initial_state_name" id="initial_state_name" <%= @presenter.multi_team_quant_essential ? 'checked' : '' %> > Multi team quant essential
+          <label class="btn btn-primary <%= @presenter.qc_flow ? 'active' : '' %>" for="qcFlow">
+            <input type="checkbox" autocomplete="off" name="qcFlow" id="qcFlow" <%= @presenter.qc_flow ? 'checked' : '' %> > QC
+            <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
+          </label>
+          <label class="btn btn-primary <%= @presenter.cherrypick_flow ? 'active' : '' %>" for="cherrypickFlow">
+            <input type="checkbox" autocomplete="off" name="cherrypickFlow" id="cherrypickFlow" <%= @presenter.cherrypick_flow ? 'checked' : '' %> > Cherrypick
             <span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-check"></span>
           </label>
         </div>

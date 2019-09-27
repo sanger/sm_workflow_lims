@@ -5,6 +5,8 @@ describe AssetType do
   context "with valid parameters" do
     let(:test_name) { 'test' }
     let(:test_identifier_type) { 'type' }
+    let(:asset_type) { create :asset_type, name: test_name, identifier_type: test_identifier_type }
+    let(:asset_type_with_asset) { create :asset_type_with_asset, asset_identifier: 'test' }
 
     it 'can be created' do
       asset_type = AssetType.new(:name=>test_name,:identifier_type=>test_identifier_type)
@@ -27,10 +29,11 @@ describe AssetType do
   context "with invalid parameters" do
 
     it 'requires a name and identifier_type' do
-      asset_type = AssetType.new()
-      expect(asset_type).to have(1).errors_on(:name)
-      expect(asset_type).to have(1).errors_on(:identifier_type)
-      expect(asset_type.valid?).to be_falsey
+      invalid_asset_type = AssetType.new()
+      expect(invalid_asset_type).to have(1).errors_on(:name)
+      expect(invalid_asset_type).to have(1).errors_on(:identifier_type)
+      expect(invalid_asset_type).to have(1).errors_on(:labware_type)
+      expect(invalid_asset_type).to_not be_valid
     end
 
   end

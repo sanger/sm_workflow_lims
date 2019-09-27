@@ -5,12 +5,17 @@ require 'timecop'
 describe Presenter::AssetPresenter::Asset do
 
   shared_examples "shared behaviour" do
-    let(:mock_type) { double('mock_type',name:'Type',identifier_type:'id',variable_samples:true)}
-    let(:mock_workflow)  { double('mock_wf',  name:'Work',has_comment:true,turn_around_days:2)}
+    let(:mock_type) do
+      double('mock_type',
+             name: 'Type',
+             identifier_type: 'id',
+             variable_samples: true)
+    end
+    let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true, turn_around_days: 2) }
     let(:date) { DateTime.parse('01-02-2012 13:15') }
-    let(:comment) { double('comment',:comment=>'A comment')}
+    let(:comment) { double('comment',:comment=>'A comment') }
 
-    let(:presenter) { Presenter::AssetPresenter::Asset.new(asset)}
+    let(:presenter) { Presenter::AssetPresenter::Asset.new(asset) }
 
 
     it "should return the identifier type for identifier_type" do
@@ -39,7 +44,16 @@ describe Presenter::AssetPresenter::Asset do
   end
 
   context "with an asset with comments" do
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,comment:comment) }
+    let(:asset) do
+      double('asset',
+             identifier: 'asset_1',
+             asset_type: mock_type,
+             workflow: mock_workflow,
+             study: 'study',
+             sample_count: 2,
+             begun_at: date,
+             comment: comment)
+    end
 
     include_examples "shared behaviour"
 
@@ -49,7 +63,16 @@ describe Presenter::AssetPresenter::Asset do
   end
 
   context "with an asset without comments" do
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,comment:nil) }
+    let(:asset) do
+      double('asset',
+             identifier: 'asset_1',
+             asset_type: mock_type,
+             workflow: mock_workflow,
+             study: 'study',
+             sample_count: 2,
+             begun_at: date,
+             comment: nil)
+    end
 
     include_examples "shared behaviour"
 
@@ -61,12 +84,23 @@ describe Presenter::AssetPresenter::Asset do
   context "an unfinished asset" do
 
     let(:age) { date - DateTime.parse('01-02-2012 15:15') }
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:nil,age:age, time_without_completion: 0) }
+    let(:asset) do
+      double('asset',
+             identifier: 'asset_1',
+             asset_type: mock_type,
+             workflow: mock_workflow,
+             study: 'study',
+             sample_count: 2,
+             begun_at: date,
+             completed_at: nil,
+             age: age,
+             time_without_completion: 0)
+    end
 
     include_examples "shared behaviour"
 
     context 'when no turn_around_days specified' do
-      let(:mock_workflow)  { double('mock_wf',  name:'Work',has_comment:true,turn_around_days:nil)}
+      let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true, turn_around_days: nil) }
 
       it "should return 'in progress' for completed_at" do
         expect(presenter.completed_at).to eq('In progress')
@@ -94,10 +128,23 @@ describe Presenter::AssetPresenter::Asset do
     context 'when due today' do
       let(:today) { DateTime.parse('03-02-2012 15:15') }
       let(:age) { today - date }
-      let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:nil,age:age, time_without_completion: age) }
+      let(:asset) do
+        double('asset',
+               identifier: 'asset_1',
+               asset_type: mock_type,
+               workflow: mock_workflow,
+               study: 'study',
+               sample_count: 2,
+               begun_at: date,
+               completed_at: nil,
+               age: age,
+               time_without_completion: age)
+      end
+
       it "should return 'Due today' for completed_at" do
         expect(presenter.completed_at).to eq('Due today')
       end
+
       it "should be warning" do
         expect(presenter.status_code).to eq('warning')
       end
@@ -105,11 +152,24 @@ describe Presenter::AssetPresenter::Asset do
 
     context 'when overdue' do
       let(:today) { DateTime.parse('04-02-2012 15:15') }
-      let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:nil,age:age, time_without_completion: age) }
+      let(:asset) do
+        double('asset',
+               identifier: 'asset_1',
+               asset_type: mock_type,
+               workflow: mock_workflow,
+               study: 'study',
+               sample_count: 2,
+               begun_at: date,
+               completed_at: nil,
+               age: age,
+               time_without_completion: age)
+      end
       let(:age) { today - date }
+
       it "should return 'Overdue (1 day)' for completed_at" do
         expect(presenter.completed_at).to eq('Overdue (1 day)')
       end
+
       it "should be danger" do
         expect(presenter.status_code).to eq('danger')
       end
@@ -118,10 +178,22 @@ describe Presenter::AssetPresenter::Asset do
 
   context "an completed asset" do
     include_examples "shared behaviour"
-    let(:asset) { double('asset',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study',sample_count:2,begun_at:date,completed_at:date, time_without_completion: 0, age: 0) }
+
+    let(:asset) do
+      double('asset',
+             identifier: 'asset_1',
+             asset_type: mock_type,
+             workflow: mock_workflow,
+             study: 'study',
+             sample_count: 2,
+             begun_at: date,
+             completed_at: date,
+             time_without_completion: 0,
+             age: 0)
+    end
+
     it "should return its completed date for completed_at" do
       expect(presenter.completed_at).to eq('01/02/2012 (Early 2 days)')
     end
   end
-
 end

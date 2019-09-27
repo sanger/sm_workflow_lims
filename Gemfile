@@ -23,7 +23,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem "bootstrap-sass", '~> 3.2.0'
+gem "bootstrap-sass", '=3.2.0.4'
 
 gem 'puma'
 
@@ -44,7 +44,6 @@ gem 'coveralls', require: false
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
   gem 'pry'
-
 end
 
 group :development do
@@ -65,5 +64,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-selenium'
   gem 'launchy'
+  # Keep webdriver in sync with chrome to prevent frustrating CI failures
+  gem 'webdrivers'
 end
 

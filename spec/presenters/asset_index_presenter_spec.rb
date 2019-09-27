@@ -5,11 +5,33 @@ require './spec/presenters/shared_presenter_behaviour'
 describe Presenter::AssetPresenter::Index do
 
   shared_examples "shared mocks" do
-    let(:mock_type) { double('mock_type',name:'Type',identifier_type:'id',variable_samples:true)}
-    let(:mock_type2) { double('mock_type2',name:'Type2',identifier_type:'id',variable_samples:true)}
-    let(:mock_workflow)  { double('mock_wf',  name:'Work',has_comment:true)}
-    let(:asset1) { double('asset_1',identifier:'asset_1',asset_type:mock_type,workflow:mock_workflow,study:'study') }
-    let(:asset2) { double('asset_2',identifier:'asset_2',asset_type:mock_type2,workflow:mock_workflow,study:'study') }
+    let(:mock_type) do
+      double('mock_type',
+             name: 'Type',
+             identifier_type: 'id',
+             variable_samples: true)
+    end
+    let(:mock_type2) do
+      double('mock_type2',
+             name: 'Type2',
+             identifier_type: 'id',
+             variable_samples: true)
+    end
+    let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true) }
+    let(:asset1) do
+      double('asset_1',
+             identifier: 'asset_1',
+             asset_type: mock_type,
+             workflow: mock_workflow,
+             study: 'study')
+    end
+    let(:asset2) do
+      double('asset_2',
+             identifier: 'asset_2',
+             asset_type: mock_type2,
+             workflow: mock_workflow,
+             study: 'study')
+    end
     let(:assets) { [asset1,asset2] }
     let!(:state) { create :state, name: 'in_progress'}
     let(:presenter) { Presenter::AssetPresenter::Index.new(assets,search,state)}
@@ -25,8 +47,8 @@ describe Presenter::AssetPresenter::Index do
     end
     it "should yield each asset of type x in turn for each_asset(x)" do
       expect { |b| presenter.each_asset('Type',&b) }.to yield_with_args(Presenter::AssetPresenter::Asset)
-      presenter.each_asset('Type') do |a|
-        expect(a.identifier).to eq('asset_1')
+      presenter.each_asset('Type') do |asset|
+        expect(asset.identifier).to eq('asset_1')
       end
     end
 
@@ -36,7 +58,7 @@ describe Presenter::AssetPresenter::Index do
 
     include_examples "standard behaviour"
 
-    let(:search) {"identifier matches 'Type'"}
+    let(:search) { "identifier matches 'Type'" }
 
     it "should yield the search parameters on search_parameters" do
       expect { |b| presenter.search_parameters(&b) }.to yield_with_args(search)
@@ -68,7 +90,7 @@ describe Presenter::AssetPresenter::Index do
   context "when state is" do
 
     include_examples "shared mocks"
-    let(:search) {nil}
+    let(:search) { nil }
 
     context 'all' do
       let(:state)  { nil }
@@ -86,29 +108,28 @@ describe Presenter::AssetPresenter::Index do
       end
     end
     context 'volume_check' do
-      let(:state)  { create :state, name: 'volume_check'}
+      let(:state) { create :state, name: 'volume_check' }
 
       it "should have volume_check actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Volume checked selected')
-        expect(presenter.action).to eq ('check_volume')
+        expect(presenter.action).to eq('check_volume')
       end
     end
     context 'quant' do
-      let(:state)  { create :state, name: 'quant'}
+      let(:state)  { create :state, name: 'quant' }
 
       it "should have quant actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
-        expect(presenter.action).to eq ('complete')
+        expect(presenter.action).to eq('complete')
       end
     end
     context 'report_required' do
-      let(:state)  { create :state, name: 'report_required'}
+      let(:state)  { create :state, name: 'report_required' }
 
       it "should have reporting actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Reported selected')
-        expect(presenter.action).to eq ('report')
+        expect(presenter.action).to eq('report')
       end
     end
   end
-
 end

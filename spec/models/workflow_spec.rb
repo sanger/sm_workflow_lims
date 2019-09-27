@@ -51,8 +51,6 @@ describe Workflow do
       expect(workflow).to have(1).errors_on(:turn_around_days)
       expect(workflow).to_not be_valid
     end
-
   end
-
 end
 

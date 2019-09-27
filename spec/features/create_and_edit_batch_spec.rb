@@ -5,8 +5,8 @@ feature 'create and edit batch', js: true do
 
   let!(:asset_type) { create(:asset_type, name: 'Sample', identifier_type: 'Name') }
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
-  let!(:workflow2) { create(:workflow_reportable, name: 'Reportable workflow') }
-  let!(:workflow3) { create(:multi_team_workflow, name: 'Multi team workflow') }
+  let!(:workflow2) { create(:workflow, name: 'Reportable workflow', reportable: true) }
+  let!(:workflow3) { create(:qc_workflow, name: 'QC workflow') }
   let!(:workflow4) { create(:workflow, name: 'Deactivated workflow', active: false) }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
@@ -26,11 +26,11 @@ feature 'create and edit batch', js: true do
       expect(page).to have_content "The batch was created."
       options  = page.all('select#workflow_id option')
       expect(options.length).to eq 4
-      expect(options[1].text).to eq 'Workflow'
+      expect(options[1].text).to include 'Workflow'
       expect(options[1].disabled?).to be false
-      expect(options[2].text).to eq 'Reportable workflow'
+      expect(options[2].text).to include 'Reportable workflow'
       expect(options[2].disabled?).to be true
-      expect(options[3].text).to eq 'Multi team workflow'
+      expect(options[3].text).to include 'QC workflow'
       expect(options[3].disabled?).to be true
       fill_in 'Study', with: 'STDY2'
       click_on 'Save'

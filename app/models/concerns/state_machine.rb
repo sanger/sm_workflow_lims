@@ -4,12 +4,12 @@ module StateMachine
   extend ActiveSupport::Concern
 
   included do
-    delegate :in_progress?, :volume_check?, :quant?, :report_required?, :reported?, to: :current_state
+    delegate :in_progress?, :cherrypick?, :volume_check?, :quant?, :report_required?, :reported?, to: :current_state
   end
 
   StateMachineError = Class.new(StandardError)
 
-  VALID_ACTIONS = ['check_volume', 'complete', 'report']
+  VALID_ACTIONS = ['cherrypicking', 'check_volume', 'complete', 'report']
 
   def perform_action(action)
     if VALID_ACTIONS.include? action
@@ -20,8 +20,13 @@ module StateMachine
   end
 
   def complete
-    events.create! state_name: 'completed' if (in_progress? || quant?)
+    events.create! state_name: 'completed' if (in_progress? || quant? || cherrypick?)
     events.create! state_name: 'report_required' if reportable?
+  end
+
+  def cherrypicking
+    complete if (cherrypick? && !qcable?)
+    events.create! state_name: 'volume_check' if (cherrypick? && qcable?)
   end
 
   def check_volume

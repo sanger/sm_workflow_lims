@@ -4,7 +4,7 @@ describe Asset do
 
   context "with valid parameters" do
 
-    let!(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let!(:asset_type) { create :asset_type, identifier_type: 'example', name: 'test' }
     let!(:identifier) { 'name' }
     let!(:study) { 'study_A'}
     let!(:project) { 'project'}
@@ -13,13 +13,15 @@ describe Asset do
     let!(:comment) { Comment.new }
     let!(:state) { create :state, name: 'in_progress'}
     let!(:completed) { create :state, name: 'completed'}
-    let!(:asset) { Asset.new(
-        identifier: identifier,
-        batch:      batch,
-        study:      study,
-        asset_type: asset_type,
-        workflow:   workflow,
-        comment:    comment) }
+    let!(:asset) do
+      build(:asset,
+            identifier: identifier,
+            batch:      batch,
+            study:      study,
+            asset_type: asset_type,
+            workflow:   workflow,
+            comment:    comment)
+    end
 
     it 'can be created' do
 
@@ -58,9 +60,8 @@ describe Asset do
     end
 
     it 'should know if it is completed' do
-      asset.save
       expect(asset.completed?).to be_falsey
-      asset.events << (create :event, asset: asset, state: completed)
+      asset.events << create(:event, asset: asset, state: completed)
       expect(asset.completed?).to be_truthy
     end
 
@@ -70,15 +71,14 @@ describe Asset do
       let(:begun_at) { DateTime.parse('01-02-2012 13:15').to_time }
 
       it 'requires an identifier, batch, asset type and workflow' do
-        asset = Asset.new(
-          :identifier => identifier,
-          :batch      => batch,
-          :asset_type => asset_type,
-          :workflow   => workflow,
-          :comment    => comment,
-          :begun_at   => begun_at
+        asset = build(:asset,
+                      identifier: identifier,
+                      batch: batch,
+                      asset_type: asset_type,
+                      workflow: workflow,
+                      comment: comment,
+                      begun_at: begun_at
         )
-
         expect(asset.begun_at).to eq(begun_at)
 
         Timecop.freeze(begun_at + 2.day) do
@@ -92,9 +92,9 @@ describe Asset do
   end
 
   context "with invalid parameters" do
-    let(:asset_type) { AssetType.new(:identifier_type=>'example',:name=>'test') }
+    let(:asset_type) { create :asset_type, identifier_type: 'example', name: 'test' }
     let(:identifier) { 'name' }
-    let(:study) { 'study_A'}
+    let(:study) { 'study_A' }
     let(:batch) { Batch.new }
     let(:workflow) { Workflow.new }
     let(:comment) { Comment.new }
@@ -132,8 +132,16 @@ describe Asset do
   context 'in_state' do
 
     let!(:state) { create :state, name: 'in_progress' }
-    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state_name: 'in_progress' ) }
-    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state_name: 'in_progress' ) }
+    let!(:reportable_workflow) do
+      Workflow.create!(name: 'reportable',
+                       reportable: true,
+                       initial_state_name: 'in_progress')
+    end
+    let!(:nonreportable_workflow) do
+      Workflow.create!(name: 'nonreportable',
+                       reportable: false,
+                       initial_state_name: 'in_progress')
+    end
     let!(:in_progress) { create :state, name: 'in_progress' }
     let!(:completed) { create :state, name: 'completed' }
     let!(:report_required) { create :state, name: 'report_required' }
@@ -145,9 +153,10 @@ describe Asset do
       incomplete = create :asset
       completed = create :asset
       completed.complete
+      asset = Asset.in_state(in_progress)
 
-      expect(Asset.in_state(in_progress)).to include(incomplete)
-      expect(Asset.in_state(in_progress)).to_not include(completed)
+      expect(asset).to include(incomplete)
+      expect(asset).to_not include(completed)
     end
 
     it 'should return all if scope nil' do
@@ -155,22 +164,26 @@ describe Asset do
     end
 
     it 'reporting_required lists appropriate assets' do
-      asset_incomplete_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_incomplete_reportable = create(:asset,
+                                           workflow: create(:workflow, reportable: true))
 
-      asset_completed_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_completed_reportable = create(:asset,
+                                          workflow: create(:workflow, reportable: true))
       asset_completed_reportable.complete
 
       asset_completed_nonreportable = create :asset
       asset_completed_nonreportable.complete
 
-      asset_reported_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_reported_reportable = create(:asset,
+                                         workflow: create(:workflow, reportable: true))
       asset_reported_reportable.complete
       asset_reported_reportable.report
+      asset = Asset.in_state(report_required)
 
-      expect(Asset.in_state(report_required)).to include(asset_completed_reportable)
-      expect(Asset.in_state(report_required)).to_not include(asset_incomplete_reportable)
-      expect(Asset.in_state(report_required)).to_not include(asset_completed_nonreportable)
-      expect(Asset.in_state(report_required)).to_not include(asset_reported_reportable)
+      expect(asset).to include(asset_completed_reportable)
+      expect(asset).to_not include(asset_incomplete_reportable)
+      expect(asset).to_not include(asset_completed_nonreportable)
+      expect(asset).to_not include(asset_reported_reportable)
     end
 
   end
@@ -186,7 +199,6 @@ describe Asset do
       comment.assets.new(:identifier=>'test1')
       comment.assets.new(:identifier=>'test2')
       expect(comment.assets.size).to eq(2)
-
       comment.assets.first.destroy!
       expect(comment.destroyed?).to be_falsey
     end
@@ -196,7 +208,6 @@ describe Asset do
       comment.assets.new(:identifier=>'test1')
       comment.assets.new(:identifier=>'test2')
       expect(comment.assets.size).to eq(2)
-
       comment.assets.each(&:destroy!)
       expect(comment.destroyed?).to be_truthy
     end
@@ -207,7 +218,9 @@ describe Asset do
     let!(:state2) { create :state, name: 'completed' }
     let!(:state3) { create :state, name: 'report_required' }
     let(:asset) { create :asset }
-    let(:reportable_asset) { create :asset, workflow: (create :workflow_reportable) }
+    let(:reportable_asset) do
+      create(:asset, workflow: create(:workflow, reportable: true))
+    end
 
     it 'should know the current state' do
       expect(asset.in_progress?).to be_truthy
