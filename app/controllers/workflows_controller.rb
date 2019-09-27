@@ -49,10 +49,10 @@ class WorkflowsController < ApplicationController
   end
 
   def turn_around_days
-    params[:turn_around_days].to_i if params[:turn_around_days].present?
+    params[:turnAroundDays].to_i if params[:turnAroundDays].present?
   end
 
   def initial_state_name
-    params[:initial_state_name] || initial_state(params[:qc_flow], params[:cherrypick_flow])
+    params[:initialStateName] || initial_state(params[:qcFlow], params[:cherrypickFlow])
   end
 end
