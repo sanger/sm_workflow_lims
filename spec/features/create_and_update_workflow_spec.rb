@@ -5,6 +5,7 @@ feature 'can create workflow', js: true do
 
   scenario 'can create workflow' do
     create :state, name: 'in_progress'
+    create :state, name: 'cherrypick'
     visit '/'
     click_on 'Admin'
     find("a", text: "Create a new workflow").click
@@ -26,16 +27,18 @@ feature 'can create workflow', js: true do
     end
     expect(page).to have_content("Name has already been taken")
     expect(Workflow.count).to eq 1
-    updated_workflow = Workflow.find_by(name: 'New Workflow')
-    expect(updated_workflow.active).to be_truthy
-    expect(updated_workflow.reportable).to be_truthy
-    expect(updated_workflow.has_comment).to be_truthy
-    expect(updated_workflow.qc_flow).to be_truthy
-    expect(updated_workflow.cherrypick_flow).to be_truthy
+    created_workflow = Workflow.find_by(name: 'New Workflow')
+    expect(created_workflow.active).to be_truthy
+    expect(created_workflow.reportable).to be_truthy
+    expect(created_workflow.has_comment).to be_truthy
+    expect(created_workflow.qc_flow).to be_truthy
+    expect(created_workflow.cherrypick_flow).to be_truthy
+    expect(created_workflow.initial_state.name).to eq('cherrypick')
   end
 
   scenario 'can update workflow' do
     create :state, name: 'in_progress'
+    create :state, name: 'cherrypick'
     create :workflow, name: 'Workflow1'
     create :workflow, name: 'Workflow2'
     visit '/'
@@ -58,6 +61,7 @@ feature 'can create workflow', js: true do
     expect(updated_workflow.has_comment).to be_truthy
     expect(updated_workflow.qc_flow).to be_truthy
     expect(updated_workflow.cherrypick_flow).to be_truthy
+    expect(updated_workflow.initial_state.name).to eq('cherrypick')
   end
 
 end
