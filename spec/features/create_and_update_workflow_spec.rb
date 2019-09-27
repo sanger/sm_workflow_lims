@@ -18,7 +18,6 @@ feature 'can create workflow', js: true do
       find('#cherrypickFlow', visible: :all).first(:xpath, './/..').click
       find("button", text: "Create").click
     end
-    #save_and_open_screenshot
     expect(page).to have_content("The workflow was created.")
     expect(Workflow.count).to eq 1
     find("a", text: "Create a new workflow").click
