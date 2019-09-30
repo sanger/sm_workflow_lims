@@ -69,6 +69,10 @@ class Asset < ActiveRecord::Base
     workflow.reportable?
   end
 
+  def qcable?
+    workflow.qc_flow?
+  end
+
   def completed?
     completed_at.present?
   end

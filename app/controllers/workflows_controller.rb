@@ -1,6 +1,7 @@
 require './app/presenters/workflow/show'
 
 class WorkflowsController < ApplicationController
+  include InitialState
 
   def create
     @workflow = Workflow.new(workflow_params)
@@ -35,8 +36,10 @@ class WorkflowsController < ApplicationController
       name:               params[:name],
       has_comment:        params[:hasComment] || false,
       reportable:         params[:reportable] || false,
+      qc_flow:            params[:qcFlow] || false,
+      cherrypick_flow:    params[:cherrypickFlow] || false,
       active:             params[:active] || false,
-      initial_state_name: params[:initial_state_name],
+      initial_state_name: initial_state_name,
       turn_around_days:   turn_around_days
     }
   end
@@ -46,7 +49,10 @@ class WorkflowsController < ApplicationController
   end
 
   def turn_around_days
-    params[:turn_around_days].to_i if params[:turn_around_days].present?
+    params[:turnAroundDays].to_i if params[:turnAroundDays].present?
   end
 
+  def initial_state_name
+    params[:initialStateName] || initial_state(params[:qcFlow], params[:cherrypickFlow])
+  end
 end

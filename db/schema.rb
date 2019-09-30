@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190801123806) do
+ActiveRecord::Schema.define(version: 20190924154728) do
 
   create_table "asset_types", force: :cascade do |t|
     t.string   "name",                 limit: 255,                          null: false
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 20190801123806) do
     t.integer  "turn_around_days", limit: 4
     t.integer  "initial_state_id", limit: 4
     t.boolean  "active",                       default: true,  null: false
+    t.boolean  "qc_flow",                      default: false, null: false
+    t.boolean  "cherrypick_flow",              default: false, null: false
   end
 
   add_index "workflows", ["initial_state_id"], name: "index_workflows_on_initial_state_id", using: :btree

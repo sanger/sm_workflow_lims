@@ -132,8 +132,16 @@ describe Asset do
   context 'in_state' do
 
     let!(:state) { create :state, name: 'in_progress' }
-    let!(:reportable_workflow)    { Workflow.create!(name:'reportable',    reportable:true, initial_state_name: 'in_progress' ) }
-    let!(:nonreportable_workflow) { Workflow.create!(name:'nonreportable', reportable:false, initial_state_name: 'in_progress' ) }
+    let!(:reportable_workflow) do
+      Workflow.create!(name: 'reportable',
+                       reportable: true,
+                       initial_state_name: 'in_progress')
+    end
+    let!(:nonreportable_workflow) do
+      Workflow.create!(name: 'nonreportable',
+                       reportable: false,
+                       initial_state_name: 'in_progress')
+    end
     let!(:in_progress) { create :state, name: 'in_progress' }
     let!(:completed) { create :state, name: 'completed' }
     let!(:report_required) { create :state, name: 'report_required' }
@@ -156,15 +164,18 @@ describe Asset do
     end
 
     it 'reporting_required lists appropriate assets' do
-      asset_incomplete_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_incomplete_reportable = create(:asset,
+                                           workflow: create(:workflow, reportable: true))
 
-      asset_completed_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_completed_reportable = create(:asset,
+                                          workflow: create(:workflow, reportable: true))
       asset_completed_reportable.complete
 
       asset_completed_nonreportable = create :asset
       asset_completed_nonreportable.complete
 
-      asset_reported_reportable = create :asset, workflow: (create :workflow_reportable)
+      asset_reported_reportable = create(:asset,
+                                         workflow: create(:workflow, reportable: true))
       asset_reported_reportable.complete
       asset_reported_reportable.report
       asset = Asset.in_state(report_required)
@@ -207,7 +218,9 @@ describe Asset do
     let!(:state2) { create :state, name: 'completed' }
     let!(:state3) { create :state, name: 'report_required' }
     let(:asset) { create :asset }
-    let(:reportable_asset) { create :asset, workflow: (create :workflow_reportable) }
+    let(:reportable_asset) do
+      create(:asset, workflow: create(:workflow, reportable: true))
+    end
 
     it 'should know the current state' do
       expect(asset.in_progress?).to be_truthy

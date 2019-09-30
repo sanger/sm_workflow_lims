@@ -56,6 +56,7 @@ module Presenter::AssetPresenter
 
     def action
       {'in_progress' => 'complete',
+        'cherrypick' => 'cherrypicking',
         'volume_check' => 'check_volume',
         'quant' => 'complete',
         'report_required' => 'report'
@@ -64,6 +65,7 @@ module Presenter::AssetPresenter
 
     def action_button
       {'in_progress' => 'Completed selected',
+        'cherrypick' => 'Completed selected',
         'volume_check' => 'Volume checked selected',
         'quant' => 'Completed selected',
         'report_required' => 'Reported selected'

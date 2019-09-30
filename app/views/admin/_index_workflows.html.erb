@@ -10,12 +10,13 @@
       <th class="text-center">Active?</th>
       <th class="text-center">Has comments?</th>
       <th class="text-center">Is reportable?</th>
-      <th class="text-center">Multi team quant essential?</th>
-      <th class="text-center">Turn around time</th>
+      <th class="text-center">QC?</th>
+      <th class="text-center">Cherrypick?</th>
+      <th class="text-center">Turn around days</th>
       <th></th>
     </thead>
     <tbody>
-      <% presenter.each_workflow do |name, has_comment, id, reportable, multi_team_quant_essential, turn_around, active| %>
+      <% presenter.each_workflow do |name, has_comment, id, reportable, qc_flow, turn_around, active, cherrypick_flow| %>
         <tr><td><%= name %></td>
           <td class="text-center">
             <span class="glyphicon <%= active ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
@@ -27,7 +28,10 @@
             <span class="glyphicon <%= reportable ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
-            <span class="glyphicon <%= multi_team_quant_essential ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
+            <span class="glyphicon <%= qc_flow ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
+          </td>
+          <td class="text-center">
+            <span class="glyphicon <%= cherrypick_flow ? 'glyphicon-ok':'glyphicon-remove' %>" aria-hidden="true"></span>
           </td>
           <td class="text-center">
             <%= turn_around ? "#{turn_around} #{'day'.pluralize(turn_around)}" : 'None' %>
