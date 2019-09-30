@@ -35,7 +35,7 @@ module Presenter::AssetTypePresenter
 
     def validates_with
       {
-        'alphanumeric' => '^\w+$',
+        'alphanumeric' => '^[\w-]+$',
         'numeric'      => '^\d+$'
       }[asset_type.identifier_data_type]
     end
