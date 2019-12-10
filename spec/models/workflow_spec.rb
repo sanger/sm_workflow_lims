@@ -47,7 +47,7 @@ describe Workflow do
     end
 
     it 'can not have a negative turn around time' do
-      workflow = Workflow.new(:name=>'test',:turn_around_days=>-1)
+      workflow = Workflow.new(:name=>'test',:turn_around_days => -1)
       expect(workflow).to have(1).errors_on(:turn_around_days)
       expect(workflow).to_not be_valid
     end
