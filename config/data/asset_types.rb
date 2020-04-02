@@ -15,7 +15,7 @@ module AssetTypeFactory
         name: 'Sample Management',
         identifier_type: 'ID',
         has_sample_count: true,
-        identifier_data_type: 'numeric',
+        identifier_data_type: 'alphanumeric',
         labware_type: 'Plate'
       },
       {

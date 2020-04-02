@@ -5,6 +5,9 @@ module Presenter::AssetTypePresenter
 
     attr_reader :asset_type
 
+    ALPHANUMERIC_REGEX = '^[\w-]+$'
+    NUMERIC_REGEX = '^\d+$'
+
     def initialize(asset_type)
       @asset_type = asset_type
     end
@@ -35,8 +38,8 @@ module Presenter::AssetTypePresenter
 
     def validates_with
       {
-        'alphanumeric' => '^[\w-]+$',
-        'numeric'      => '^\d+$'
+        'alphanumeric' => ALPHANUMERIC_REGEX,
+        'numeric'      => NUMERIC_REGEX
       }[asset_type.identifier_data_type]
     end
 
