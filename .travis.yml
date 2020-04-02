@@ -22,6 +22,7 @@ before_script:
 - bundle exec rake webdrivers:chromedriver:update
 script:
 - xvfb-run -a bundle exec rspec
+before_deploy: "./compile-build"
 deploy:
   provider: releases
   file: release.tar.gz
@@ -32,6 +33,5 @@ deploy:
     repo: sanger/sm_workflow_lims
   api_key:
     secure: cJalqsS+skyojjpUlZKKUwLro+pnNhKkjTXJc3y55yQboYZuGvbYiPbMtfloouWuTQGDJYz4VGSbb3+Y35OMXHD5cC9OmkuyNUefRKUL304rVSNBZvRb0KKO9iIA4mETNcRz7fQqoe27cu8/PdHlfgs/ue0N/rp7EcrPDdjmkeA=
-  file: release.tar.gz
 notifications:
   slack: psd-team:V2SCGvDqEvbszhvCUdTcQOKm
