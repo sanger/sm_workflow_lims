@@ -22,7 +22,6 @@ before_script:
 - bundle exec rake webdrivers:chromedriver:update
 script:
 - xvfb-run -a bundle exec rspec
-before_deploy: "./compile-build"
 deploy:
   provider: releases
   file: release.tar.gz
@@ -32,5 +31,7 @@ deploy:
     tags: true
     repo: sanger/sm_workflow_lims
   api_key:
-    secure: jmzNZLdWOIWzzTZjmLI2xYSyfN6isDOEfmNwUTkJE4/FS9VNLCQC5uj6MdbEFsfP3w0Uv0llEDSRjhEZAQjmgw3xX0Xij3AYjW2rqM4UxEO2yVGkpCctvRVODrLkgSvNb6edVfkuRIsD8qyUasH+UPnXxZd321YucRMc+kCYAiS0JXPs0Gl6QWm0taKflqxD/DhBdq43lYAQcbXYjB9cCmzTfCUvAHIYwTtUDkRfQ3pLi3LqaelMw3lJqa3YaOh4xaRTuOexpzWANhj18LqJuvVvbdm4bOoGNc3up5r3+WJcwOys9LPES5niDGImJFDzJsZuxSSie3hn3cp5xUmasg4IayFpZjXkci8HTbK8MJxpeyNcWOMrpzXshqA+vqiVGSkBZCaCRyy8vc8lbvDhgrGRwZ6kNph2qsNQlXwAkCDXRbt5yDJEDKJJuDS3kpnoYE8sgyGLWFmVHMtIxeqKGRUxDad7IvLfG1nXBioAtqsanJBccOnL1a/Xxc+tQXPdO7iQbZS43xIYb5g+YeGCHuuIysS0PQ9T8IiojbjDWcKcLlDjN+KnTLVVG2L52uWBqA4yQIiYMjukzTj6k1O9ahobIQXUN8Ep23bLKZWBj9lok4JQcrqooIGmu9et1OIzXzI/SB9WEHMtJACUF4YvFWPe1/PTUoOn6bM5HPno2og=
-
+    secure: cJalqsS+skyojjpUlZKKUwLro+pnNhKkjTXJc3y55yQboYZuGvbYiPbMtfloouWuTQGDJYz4VGSbb3+Y35OMXHD5cC9OmkuyNUefRKUL304rVSNBZvRb0KKO9iIA4mETNcRz7fQqoe27cu8/PdHlfgs/ue0N/rp7EcrPDdjmkeA=
+  file: release.tar.gz
+notifications:
+  slack: psd-team:V2SCGvDqEvbszhvCUdTcQOKm
