@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'create complete and report assets within standard flow', js: true do
-
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
   let!(:workflow2) { create(:workflow, name: 'Reportable workflow', reportable: true) }
@@ -82,5 +82,4 @@ feature 'create complete and report assets within standard flow', js: true do
     click_on 'Reported selected'
     expect(page).to have_content "Report required is done for 456"
   end
-
 end

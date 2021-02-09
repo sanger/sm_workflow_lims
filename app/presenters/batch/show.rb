@@ -6,7 +6,7 @@ module Presenter::BatchPresenter
     attr_reader :batch
 
     def initialize(batch)
-      @batch=batch
+      @batch = batch
     end
 
     def id
@@ -25,11 +25,13 @@ module Presenter::BatchPresenter
 
     def study
       return first_asset.study if first_asset
+
       'Not Applicable'
     end
 
     def project
       return first_asset.project if first_asset
+
       'Not Applicable'
     end
 
@@ -40,8 +42,8 @@ module Presenter::BatchPresenter
     def prohibited_workflow(reportable, qc_flow, cherrypick_flow)
       if workflow.present?
         (workflow.reportable != reportable) ||
-        (workflow.qc_flow != qc_flow) ||
-        (workflow.cherrypick_flow != cherrypick_flow)
+          (workflow.qc_flow != qc_flow) ||
+          (workflow.cherrypick_flow != cherrypick_flow)
       end
     end
 
@@ -53,16 +55,19 @@ module Presenter::BatchPresenter
 
     def pipeline_destination
       return first_asset.pipeline_destination.name if first_asset && !first_asset.pipeline_destination.nil?
+
       'None'
     end
 
     def cost_code
       return first_asset.cost_code.name if first_asset && !first_asset.cost_code.nil?
+
       ''
     end
 
     def comment
       return first_asset.comment.comment if first_asset && first_asset.comment
+
       ''
     end
 
@@ -78,10 +83,8 @@ module Presenter::BatchPresenter
       batch.assets.count
     end
 
-
     def placeholder_date
       first_asset.begun_at.strftime('%d/%m/%Y')
     end
-
   end
 end

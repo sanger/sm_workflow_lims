@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'can create pipeline destination', js: true do
-
   scenario 'can create pipeline destination' do
     visit '/'
     click_on 'Admin'
@@ -21,5 +21,4 @@ feature 'can create pipeline destination', js: true do
     expect(page).to have_content("Name has already been taken")
     expect(PipelineDestination.count).to eq 1
   end
-
 end

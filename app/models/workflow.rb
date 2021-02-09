@@ -1,5 +1,4 @@
 class Workflow < ActiveRecord::Base
-
   has_many :assets
   belongs_to :initial_state, class_name: 'State'
 

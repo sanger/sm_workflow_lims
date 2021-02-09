@@ -2,9 +2,7 @@ require './app/presenters/presenter'
 
 module Presenter::BatchPresenter
   class New < Presenter
-
     def each_asset
-
     end
 
     def study
@@ -52,6 +50,5 @@ module Presenter::BatchPresenter
     def workflow_name
       ''
     end
-
   end
 end

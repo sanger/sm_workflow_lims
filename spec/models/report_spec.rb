@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Report do
-
   context "with invalid parameters" do
     it "should not be valid if workflow, start or end dates are not provided" do
       report = Report.new({})
@@ -9,12 +8,11 @@ describe Report do
       expect(report.errors.full_messages.count).to eq 3
     end
     it "should not be valid if start date is later than end date" do
-      report = Report.new({start_date: "15/04/2017", end_date: "01/04/2017"})
+      report = Report.new({ start_date: "15/04/2017", end_date: "01/04/2017" })
       expect(report.valid?).to be false
       expect(report.errors.full_messages).to include("Start date should be earlier than the end date.")
     end
   end
-
 
   context "with valid parameters" do
     let!(:workflow) { create(:workflow, name: "Workflow") }
@@ -46,5 +44,4 @@ describe Report do
       Timecop.return
     end
   end
-
 end

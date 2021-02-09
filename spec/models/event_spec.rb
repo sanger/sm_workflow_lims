@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe Event do
-
   let(:event) { Event.new }
   let(:asset) { create :asset }
-  let!(:in_progress) { create :state, name: 'in_progress'}
-  let!(:completed) { create :state, name: 'completed'}
+  let!(:in_progress) { create :state, name: 'in_progress' }
+  let!(:completed) { create :state, name: 'completed' }
 
   it 'should have name' do
     expect(event.valid?).to be false
@@ -28,11 +27,10 @@ describe Event do
     Timecop.freeze(Time.local(2017, 3, 7))
     old_in_progress_events = create_list(:event, 3, state: in_progress)
     old_completed_events = create_list(:event, 2, state: completed)
-    expect(Event.completed_between(Date.today-1, Date.today+1)).to eq old_completed_events
+    expect(Event.completed_between(Date.today - 1, Date.today + 1)).to eq old_completed_events
   end
 
   after do
     Timecop.return
   end
-
 end

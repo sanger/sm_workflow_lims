@@ -3,7 +3,6 @@ require './app/presenters/asset/asset'
 require 'timecop'
 
 describe Presenter::AssetPresenter::Asset do
-
   shared_examples "shared behaviour" do
     let(:mock_type) do
       double('mock_type',
@@ -13,10 +12,9 @@ describe Presenter::AssetPresenter::Asset do
     end
     let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true, turn_around_days: 2) }
     let(:date) { DateTime.parse('01-02-2012 13:15') }
-    let(:comment) { double('comment',:comment=>'A comment') }
+    let(:comment) { double('comment', :comment => 'A comment') }
 
     let(:presenter) { Presenter::AssetPresenter::Asset.new(asset) }
-
 
     it "should return the identifier type for identifier_type" do
       expect(presenter.identifier_type).to eq('id')
@@ -76,13 +74,12 @@ describe Presenter::AssetPresenter::Asset do
 
     include_examples "shared behaviour"
 
-    it "should return an empty string for comments"do
+    it "should return an empty string for comments" do
       expect(presenter.comments).to eq('')
     end
   end
 
   context "an unfinished asset" do
-
     let(:age) { date - DateTime.parse('01-02-2012 15:15') }
     let(:asset) do
       double('asset',

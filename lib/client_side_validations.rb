@@ -9,13 +9,14 @@ module ClientSideValidations
 
       def html_validation_attributes(attr_name)
         return {} unless @regexp[attr_name]
+
         {
           :'data-psg-regexp' => "#{@regexp[attr_name][:with].source}",
-          :'data-psg-input-optional' => "#{@regexp[attr_name][:allow_blank]==true}",
+          :'data-psg-input-optional' => "#{@regexp[attr_name][:allow_blank] == true}",
           :'data-psg-validation-error-msg' => "#{@regexp[attr_name][:error_msg]}"
         }.tap do |obj|
           # For the moment, it's just for data-psg-validation-error-msg
-          obj.delete_if{|k, v| v.empty? }
+          obj.delete_if { |k, v| v.empty? }
         end
       end
 
@@ -35,10 +36,8 @@ module ClientSideValidations
       end
     end
   end
-
 end
 
 def params_obj_to_html_params(params)
-  params.to_a.map {|p| "#{p[0]}='#{p[1]}'"}.join(' ')
+  params.to_a.map { |p| "#{p[0]}='#{p[1]}'" }.join(' ')
 end
-

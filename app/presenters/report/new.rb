@@ -1,12 +1,10 @@
 require './app/presenters/presenter'
 
 module Presenter::ReportPresenter
-
   class New < Presenter
-
     attr_reader :report
 
-    def initialize(report=Report.new({}))
+    def initialize(report = Report.new({}))
       @report = report
     end
 
@@ -33,7 +31,5 @@ module Presenter::ReportPresenter
     def end_date
       report.end_date.strftime(report.date_format) if report.end_date.present?
     end
-
   end
-
 end

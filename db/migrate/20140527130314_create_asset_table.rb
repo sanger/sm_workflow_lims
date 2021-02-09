@@ -8,9 +8,9 @@ class CreateAssetTable < ActiveRecord::Migration
       t.references  :comment,      :null => true
       t.references  :batch,        :null => false
       t.string      :study
-      t.integer     :sample_count, :null=> false, :default => 1
+      t.integer     :sample_count, :null => false, :default => 1
       t.timestamps
-      t.datetime    :completed_at
+      t.datetime :completed_at
     end
   end
 end

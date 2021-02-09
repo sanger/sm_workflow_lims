@@ -1,4 +1,4 @@
-#www.mattsears.com/articles/2011/11/27ruby-blocks-as-dynamic-callbacks
+# www.mattsears.com/articles/2011/11/27ruby-blocks-as-dynamic-callbacks
 class Proc
   def callback(callable, *args)
     self === Class.new do

@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   sequence :workflow_name do |n|
     "Workflow #{n}"
   end

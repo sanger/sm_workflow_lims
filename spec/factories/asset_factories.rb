@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   sequence :asset_identifier do |n|
     "Asset #{n}"
   end
@@ -15,5 +14,4 @@ FactoryGirl.define do
     batch
     asset_type
   end
-
 end

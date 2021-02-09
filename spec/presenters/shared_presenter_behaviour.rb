@@ -26,7 +26,6 @@ shared_examples "shared presenter behaviour" do
       yielded << [name, identifier_type, has_sample_count]
     end
     expect(yielded).to eq([['type1', 'id1', true], ['type2', 'id2', false]])
-
   end
 
   it "should yield each workflow and its comment_requirement in turn for each_workflow" do
@@ -44,5 +43,4 @@ shared_examples "shared presenter behaviour" do
     end
     expect(yielded).to eq([['wf1', true, true, true, 1, true]])
   end
-
 end

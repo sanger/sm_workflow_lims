@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe State do
-
   let(:state) { State.new }
 
   it 'should have name' do

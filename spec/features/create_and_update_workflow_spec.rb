@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'can create workflow', js: true do
-
   scenario 'can create workflow' do
     create :state, name: 'in_progress'
     create :state, name: 'cherrypick'
@@ -63,5 +63,4 @@ feature 'can create workflow', js: true do
     expect(updated_workflow.cherrypick_flow).to be_truthy
     expect(updated_workflow.initial_state.name).to eq('cherrypick')
   end
-
 end

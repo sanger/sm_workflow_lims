@@ -2,7 +2,6 @@ require './app/presenters/report/new'
 require './app/presenters/report/show'
 
 class ReportsController < ApplicationController
-
   def new
     @presenter = Presenter::ReportPresenter::New.new
   end
@@ -28,5 +27,4 @@ class ReportsController < ApplicationController
               filename: "report.csv",
               disposition: 'attachment'
   end
-
 end

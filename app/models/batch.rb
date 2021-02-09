@@ -1,5 +1,4 @@
 class Batch < ActiveRecord::Base
-
   has_many :assets
   has_many :comments, through: :assets
 
@@ -10,5 +9,4 @@ class Batch < ActiveRecord::Base
       self.assets.each(&:destroy!)
     end
   end
-
 end

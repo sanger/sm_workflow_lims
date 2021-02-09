@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module AssetTypeFactory
-
   def self.asset_types
     [
       {
@@ -38,5 +37,4 @@ module AssetTypeFactory
   def self.seed
     AssetType.create!(asset_types)
   end
-
 end

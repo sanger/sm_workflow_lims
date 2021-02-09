@@ -24,6 +24,4 @@ Rails.application.routes.draw do
       get :csv
     end
   end
-
-
 end

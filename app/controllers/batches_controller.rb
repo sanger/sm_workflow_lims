@@ -2,7 +2,6 @@ require './app/presenters/batch/new'
 require './app/presenters/batch/show'
 
 class BatchesController < ApplicationController
-
   before_action :batch, only: [:show, :update, :remove]
 
   def new
@@ -23,7 +22,7 @@ class BatchesController < ApplicationController
       pipeline_destination: pipeline_destination,
       begun_at: params[:begun_at],
       comment: params[:comment]
-      )
+    )
     if batch_updater.valid?
       batch = batch_updater.update!
       @presenter = Presenter::BatchPresenter::Show.new(batch)
@@ -98,5 +97,4 @@ class BatchesController < ApplicationController
   def assets_provided
     params[:assets] && params[:assets].keys.size > 0
   end
-
 end

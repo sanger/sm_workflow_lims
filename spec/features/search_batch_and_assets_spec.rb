@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'search assets and batches', js: true do
-
   let!(:batch1) { create :batch_with_assets }
   let!(:batch2) { create :batch_with_assets }
   let!(:additional_asset1) { create :asset, identifier: batch1.id }
@@ -28,5 +28,4 @@ feature 'search assets and batches', js: true do
     expect(page).to have_content "Search results where batch id or asset identifier matches '#{batch2.id}'"
     expect(page.all('tbody>tr').count).to eq batch2.assets.count
   end
-
 end

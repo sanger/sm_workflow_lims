@@ -3,7 +3,6 @@ require './app/presenters/report/new'
 require './spec/presenters/shared_presenter_behaviour'
 
 describe Presenter::ReportPresenter::New do
-
   let(:presenter) { Presenter::ReportPresenter::New.new }
 
   context "always" do
@@ -22,7 +21,6 @@ describe Presenter::ReportPresenter::New do
   end
 
   context "with valid report" do
-
     let!(:workflow) { create(:workflow, name: "Workflow") }
     let!(:report) { Report.new(workflow: workflow, start_date: "01/04/2017", end_date: "15/04/2017") }
     let(:presenter) { Presenter::ReportPresenter::New.new(report) }
@@ -38,7 +36,6 @@ describe Presenter::ReportPresenter::New do
   end
 
   context "with invalid report" do
-
     let!(:workflow) { create(:workflow, name: "Workflow") }
     let!(:report) { Report.new(workflow: workflow, start_date: "01/04/2017") }
     let(:presenter) { Presenter::ReportPresenter::New.new(report) }

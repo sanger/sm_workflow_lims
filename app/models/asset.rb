@@ -1,7 +1,6 @@
 require './lib/client_side_validations'
 
 class Asset < ActiveRecord::Base
-
   include StateMachine
 
   belongs_to :asset_type
@@ -21,7 +20,7 @@ class Asset < ActiveRecord::Base
   validates_presence_of :workflow, :batch, :identifier, :asset_type
 
   delegate :identifier_type, to: :asset_type
-  default_scope { includes(:workflow,:asset_type,:comment,:batch, :pipeline_destination, events: :state) }
+  default_scope { includes(:workflow, :asset_type, :comment, :batch, :pipeline_destination, events: :state) }
 
   def remove_comment
     comment.destroy
@@ -88,6 +87,7 @@ class Asset < ActiveRecord::Base
 
   def time_without_completion
     return ((completed_at - begun_at) / 86400).floor if completed?
+
     age
   end
 
@@ -99,10 +99,10 @@ class Asset < ActiveRecord::Base
     attr_reader :action, :assets, :flash_status, :asset_state
 
     def self.create!(*args)
-      self.new(*args).tap {|action| action.do! }
+      self.new(*args).tap { |action| action.do! }
     end
 
-    def initialize(action:,assets:)
+    def initialize(action:, assets:)
       @action = action
       @assets = assets
       @asset_state = assets.first.current_state
@@ -121,7 +121,6 @@ class Asset < ActiveRecord::Base
   end
 
   class Updater < AssetAction
-
     def do!
       ActiveRecord::Base.transaction do
         assets.each { |a| a.perform_action(action) }
@@ -137,5 +136,4 @@ class Asset < ActiveRecord::Base
 
     def redirect_state; asset_state; end
   end
-
 end

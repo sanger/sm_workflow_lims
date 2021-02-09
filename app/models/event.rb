@@ -22,5 +22,4 @@ class Event < ActiveRecord::Base
     state = State.find_by(name: 'completed')
     where(created_at: start_date..end_date, state: state)
   end
-
 end

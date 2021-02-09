@@ -1,5 +1,4 @@
 class PipelineDestinationsController < ApplicationController
-
   def create
     @pipeline_destination = PipelineDestination.new(name: params[:name])
     if @pipeline_destination.valid?
@@ -11,5 +10,4 @@ class PipelineDestinationsController < ApplicationController
       redirect_to :back
     end
   end
-
 end

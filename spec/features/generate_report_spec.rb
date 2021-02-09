@@ -1,16 +1,18 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'can generate report', js: true do
-
   let!(:workflow1) { create(:workflow, name: 'Workflow1') }
   let!(:workflow2) { create(:workflow, name: 'Workflow2') }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:completed) { create :state, name: 'completed' }
   let!(:asset1) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project1' }
-  let!(:asset2) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code: (create :cost_code, name: 'A1') }
+  let!(:asset2) {
+    create :asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code: (create :cost_code, name: 'A1')
+  }
   let!(:asset3) { create :asset, workflow: workflow2, study: 'Study1', project: 'Project2' }
-  let!(:asset4) { create :asset, workflow: workflow1}
+  let!(:asset4) { create :asset, workflow: workflow1 }
 
   before do
     Timecop.freeze(Time.local(2017, 3, 7))
@@ -44,5 +46,4 @@ feature 'can generate report', js: true do
   after do
     Timecop.return
   end
-
 end

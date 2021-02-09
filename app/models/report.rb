@@ -1,10 +1,10 @@
 require 'csv'
 
 class Report
-
   include ActiveModel::Model
 
   attr_accessor :workflow_id, :workflow, :start_date, :end_date
+
   validates_presence_of :workflow, :start_date, :end_date
   validate :correctness_of_period, if: 'start_date.present? && end_date.present?'
 
@@ -65,7 +65,6 @@ class Report
   end
 
   class Row
-
     attr_reader :data
 
     def initialize(data)
@@ -73,9 +72,7 @@ class Report
     end
 
     def data_for(column_names)
-      data.values_at(*column_names).map {|el| el ? el : 'Not defined'}
+      data.values_at(*column_names).map { |el| el ? el : 'Not defined' }
     end
-
   end
-
 end

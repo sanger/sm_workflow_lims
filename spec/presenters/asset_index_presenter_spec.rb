@@ -3,7 +3,6 @@ require './app/presenters/asset/index'
 require './spec/presenters/shared_presenter_behaviour'
 
 describe Presenter::AssetPresenter::Index do
-
   shared_examples "shared mocks" do
     let(:mock_type) do
       double('mock_type',
@@ -32,13 +31,12 @@ describe Presenter::AssetPresenter::Index do
              workflow: mock_workflow,
              study: 'study')
     end
-    let(:assets) { [asset1,asset2] }
-    let!(:state) { create :state, name: 'in_progress'}
-    let(:presenter) { Presenter::AssetPresenter::Index.new(assets,search,state)}
+    let(:assets) { [asset1, asset2] }
+    let!(:state) { create :state, name: 'in_progress' }
+    let(:presenter) { Presenter::AssetPresenter::Index.new(assets, search, state) }
   end
 
   shared_examples "standard behaviour" do
-
     include_examples("shared presenter behaviour")
     include_examples("shared mocks")
 
@@ -46,16 +44,14 @@ describe Presenter::AssetPresenter::Index do
       expect(presenter.total).to eq(2)
     end
     it "should yield each asset of type x in turn for each_asset(x)" do
-      expect { |b| presenter.each_asset('Type',&b) }.to yield_with_args(Presenter::AssetPresenter::Asset)
+      expect { |b| presenter.each_asset('Type', &b) }.to yield_with_args(Presenter::AssetPresenter::Asset)
       presenter.each_asset('Type') do |asset|
         expect(asset.identifier).to eq('asset_1')
       end
     end
-
   end
 
   context "when returning search results" do
-
     include_examples "standard behaviour"
 
     let(:search) { "identifier matches 'Type'" }
@@ -68,14 +64,12 @@ describe Presenter::AssetPresenter::Index do
     it "should return true for is_search?" do
       expect(presenter.is_search?).to be_truthy
     end
-
   end
 
   context "when returning a complete index" do
-
     include_examples "standard behaviour"
 
-    let(:search) {nil}
+    let(:search) { nil }
 
     it "should not yield on search_parameters" do
       expect { |b| presenter.search_parameters(&b) }.to yield_successive_args()
@@ -84,23 +78,21 @@ describe Presenter::AssetPresenter::Index do
     it "should return false for is_search?" do
       expect(presenter.is_search?).to be_falsey
     end
-
   end
 
   context "when state is" do
-
     include_examples "shared mocks"
     let(:search) { nil }
 
     context 'all' do
-      let(:state)  { nil }
+      let(:state) { nil }
 
       it "should have no action button" do
         expect { |b| presenter.action_button(&b) }.not_to yield_control
       end
     end
     context 'in_progress' do
-      let(:state) { create :state, name: 'in_progress'}
+      let(:state) { create :state, name: 'in_progress' }
 
       it "should have complete actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
@@ -116,7 +108,7 @@ describe Presenter::AssetPresenter::Index do
       end
     end
     context 'quant' do
-      let(:state)  { create :state, name: 'quant' }
+      let(:state) { create :state, name: 'quant' }
 
       it "should have quant actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
@@ -124,7 +116,7 @@ describe Presenter::AssetPresenter::Index do
       end
     end
     context 'report_required' do
-      let(:state)  { create :state, name: 'report_required' }
+      let(:state) { create :state, name: 'report_required' }
 
       it "should have reporting actions" do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Reported selected')

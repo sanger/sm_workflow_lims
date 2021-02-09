@@ -1,6 +1,4 @@
-
 module StateMachine
-
   extend ActiveSupport::Concern
 
   included do
@@ -40,5 +38,4 @@ module StateMachine
   def current_state
     events.last.state.name.inquiry
   end
-
 end

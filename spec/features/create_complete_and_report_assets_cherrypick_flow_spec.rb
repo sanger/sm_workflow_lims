@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'create complete and report assets within Cherrypick flow', js: true do
-
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
@@ -134,5 +134,4 @@ feature 'create complete and report assets within Cherrypick flow', js: true do
     expect(page).to have_content "Report required is done for 789"
     expect(page).not_to have_selector('table tr')
   end
-
 end
