@@ -16,6 +16,7 @@
 # users commonly want.
 #
 # require 'database_cleaner'
+
 require 'webdrivers/chromedriver'
 Webdrivers::Chromedriver.update
 
