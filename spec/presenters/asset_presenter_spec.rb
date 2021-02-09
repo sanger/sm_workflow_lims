@@ -109,8 +109,9 @@ describe Presenter::AssetPresenter::Asset do
     end
 
     context 'when not due for a while' do
-      # DateTime returns differences in rationals. However, to avoid making assumptions about the performance of the standard
-      # library, we just use it. That way, if its behaviour changes, out tests will fail.
+      # DateTime returns differences in rationals. However, to avoid making
+      # assumptions about the performance of the standard library, we just use
+      # it. That way, if its behaviour changes, out tests will fail.
       let(:age) { (DateTime.parse('01-02-2012 15:15') - date).to_i }
 
       it "returns 'in progress' for completed_at" do

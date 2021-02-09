@@ -42,7 +42,13 @@ describe Report do
       asset3.complete
       asset4 = create :asset, workflow: workflow
       report = Report.new(workflow: workflow, start_date: '01/04/2017', end_date: '15/04/2017')
-      expect(report.to_csv).to eq "Report for 'Workflow' workflow from 01/04/2017 to 15/04/2017\nStudy,Project,Cost code name,Assets count\nStudy1,Project1,Not defined,1\nStudy1,Project2,Not defined,2\n"
+      expected_report = <<~REPORT
+        Report for 'Workflow' workflow from 01/04/2017 to 15/04/2017
+        Study,Project,Cost code name,Assets count
+        Study1,Project1,Not defined,1
+        Study1,Project2,Not defined,2
+      REPORT
+      expect(report.to_csv).to eq expected_report
     end
   end
 end

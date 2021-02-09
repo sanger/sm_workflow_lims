@@ -611,10 +611,3 @@ Style/ZeroLengthPredicate:
   Exclude:
     - 'app/controllers/batches_controller.rb'
     - 'app/presenters/asset/index.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 203

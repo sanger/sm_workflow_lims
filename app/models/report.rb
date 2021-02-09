@@ -23,7 +23,9 @@ class Report
   end
 
   def title
-    "Report for '#{workflow.name}' workflow from #{start_date.strftime(date_format)} to #{end_date.strftime(date_format)}"
+    from = start_date.strftime(date_format)
+    to = end_date.strftime(date_format)
+    "Report for '#{workflow.name}' workflow from #{from} to #{to}"
   end
 
   def rows

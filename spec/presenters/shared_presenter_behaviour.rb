@@ -36,11 +36,8 @@ shared_examples 'shared presenter behaviour' do
     expect(yielded).to eq([['wf1', true, true, true, 1, true], ['wf2', false, false, false, nil, false]])
   end
 
-  it 'yields only active workflows' do
-    yielded = []
-    presenter.active_workflows do |name, has_comment, _id, reportable, qc_flow, _cherrypick_flow, turn_around_days, active|
-      yielded << [name, has_comment, reportable, qc_flow, turn_around_days, active]
-    end
-    expect(yielded).to eq([['wf1', true, true, true, 1, true]])
+  it 'yields only active workflows (rev)' do
+    expect { |b| presenter.active_workflows(&b) }
+      .to yield_with_args('wf1', true, workflow_1.id, true, true, workflow_1.cherrypick_flow, 1, true)
   end
 end
