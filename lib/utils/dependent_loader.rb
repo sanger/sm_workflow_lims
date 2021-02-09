@@ -32,5 +32,7 @@ class DependentLoader
         block.callback :failure
       end
     end
+  rescue StandardError
+    block.callback :failure
   end
 end
