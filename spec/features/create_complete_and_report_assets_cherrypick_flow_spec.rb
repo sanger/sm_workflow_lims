@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature 'create complete and report assets within Cherrypick flow', js: true do
+describe 'create complete and report assets within Cherrypick flow', js: true do
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
@@ -16,7 +16,7 @@ feature 'create complete and report assets within Cherrypick flow', js: true do
     create :cherrypick_qc_workflow, name: 'Cherrypick Reportable QC workflow', reportable: true
   end
 
-  scenario 'can create and complete a non-reportable asset' do
+  it 'can create and complete a non-reportable asset' do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'
@@ -43,7 +43,7 @@ feature 'create complete and report assets within Cherrypick flow', js: true do
     expect(page).to have_selector('table tr', count: 2)
   end
 
-  scenario 'can create and complete a non-reportable QC asset' do
+  it 'can create and complete a non-reportable QC asset' do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'
@@ -84,7 +84,7 @@ feature 'create complete and report assets within Cherrypick flow', js: true do
     expect(page).not_to have_selector('table tr')
   end
 
-  scenario 'can create, complete and report a reportable asset' do
+  it 'can create, complete and report a reportable asset' do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature 'create complete and report assets within standard flow', js: true do
+describe 'create complete and report assets within standard flow', js: true do
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
   let!(:workflow2) { create(:workflow, name: 'Reportable workflow', reportable: true) }
@@ -13,7 +13,7 @@ feature 'create complete and report assets within standard flow', js: true do
   let!(:completed) { create :state, name: 'completed' }
   let!(:reported) { create :state, name: 'reported' }
 
-  scenario 'can create and complete a non-reportable asset' do
+  it 'can create and complete a non-reportable asset' do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'
@@ -44,7 +44,7 @@ feature 'create complete and report assets within standard flow', js: true do
     expect(page).not_to have_selector('table tr')
   end
 
-  scenario 'can create, complete and report a reportable asset' do
+  it 'can create, complete and report a reportable asset' do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'

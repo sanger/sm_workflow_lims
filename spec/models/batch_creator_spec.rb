@@ -5,7 +5,11 @@ describe Batch::Creator do
     Timecop.freeze(Time.local(2017, 3, 7))
   end
 
-  it 'should not be valid if the begun_at date is wrong, required attributes were not provided' do
+  after do
+    Timecop.return
+  end
+
+  it 'is not valid if the begun_at date is wrong, required attributes were not provided' do
     batch_creator = Batch::Creator.new(
       begun_at: '05/05/2017',
       project: 'project',
@@ -22,7 +26,7 @@ describe Batch::Creator do
     expect(batch_creator).to have(1).errors_on(:dates)
   end
 
-  it 'should create the right batch and the right assets' do
+  it 'creates the right batch and the right assets' do
     state = create :state, name: 'in_progress'
     assets = [{ type: 'Plate', identifier: 'test', sample_count: '25' },
               { type: 'Plate', identifier: 'test2', sample_count: '10' },
@@ -43,9 +47,5 @@ describe Batch::Creator do
     batch_creator.create!
     expect(Asset.count).to eq 3
     expect(Asset.last.current_state).to eq state.name
-  end
-
-  after do
-    Timecop.return
   end
 end

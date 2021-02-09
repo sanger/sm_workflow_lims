@@ -25,7 +25,7 @@ describe Workflow do
       expect(workflow.assets.first.identifier).to eq('test')
     end
 
-    it 'should know its initial state' do
+    it 'knows its initial state' do
       expect(workflow.initial_state).to eq volume_check
     end
   end
@@ -34,20 +34,20 @@ describe Workflow do
     it 'requires a name' do
       workflow = Workflow.new
       expect(workflow).to have(1).errors_on(:name)
-      expect(workflow).to_not be_valid
+      expect(workflow).not_to be_valid
     end
 
     it 'requires a unique name' do
       workflow = Workflow.create!(name: 'test1', initial_state: volume_check)
       workflow = Workflow.create(name: 'test1')
       expect(workflow).to have(1).errors_on(:name)
-      expect(workflow).to_not be_valid
+      expect(workflow).not_to be_valid
     end
 
     it 'can not have a negative turn around time' do
       workflow = Workflow.new(name: 'test', turn_around_days: -1)
       expect(workflow).to have(1).errors_on(:turn_around_days)
-      expect(workflow).to_not be_valid
+      expect(workflow).not_to be_valid
     end
   end
 end

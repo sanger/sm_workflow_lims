@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature 'can generate report', js: true do
+describe 'can generate report', js: true do
   let!(:workflow1) { create(:workflow, name: 'Workflow1') }
   let!(:workflow2) { create(:workflow, name: 'Workflow2') }
   let!(:in_progress) { create :state, name: 'in_progress' }
@@ -18,7 +18,11 @@ feature 'can generate report', js: true do
     Timecop.freeze(Time.local(2017, 3, 7))
   end
 
-  scenario 'can generate report' do
+  after do
+    Timecop.return
+  end
+
+  it 'can generate report' do
     asset1.complete
     asset2.complete
     asset3.complete
@@ -41,9 +45,5 @@ feature 'can generate report', js: true do
       expect(page).to have_text('2 Study1 Project2 A1 1')
     end
     click_on 'Download csv file'
-  end
-
-  after do
-    Timecop.return
   end
 end

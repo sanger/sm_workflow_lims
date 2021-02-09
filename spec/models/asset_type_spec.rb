@@ -30,7 +30,7 @@ describe AssetType do
       expect(invalid_asset_type).to have(1).errors_on(:name)
       expect(invalid_asset_type).to have(1).errors_on(:identifier_type)
       expect(invalid_asset_type).to have(1).errors_on(:labware_type)
-      expect(invalid_asset_type).to_not be_valid
+      expect(invalid_asset_type).not_to be_valid
     end
   end
 end

@@ -13,7 +13,7 @@ FactoryGirl.define do
     labware_type { 'Plate' }
 
     factory :asset_type_has_sample_count do
-      has_sample_count true
+      has_sample_count { true }
     end
 
     factory :asset_type_with_asset do

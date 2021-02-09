@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature 'create complete and report assets within QC flow', js: true do
+describe 'create complete and report assets within QC flow', js: true do
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
@@ -13,7 +13,7 @@ feature 'create complete and report assets within QC flow', js: true do
   let!(:workflow1) { create(:qc_workflow, name: 'QC workflow') }
   let!(:workflow2) { create(:qc_workflow, name: 'Reportable QC workflow', reportable: true) }
 
-  scenario 'can create and complete a non-reportable asset' do
+  it 'can create and complete a non-reportable asset' do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'
@@ -48,7 +48,7 @@ feature 'create complete and report assets within QC flow', js: true do
     expect(page).not_to have_selector('table tr')
   end
 
-  scenario 'can create, complete and report a reportable asset' do
+  it 'can create, complete and report a reportable asset' do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'

@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-feature 'can create workflow', js: true do
-  scenario 'can create workflow' do
+describe 'can create workflow', js: true do
+  it 'can create workflow' do
     create :state, name: 'in_progress'
     create :state, name: 'cherrypick'
     visit '/'
@@ -36,7 +36,7 @@ feature 'can create workflow', js: true do
     expect(created_workflow.initial_state.name).to eq('cherrypick')
   end
 
-  scenario 'can update workflow' do
+  it 'can update workflow' do
     create :state, name: 'in_progress'
     create :state, name: 'cherrypick'
     create :workflow, name: 'Workflow1'

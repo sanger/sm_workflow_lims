@@ -16,7 +16,7 @@ describe Presenter::ReportPresenter::Show do
     include_examples('shared presenter behaviour')
   end
 
-  it 'should generte correct html for report' do
+  it 'genertes correct html for report' do
     Timecop.freeze(Time.local(2017, 4, 7))
     asset1.complete
     asset2.complete

@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-feature 'can create pipeline destination', js: true do
-  scenario 'can create pipeline destination' do
+describe 'can create pipeline destination', js: true do
+  it 'can create pipeline destination' do
     visit '/'
     click_on 'Admin'
     find('a', text: 'Create a new destination').click

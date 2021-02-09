@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature 'create and edit batch', js: true do
+describe 'create and edit batch', js: true do
   let!(:asset_type) { create(:asset_type, name: 'Sample', identifier_type: 'Name') }
   let!(:workflow1) { create(:workflow, name: 'Workflow') }
   let!(:workflow2) { create(:workflow, name: 'Reportable workflow', reportable: true) }
@@ -11,7 +11,7 @@ feature 'create and edit batch', js: true do
   let!(:in_progress) { create :state, name: 'in_progress' }
   let!(:volume_check) { create :state, name: 'volume_check' }
 
-  scenario 'can create and edit a batch' do
+  it 'can create and edit a batch' do
     visit '/'
     click_link 'New Batch'
     click_on 'Sample'
@@ -45,7 +45,7 @@ feature 'create and edit batch', js: true do
     expect(Batch.count).to eq count - 1
   end
 
-  scenario 'can create a batch with an Aker barcode' do
+  it 'can create a batch with an Aker barcode' do
     create(:asset_type, name: 'Plate with Name', identifier_type: 'Name')
     visit '/'
     click_link 'New Batch'

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Presenter::AssetTypePresenter::AssetType do
-  context '#validates_with' do
+  describe '#validates_with' do
     let(:asset_type) { create :asset_type, identifier_data_type: identifier_data_type }
     let(:presenter) { Presenter::AssetTypePresenter::AssetType.new(asset_type) }
 

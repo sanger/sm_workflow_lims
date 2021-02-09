@@ -10,7 +10,7 @@ describe Presenter::ReportPresenter::New do
   end
 
   context 'with empty report' do
-    it 'should not have report data' do
+    it 'does not have report data' do
       expect(presenter.workflow).to be nil
       expect(presenter.start_date).to be nil
       expect(presenter.end_date).to be nil
@@ -25,7 +25,7 @@ describe Presenter::ReportPresenter::New do
     let!(:report) { Report.new(workflow: workflow, start_date: '01/04/2017', end_date: '15/04/2017') }
     let(:presenter) { Presenter::ReportPresenter::New.new(report) }
 
-    it 'should have report data' do
+    it 'has report data' do
       expect(presenter.workflow).to eq 'Workflow'
       expect(presenter.start_date).to eq '01/04/2017'
       expect(presenter.end_date).to eq '15/04/2017'
@@ -40,7 +40,7 @@ describe Presenter::ReportPresenter::New do
     let!(:report) { Report.new(workflow: workflow, start_date: '01/04/2017') }
     let(:presenter) { Presenter::ReportPresenter::New.new(report) }
 
-    it 'should have flash' do
+    it 'has flash' do
       expect(presenter.report.valid?).to be false
       expect(presenter.workflow).to eq 'Workflow'
       expect(presenter.start_date).to eq '01/04/2017'
