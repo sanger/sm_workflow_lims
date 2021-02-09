@@ -9,9 +9,7 @@ module Presenter::BatchPresenter
       @batch = batch
     end
 
-    def id
-      batch.id
-    end
+    delegate :id, to: :batch
 
     def action
       "/batches/#{id}"
@@ -48,9 +46,7 @@ module Presenter::BatchPresenter
     end
 
     def workflow_name
-      if workflow.present?
-        workflow.name
-      end
+      workflow.name if workflow.present?
     end
 
     def pipeline_destination

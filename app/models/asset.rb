@@ -13,11 +13,11 @@ class Asset < ActiveRecord::Base
 
   before_create :set_begun_at
   after_create :create_initial_event
-  after_destroy :remove_comment, :if => :comment
+  after_destroy :remove_comment, if: :comment
 
   include ClientSideValidations
-  validate_with_regexp :study, :with => /^\w+$/
-  validates_presence_of :workflow, :batch, :identifier, :asset_type
+  validate_with_regexp :study, with: /^\w+$/
+  validates :workflow, :batch, :identifier, :asset_type, presence: true
 
   delegate :identifier_type, to: :asset_type
   default_scope { includes(:workflow, :asset_type, :comment, :batch, :pipeline_destination, events: :state) }
@@ -38,14 +38,14 @@ class Asset < ActiveRecord::Base
 
   def self.with_identifier(search_string)
     if search_string.present?
-      where("identifier = :search_string or batch_id = :search_string", search_string: search_string)
+      where('identifier = :search_string or batch_id = :search_string', search_string: search_string)
     else
       all
     end
   end
 
   def set_begun_at
-    self.begun_at ||= self.created_at
+    self.begun_at ||= created_at
   end
   private :set_begun_at
 
@@ -54,19 +54,17 @@ class Asset < ActiveRecord::Base
     where(workflow: workflow)
       .joins(:events)
       .merge(Event.completed_between(start_date, end_date))
-      .joins("LEFT JOIN cost_codes ON assets.cost_code_id = cost_codes.id")
-      .group("study")
-      .group("project")
-      .group("cost_codes.name")
+      .joins('LEFT JOIN cost_codes ON assets.cost_code_id = cost_codes.id')
+      .group('study')
+      .group('project')
+      .group('cost_codes.name')
       .count
       .map do |key, value|
         { study: key[0], project: key[1], cost_code_name: key[2], assets_count: value }.with_indifferent_access
       end
   end
 
-  def reportable?
-    workflow.reportable?
-  end
+  delegate :reportable?, to: :workflow
 
   def qcable?
     workflow.qc_flow?
@@ -86,7 +84,7 @@ class Asset < ActiveRecord::Base
   end
 
   def time_without_completion
-    return ((completed_at - begun_at) / 86400).floor if completed?
+    return ((completed_at - begun_at) / 86_400).floor if completed?
 
     age
   end
@@ -99,7 +97,7 @@ class Asset < ActiveRecord::Base
     attr_reader :action, :assets, :flash_status, :asset_state
 
     def self.create!(*args)
-      self.new(*args).tap { |action| action.do! }
+      new(*args).tap { |action| action.do! }
     end
 
     def initialize(action:, assets:)
@@ -130,10 +128,15 @@ class Asset < ActiveRecord::Base
     end
 
     def message
-      done? ? "#{asset_state.humanize} is done for #{identifiers.to_sentence}" :
-              "#{asset_state.humanize} has not been finished for requested assets."
+      if done?
+        "#{asset_state.humanize} is done for #{identifiers.to_sentence}"
+      else
+        "#{asset_state.humanize} has not been finished for requested assets."
+      end
     end
 
-    def redirect_state; asset_state; end
+    def redirect_state
+      asset_state
+    end
   end
 end

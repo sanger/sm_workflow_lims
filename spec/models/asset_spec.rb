@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Asset do
-  context "with valid parameters" do
+  context 'with valid parameters' do
     let!(:asset_type) { create :asset_type, identifier_type: 'example', name: 'test' }
     let!(:identifier) { 'name' }
     let!(:study) { 'study_A' }
@@ -62,7 +62,7 @@ describe Asset do
       expect(asset.completed?).to be_truthy
     end
 
-    context "with a defined begun time" do
+    context 'with a defined begun time' do
       let(:begun_at) { DateTime.parse('01-02-2012 13:15').to_time }
 
       it 'requires an identifier, batch, asset type and workflow' do
@@ -75,14 +75,14 @@ describe Asset do
                       begun_at: begun_at)
         expect(asset.begun_at).to eq(begun_at)
 
-        Timecop.freeze(begun_at + 2.day) do
+        Timecop.freeze(begun_at + 2.days) do
           expect(asset.age).to eq(2)
         end
       end
     end
   end
 
-  context "with invalid parameters" do
+  context 'with invalid parameters' do
     let(:asset_type) { create :asset_type, identifier_type: 'example', name: 'test' }
     let(:identifier) { 'name' }
     let(:study) { 'study_A' }
@@ -91,7 +91,7 @@ describe Asset do
     let(:comment) { Comment.new }
 
     it 'requires an identifier, batch, study, asset type and workflow' do
-      asset = Asset.new()
+      asset = Asset.new
       expect(asset).to have(1).errors_on(:identifier)
       expect(asset).to have(1).errors_on(:batch)
       expect(asset).to have(1).errors_on(:study)
@@ -102,20 +102,20 @@ describe Asset do
 
     it 'requires study to follow convention format (no spaces)' do
       asset = Asset.new(
-        :identifier => identifier,
-        :batch => batch,
-        :study => 'Not valid because it has spaces',
-        :asset_type => asset_type,
-        :workflow => workflow,
-        :comment => comment
+        identifier: identifier,
+        batch: batch,
+        study: 'Not valid because it has spaces',
+        asset_type: asset_type,
+        workflow: workflow,
+        comment: comment
       )
       expect(asset).to have(1).errors_on(:study)
     end
 
     it 'requires cost code to follow convention format (1 letter + digits)' do
-      cost_code = CostCode.new(:name => 'NOT VALID')
+      cost_code = CostCode.new(name: 'NOT VALID')
       expect(cost_code).to have(1).errors_on(:name)
-      cost_code = CostCode.new(:name => 'S1')
+      cost_code = CostCode.new(name: 'S1')
       expect(cost_code).to have(0).errors_on(:name)
     end
   end
@@ -178,15 +178,15 @@ describe Asset do
   end
 
   context 'removal of an asset' do
-    let(:asset_type) { AssetType.new(:identifier_type => 'example', :name => 'test') }
+    let(:asset_type) { AssetType.new(identifier_type: 'example', name: 'test') }
     let(:identifier) { 'name' }
     let(:batch) { Batch.new }
     let(:workflow) { Workflow.new }
 
     it 'keeps comment if there are more assets using the same comment' do
       comment = Comment.new
-      comment.assets.new(:identifier => 'test1')
-      comment.assets.new(:identifier => 'test2')
+      comment.assets.new(identifier: 'test1')
+      comment.assets.new(identifier: 'test2')
       expect(comment.assets.size).to eq(2)
       comment.assets.first.destroy!
       expect(comment.destroyed?).to be_falsey
@@ -194,8 +194,8 @@ describe Asset do
 
     it 'destroys comment if there are no more assets using it' do
       comment = Comment.new
-      comment.assets.new(:identifier => 'test1')
-      comment.assets.new(:identifier => 'test2')
+      comment.assets.new(identifier: 'test1')
+      comment.assets.new(identifier: 'test2')
       expect(comment.assets.size).to eq(2)
       comment.assets.each(&:destroy!)
       expect(comment.destroyed?).to be_truthy
@@ -255,12 +255,12 @@ describe Asset do
       start_date = Date.today - 1
       end_date = Date.today + 1
       expect(Asset.generate_report_data(start_date, end_date,
-                                        workflow1)).to eq([{ "study" => "Study1", "project" => "Project1", "cost_code_name" => nil, "assets_count" => 1 },
-                                                           { "study" => "Study1",
-                                                             "project" => "Project2", "cost_code_name" => cost_code.name, "assets_count" => 1 }])
+                                        workflow1)).to eq([{ 'study' => 'Study1', 'project' => 'Project1', 'cost_code_name' => nil, 'assets_count' => 1 },
+                                                           { 'study' => 'Study1',
+                                                             'project' => 'Project2', 'cost_code_name' => cost_code.name, 'assets_count' => 1 }])
       expect(Asset.generate_report_data(start_date, end_date,
-                                        workflow2)).to eq([{ "study" => "Study1", "project" => "Project2",
-                                                             "cost_code_name" => nil, "assets_count" => 2 }])
+                                        workflow2)).to eq([{ 'study' => 'Study1', 'project' => 'Project2',
+                                                             'cost_code_name' => nil, 'assets_count' => 2 }])
     end
 
     after do

@@ -11,9 +11,7 @@ module Presenter::AssetTypePresenter
       @asset_type = asset_type
     end
 
-    def name
-      asset_type.name
-    end
+    delegate :name, to: :asset_type
 
     def identifier
       asset_type.identifier_type
@@ -23,16 +21,14 @@ module Presenter::AssetTypePresenter
       yield if asset_type.has_sample_count
     end
 
-    def id
-      asset_type.id
-    end
+    delegate :id, to: :asset_type
 
     def type
       asset_type.labware_type
     end
 
     def template_name
-      asset_type.name.downcase.gsub(' ', '_')
+      asset_type.name.downcase.tr(' ', '_')
     end
 
     def validates_with
@@ -49,7 +45,7 @@ module Presenter::AssetTypePresenter
     end
 
     def is_field_value_shared_inside_batch?(asset_field)
-      [:batch_id, :workflow, :cost_code, :study, :project].include?(asset_field)
+      %i[batch_id workflow cost_code study project].include?(asset_field)
     end
   end
 end

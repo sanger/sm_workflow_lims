@@ -18,13 +18,12 @@ class ReportsController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   def csv
     send_data params[:csv_file_content],
               type: 'text/csv',
-              filename: "report.csv",
+              filename: 'report.csv',
               disposition: 'attachment'
   end
 end

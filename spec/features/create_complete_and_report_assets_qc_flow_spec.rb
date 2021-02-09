@@ -17,32 +17,32 @@ feature 'create complete and report assets within QC flow', js: true do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'
-    within("div#tube-template") do
+    within('div#tube-template') do
       fill_in 'identifier', with: 123
     end
     click_on 'Append to batch'
-    within("div#tube-template") do
+    within('div#tube-template') do
       fill_in 'identifier', with: 456
     end
     click_on 'Append to batch'
-    expect(page).to have_content "Asset added to the batch"
+    expect(page).to have_content 'Asset added to the batch'
     fill_in 'Study', with: 'STDY'
     select('QC workflow', from: 'Workflow')
     click_on 'Save'
-    expect(page).to have_content "The batch was created."
+    expect(page).to have_content 'The batch was created.'
     click_on 'In Progress'
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
     expect(page).to have_selector('table tr', count: 3)
     check "assets[#{Asset.first.id}]"
     click_on 'Volume checked selected'
-    expect(page).to have_content "Volume check is done for 123"
+    expect(page).to have_content 'Volume check is done for 123'
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 2)
     check "assets[#{Asset.first.id}]"
     click_on 'Completed selected'
-    expect(page).to have_content "Quant is done for 123"
+    expect(page).to have_content 'Quant is done for 123'
     expect(page).not_to have_selector('table tr')
     click_on 'Report Required'
     expect(page).not_to have_selector('table tr')
@@ -52,23 +52,23 @@ feature 'create complete and report assets within QC flow', js: true do
     visit '/'
     click_link 'New Batch'
     click_on 'Tube'
-    within("div#tube-template") do
+    within('div#tube-template') do
       fill_in 'identifier', with: 123
     end
     click_on 'Append to batch'
-    within("div#tube-template") do
+    within('div#tube-template') do
       fill_in 'identifier', with: 456
     end
     click_on 'Append to batch'
-    within("div#tube-template") do
+    within('div#tube-template') do
       fill_in 'identifier', with: 789
     end
     click_on 'Append to batch'
-    expect(page).to have_content "Asset added to the batch"
+    expect(page).to have_content 'Asset added to the batch'
     fill_in 'Study', with: 'STDY'
     select('Reportable QC workflow', from: 'Workflow')
     click_on 'Save'
-    expect(page).to have_content "The batch was created."
+    expect(page).to have_content 'The batch was created.'
     click_on 'In Progress'
     expect(page).not_to have_selector('table tr')
     click_on 'Volume check'
@@ -76,19 +76,19 @@ feature 'create complete and report assets within QC flow', js: true do
     check "assets[#{Asset.first.id}]"
     check "assets[#{Asset.third.id}]"
     click_on 'Volume checked selected'
-    expect(page).to have_content "Volume check is done for 123 and 789"
+    expect(page).to have_content 'Volume check is done for 123 and 789'
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 3)
     check "assets[#{Asset.third.id}]"
     click_on 'Completed selected'
-    expect(page).to have_content "Quant is done for 789"
+    expect(page).to have_content 'Quant is done for 789'
     expect(page).to have_selector('table tr', count: 2)
     click_on 'Report Required'
     expect(page).to have_selector('table tr', count: 2)
     check "assets[#{Asset.third.id}]"
     click_on 'Reported selected'
-    expect(page).to have_content "Report required is done for 789"
+    expect(page).to have_content 'Report required is done for 789'
     expect(page).not_to have_selector('table tr')
   end
 end

@@ -24,9 +24,9 @@ describe Batch::Creator do
 
   it 'should create the right batch and the right assets' do
     state = create :state, name: 'in_progress'
-    assets = [{ type: "Plate", identifier: "test", sample_count: "25" },
-              { type: "Plate", identifier: "test2", sample_count: "10" },
-              { type: "Plate", identifier: "test3", sample_count: "96" }]
+    assets = [{ type: 'Plate', identifier: 'test', sample_count: '25' },
+              { type: 'Plate', identifier: 'test2', sample_count: '10' },
+              { type: 'Plate', identifier: 'test3', sample_count: '96' }]
     workflow = create :workflow
 
     batch_creator = Batch::Creator.new(

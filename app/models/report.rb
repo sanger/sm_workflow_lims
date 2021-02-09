@@ -5,7 +5,7 @@ class Report
 
   attr_accessor :workflow_id, :workflow, :start_date, :end_date
 
-  validates_presence_of :workflow, :start_date, :end_date
+  validates :workflow, :start_date, :end_date, presence: true
   validate :correctness_of_period, if: 'start_date.present? && end_date.present?'
 
   def to_csv
@@ -19,7 +19,7 @@ class Report
   end
 
   def column_names
-    ['study', 'project', 'cost_code_name', 'assets_count']
+    %w[study project cost_code_name assets_count]
   end
 
   def title
@@ -61,7 +61,7 @@ class Report
   end
 
   def correctness_of_period
-    errors.add(:start_date, 'should be earlier than the end date.') unless (start_date <= end_date)
+    errors.add(:start_date, 'should be earlier than the end date.') unless start_date <= end_date
   end
 
   class Row
@@ -72,7 +72,7 @@ class Report
     end
 
     def data_for(column_names)
-      data.values_at(*column_names).map { |el| el ? el : 'Not defined' }
+      data.values_at(*column_names).map { |el| el || 'Not defined' }
     end
   end
 end

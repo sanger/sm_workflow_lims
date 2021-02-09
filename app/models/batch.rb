@@ -6,7 +6,7 @@ class Batch < ActiveRecord::Base
 
   def remove_assets
     ActiveRecord::Base.transaction do
-      self.assets.each(&:destroy!)
+      assets.each(&:destroy!)
     end
   end
 end

@@ -17,11 +17,11 @@ module Presenter::AssetPresenter
     end
 
     def has_assets?(type)
-      return assets[type].length > 0
+      assets[type].length > 0
     end
 
     def num_assets(type)
-      return assets[type].length
+      assets[type].length
     end
 
     def assets_from_batch(type, batch_id)
@@ -29,9 +29,7 @@ module Presenter::AssetPresenter
     end
 
     def each_asset(type)
-      if assets[type].nil?
-        return
-      end
+      return if assets[type].nil?
 
       assets[type].each do |asset|
         yield Presenter::AssetPresenter::Asset.new(asset)

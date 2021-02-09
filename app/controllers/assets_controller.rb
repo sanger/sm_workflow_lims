@@ -15,7 +15,7 @@ class AssetsController < ApplicationController
 
   def index
     if params[:state].nil? && params[:identifier].nil?
-      redirect_to("/assets?state=in_progress")
+      redirect_to('/assets?state=in_progress')
     else
       assets = Asset.in_state(state)
                     .with_identifier(params[:identifier])

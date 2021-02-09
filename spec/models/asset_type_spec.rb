@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe AssetType do
-  context "with valid parameters" do
+  context 'with valid parameters' do
     let(:test_name) { 'test' }
     let(:test_identifier_type) { 'type' }
     let(:asset_type) { create :asset_type, name: test_name, identifier_type: test_identifier_type }
@@ -24,9 +24,9 @@ describe AssetType do
     end
   end
 
-  context "with invalid parameters" do
+  context 'with invalid parameters' do
     it 'requires a name and identifier_type' do
-      invalid_asset_type = AssetType.new()
+      invalid_asset_type = AssetType.new
       expect(invalid_asset_type).to have(1).errors_on(:name)
       expect(invalid_asset_type).to have(1).errors_on(:identifier_type)
       expect(invalid_asset_type).to have(1).errors_on(:labware_type)

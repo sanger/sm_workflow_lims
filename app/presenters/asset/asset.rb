@@ -12,21 +12,13 @@ module Presenter::AssetPresenter
       asset.asset_type.identifier_type
     end
 
-    def id
-      asset.id
-    end
+    delegate :id, to: :asset
 
-    def identifier
-      asset.identifier
-    end
+    delegate :identifier, to: :asset
 
-    def sample_count
-      asset.sample_count
-    end
+    delegate :sample_count, to: :asset
 
-    def study
-      asset.study
-    end
+    delegate :study, to: :asset
 
     def project
       asset.project.nil? ? 'Not defined' : asset.project
@@ -59,9 +51,13 @@ module Presenter::AssetPresenter
     end
 
     def completed_status_label
-      return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} #{'day'.pluralize(overdue_by)}" if completed_late?
-      return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'day'.pluralize(overdue_by)}" if completed_early?
-      return "On time" if completed_on_time?
+      if completed_late?
+        return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} #{'day'.pluralize(overdue_by)}"
+      end
+      if completed_early?
+        return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'day'.pluralize(overdue_by)}"
+      end
+      return 'On time' if completed_on_time?
     end
 
     def completed_at_status
@@ -83,7 +79,7 @@ module Presenter::AssetPresenter
     def in_progress_status
       return " (#{days_left} days left)" if asset.workflow.turn_around_days
 
-      return ""
+      ''
     end
 
     def due_today?
@@ -99,25 +95,25 @@ module Presenter::AssetPresenter
     def completed_early?
       return asset.time_without_completion < asset.workflow.turn_around_days if asset.workflow.turn_around_days
 
-      return false
+      false
     end
 
     def completed_late?
       return asset.time_without_completion > asset.workflow.turn_around_days if asset.workflow.turn_around_days
 
-      return false
+      false
     end
 
     def completed_on_time?
       return asset.time_without_completion == asset.workflow.turn_around_days if asset.workflow.turn_around_days
 
-      return false
+      false
     end
 
     def overdue_by
       return 0 if asset.workflow.turn_around_days.nil?
 
-      [(time_from_due_date).floor, 0].max
+      [time_from_due_date.floor, 0].max
     end
 
     def overdue?

@@ -2,7 +2,7 @@ class Batch
   module DateValidator
     def valid_date_provided
       @date = nil
-      return true unless begun_at.present?
+      return true if begun_at.blank?
 
       begin
         @date = DateTime.strptime(begun_at, '%d/%m/%Y') + 12.hours

@@ -9,7 +9,7 @@ module Presenter::ReportPresenter
     end
 
     def action
-      "/reports"
+      '/reports'
     end
 
     def page

@@ -21,8 +21,8 @@ require 'webdrivers/chromedriver'
 Webdrivers::Chromedriver.update
 
 require 'factory_girl'
-require "capybara/rspec"
-require "capybara/rails"
+require 'capybara/rspec'
+require 'capybara/rails'
 require 'selenium/webdriver'
 
 Capybara.register_driver :chrome do |app|

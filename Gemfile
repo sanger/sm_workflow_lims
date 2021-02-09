@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.2.6'
 # Use mysql2 as the database for Active Record
-gem "mysql2", '< 0.5'
+gem 'mysql2', '< 0.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem "bootstrap-sass", '3.4.1'
+gem 'bootstrap-sass', '3.4.1'
 
 gem 'puma'
 
@@ -49,22 +49,22 @@ group :development do
   # displays speed badge for every html page
   gem 'rack-mini-profiler'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
+  gem 'spring'
 end
 
 group :test do
-  gem 'rspec-rails', '~> 3.5.0'
-  gem 'rspec-collection_matchers'
-  gem 'timecop'
-  gem 'database_cleaner'
-  gem 'factory_girl'
   gem 'capybara'
   gem 'capybara-selenium'
+  gem 'database_cleaner'
+  gem 'factory_girl'
   gem 'launchy'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-rails', '~> 3.5.0'
+  gem 'timecop'
   # Keep webdriver in sync with chrome to prevent frustrating CI failures
   gem 'webdrivers', require: false
 end

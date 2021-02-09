@@ -1,6 +1,6 @@
 class AssetType < ActiveRecord::Base
-  validates_presence_of :name, :identifier_type, :labware_type
-  validates_uniqueness_of :name
+  validates :name, :identifier_type, :labware_type, presence: true
+  validates :name, uniqueness: true
 
   has_many :assets
 end

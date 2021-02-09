@@ -3,7 +3,7 @@ class Batch
     include ActiveModel::Model
     include Batch::DateValidator
 
-    validates_presence_of :workflow, :assets, :asset_type, :study
+    validates :workflow, :assets, :asset_type, :study, presence: true
     validate :valid_date_provided
 
     attr_accessor :comment, :assets, :study, :project, :workflow, :asset_type, :pipeline_destination, :begun_at,

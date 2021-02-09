@@ -3,7 +3,7 @@ require './app/presenters/asset/index'
 require './spec/presenters/shared_presenter_behaviour'
 
 describe Presenter::AssetPresenter::Index do
-  shared_examples "shared mocks" do
+  shared_examples 'shared mocks' do
     let(:mock_type) do
       double('mock_type',
              name: 'Type',
@@ -36,14 +36,14 @@ describe Presenter::AssetPresenter::Index do
     let(:presenter) { Presenter::AssetPresenter::Index.new(assets, search, state) }
   end
 
-  shared_examples "standard behaviour" do
-    include_examples("shared presenter behaviour")
-    include_examples("shared mocks")
+  shared_examples 'standard behaviour' do
+    include_examples('shared presenter behaviour')
+    include_examples('shared mocks')
 
-    it "should return a count of assets for total" do
+    it 'should return a count of assets for total' do
       expect(presenter.total).to eq(2)
     end
-    it "should yield each asset of type x in turn for each_asset(x)" do
+    it 'should yield each asset of type x in turn for each_asset(x)' do
       expect { |b| presenter.each_asset('Type', &b) }.to yield_with_args(Presenter::AssetPresenter::Asset)
       presenter.each_asset('Type') do |asset|
         expect(asset.identifier).to eq('asset_1')
@@ -51,58 +51,58 @@ describe Presenter::AssetPresenter::Index do
     end
   end
 
-  context "when returning search results" do
-    include_examples "standard behaviour"
+  context 'when returning search results' do
+    include_examples 'standard behaviour'
 
     let(:search) { "identifier matches 'Type'" }
 
-    it "should yield the search parameters on search_parameters" do
+    it 'should yield the search parameters on search_parameters' do
       expect { |b| presenter.search_parameters(&b) }.to yield_with_args(search)
     end
     # Eg. presenter.search_parameters {|sp| puts sp }
     # -> identifier matches 'my plate'
-    it "should return true for is_search?" do
+    it 'should return true for is_search?' do
       expect(presenter.is_search?).to be_truthy
     end
   end
 
-  context "when returning a complete index" do
-    include_examples "standard behaviour"
+  context 'when returning a complete index' do
+    include_examples 'standard behaviour'
 
     let(:search) { nil }
 
-    it "should not yield on search_parameters" do
-      expect { |b| presenter.search_parameters(&b) }.to yield_successive_args()
+    it 'should not yield on search_parameters' do
+      expect { |b| presenter.search_parameters(&b) }.to yield_successive_args
     end
     # Eg. presenter.search_parameters {|sp| puts "Never called" }
-    it "should return false for is_search?" do
+    it 'should return false for is_search?' do
       expect(presenter.is_search?).to be_falsey
     end
   end
 
-  context "when state is" do
-    include_examples "shared mocks"
+  context 'when state is' do
+    include_examples 'shared mocks'
     let(:search) { nil }
 
     context 'all' do
       let(:state) { nil }
 
-      it "should have no action button" do
+      it 'should have no action button' do
         expect { |b| presenter.action_button(&b) }.not_to yield_control
       end
     end
     context 'in_progress' do
       let(:state) { create :state, name: 'in_progress' }
 
-      it "should have complete actions" do
+      it 'should have complete actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
-        expect(presenter.action).to eq ('complete')
+        expect(presenter.action).to eq('complete')
       end
     end
     context 'volume_check' do
       let(:state) { create :state, name: 'volume_check' }
 
-      it "should have volume_check actions" do
+      it 'should have volume_check actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Volume checked selected')
         expect(presenter.action).to eq('check_volume')
       end
@@ -110,7 +110,7 @@ describe Presenter::AssetPresenter::Index do
     context 'quant' do
       let(:state) { create :state, name: 'quant' }
 
-      it "should have quant actions" do
+      it 'should have quant actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
         expect(presenter.action).to eq('complete')
       end
@@ -118,7 +118,7 @@ describe Presenter::AssetPresenter::Index do
     context 'report_required' do
       let(:state) { create :state, name: 'report_required' }
 
-      it "should have reporting actions" do
+      it 'should have reporting actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Reported selected')
         expect(presenter.action).to eq('report')
       end

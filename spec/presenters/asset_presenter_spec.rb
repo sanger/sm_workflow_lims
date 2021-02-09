@@ -3,7 +3,7 @@ require './app/presenters/asset/asset'
 require 'timecop'
 
 describe Presenter::AssetPresenter::Asset do
-  shared_examples "shared behaviour" do
+  shared_examples 'shared behaviour' do
     let(:mock_type) do
       double('mock_type',
              name: 'Type',
@@ -12,36 +12,36 @@ describe Presenter::AssetPresenter::Asset do
     end
     let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true, turn_around_days: 2) }
     let(:date) { DateTime.parse('01-02-2012 13:15') }
-    let(:comment) { double('comment', :comment => 'A comment') }
+    let(:comment) { double('comment', comment: 'A comment') }
 
     let(:presenter) { Presenter::AssetPresenter::Asset.new(asset) }
 
-    it "should return the identifier type for identifier_type" do
+    it 'should return the identifier type for identifier_type' do
       expect(presenter.identifier_type).to eq('id')
     end
 
-    it "should return the identifier for identifier" do
+    it 'should return the identifier for identifier' do
       expect(presenter.identifier).to eq('asset_1')
     end
 
-    it "should return the sample count for sample_count" do
+    it 'should return the sample count for sample_count' do
       expect(presenter.sample_count).to eq(2)
     end
 
-    it "should return the study_name for study" do
+    it 'should return the study_name for study' do
       expect(presenter.study).to eq('study')
     end
 
-    it "should return the workflow for workflow" do
+    it 'should return the workflow for workflow' do
       expect(presenter.workflow).to eq('Work')
     end
 
-    it "should return the created at time as a formatted string for created_at" do
+    it 'should return the created at time as a formatted string for created_at' do
       expect(presenter.created_at).to eq('01/02/2012')
     end
   end
 
-  context "with an asset with comments" do
+  context 'with an asset with comments' do
     let(:asset) do
       double('asset',
              identifier: 'asset_1',
@@ -53,14 +53,14 @@ describe Presenter::AssetPresenter::Asset do
              comment: comment)
     end
 
-    include_examples "shared behaviour"
+    include_examples 'shared behaviour'
 
-    it "should return the comment for comments" do
+    it 'should return the comment for comments' do
       expect(presenter.comments).to eq('A comment')
     end
   end
 
-  context "with an asset without comments" do
+  context 'with an asset without comments' do
     let(:asset) do
       double('asset',
              identifier: 'asset_1',
@@ -72,14 +72,14 @@ describe Presenter::AssetPresenter::Asset do
              comment: nil)
     end
 
-    include_examples "shared behaviour"
+    include_examples 'shared behaviour'
 
-    it "should return an empty string for comments" do
+    it 'should return an empty string for comments' do
       expect(presenter.comments).to eq('')
     end
   end
 
-  context "an unfinished asset" do
+  context 'an unfinished asset' do
     let(:age) { date - DateTime.parse('01-02-2012 15:15') }
     let(:asset) do
       double('asset',
@@ -94,7 +94,7 @@ describe Presenter::AssetPresenter::Asset do
              time_without_completion: 0)
     end
 
-    include_examples "shared behaviour"
+    include_examples 'shared behaviour'
 
     context 'when no turn_around_days specified' do
       let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true, turn_around_days: nil) }
@@ -103,7 +103,7 @@ describe Presenter::AssetPresenter::Asset do
         expect(presenter.completed_at).to eq('In progress')
       end
 
-      it "should have no styling" do
+      it 'should have no styling' do
         expect(presenter.status_code).to eq('default')
       end
     end
@@ -142,7 +142,7 @@ describe Presenter::AssetPresenter::Asset do
         expect(presenter.completed_at).to eq('Due today')
       end
 
-      it "should be warning" do
+      it 'should be warning' do
         expect(presenter.status_code).to eq('warning')
       end
     end
@@ -167,14 +167,14 @@ describe Presenter::AssetPresenter::Asset do
         expect(presenter.completed_at).to eq('Overdue (1 day)')
       end
 
-      it "should be danger" do
+      it 'should be danger' do
         expect(presenter.status_code).to eq('danger')
       end
     end
   end
 
-  context "an completed asset" do
-    include_examples "shared behaviour"
+  context 'an completed asset' do
+    include_examples 'shared behaviour'
 
     let(:asset) do
       double('asset',
@@ -189,7 +189,7 @@ describe Presenter::AssetPresenter::Asset do
              age: 0)
     end
 
-    it "should return its completed date for completed_at" do
+    it 'should return its completed date for completed_at' do
       expect(presenter.completed_at).to eq('01/02/2012 (Early 2 days)')
     end
   end

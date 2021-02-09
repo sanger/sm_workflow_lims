@@ -7,7 +7,7 @@ describe Batch::Updater do
 
   it 'should not be valid if the begun_at date is wrong, required attributes were not provided' do
     batch_updater = Batch::Updater.new(
-      begun_at: '005/05/23456',
+      begun_at: '005/05/23456'
     )
     expect(batch_updater.valid?).to be false
     expect(batch_updater.errors.messages.count).to eq 3
