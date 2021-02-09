@@ -41,3 +41,14 @@ jobs:
         CC_TEST_REPORTER_ID:  ${{ secrets.CC_TEST_REPORTER_ID || '5e399530a457db7a41cd5785ce0536b79e9022b3c2d4382f101310b3b166eb38' }}
       with:
         coverageCommand: bundle exec rspec
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true # Runs bundle install and caches gems. See the ruby_test.yml
+                            # example if you need more control over bundler.
+    - name: Lint
+      run: bundle exec rubocop
