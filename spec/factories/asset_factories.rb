@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :asset_identifier do |n|
     "Asset #{n}"
   end

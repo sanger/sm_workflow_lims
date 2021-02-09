@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :asset_type_name do |n|
     "Asset type #{n}"
   end

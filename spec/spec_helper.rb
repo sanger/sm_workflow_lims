@@ -20,7 +20,7 @@
 require 'webdrivers/chromedriver'
 Webdrivers::Chromedriver.update
 
-require 'factory_girl'
+require 'factory_bot'
 require 'capybara/rspec'
 require 'capybara/rails'
 require 'selenium/webdriver'
@@ -67,10 +67,10 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
-    FactoryGirl.find_definitions
+    FactoryBot.find_definitions
   end
 
   config.before(:suite) do

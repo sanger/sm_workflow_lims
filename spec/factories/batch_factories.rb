@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :batch do
     factory :batch_with_assets do
       transient do

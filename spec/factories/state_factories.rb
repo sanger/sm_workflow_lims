@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence :state_name do |n|
     "State #{n}"
   end
