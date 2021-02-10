@@ -6,7 +6,6 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
     env:
       TZ: Europe/London
