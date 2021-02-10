@@ -2,8 +2,7 @@ require './app/presenters/batch/new'
 require './app/presenters/batch/show'
 
 class BatchesController < ApplicationController
-
-  before_action :batch, only: [:show, :update, :remove]
+  before_action :batch, only: %i[show update remove]
 
   def new
     @presenter = Presenter::BatchPresenter::New.new
@@ -23,11 +22,11 @@ class BatchesController < ApplicationController
       pipeline_destination: pipeline_destination,
       begun_at: params[:begun_at],
       comment: params[:comment]
-      )
+    )
     if batch_updater.valid?
       batch = batch_updater.update!
       @presenter = Presenter::BatchPresenter::Show.new(batch)
-      flash[:notice] = "The batch was updated."
+      flash[:notice] = 'The batch was updated.'
       redirect_to("/batches/#{params[:id]}")
     else
       flash[:error] = batch_updater.errors.full_messages.join('; ')
@@ -37,8 +36,8 @@ class BatchesController < ApplicationController
 
   def destroy
     batch.destroy!
-    flash[:notice] = "The batch was deleted."
-    redirect_to("/batches/new")
+    flash[:notice] = 'The batch was deleted.'
+    redirect_to('/batches/new')
   end
 
   def create
@@ -56,7 +55,7 @@ class BatchesController < ApplicationController
     if batch_creator.valid?
       batch = batch_creator.create!
       @presenter = Presenter::BatchPresenter::Show.new(batch)
-      flash[:notice] = "The batch was created."
+      flash[:notice] = 'The batch was created.'
       redirect_to("/batches/#{@presenter.id}")
     else
       flash[:error] = batch_creator.errors.full_messages.join('; ')
@@ -67,26 +66,26 @@ class BatchesController < ApplicationController
   private
 
   def workflow
-    Workflow.find_by_id(params[:workflow_id])
+    Workflow.find_by(id: params[:workflow_id])
   end
 
   def pipeline_destination
-    PipelineDestination.find_by_id(params[:pipeline_destination_id])
+    PipelineDestination.find_by(id: params[:pipeline_destination_id])
   end
 
   def cost_code
-    CostCode.find_or_create_by(:name => params[:cost_code])
+    CostCode.find_or_create_by(name: params[:cost_code])
   end
 
   def asset_type
-    AssetType.find_by_id(params[:asset_type_id])
+    AssetType.find_by(id: params[:asset_type_id])
   end
 
   def batch
     if params[:id].present?
-      @batch ||= Batch.find_by_id(params[:id])
+      @batch ||= Batch.find_by(id: params[:id])
     else
-      flash[:error] = "You must specify a batch."
+      flash[:error] = 'You must specify a batch.'
       redirect_to :back
     end
   end
@@ -98,5 +97,4 @@ class BatchesController < ApplicationController
   def assets_provided
     params[:assets] && params[:assets].keys.size > 0
   end
-
 end

@@ -1,5 +1,4 @@
-FactoryGirl.define do
-
+FactoryBot.define do
   sequence :pipeline_destination_name do |n|
     "Pipeline destination #{n}"
   end
@@ -7,5 +6,4 @@ FactoryGirl.define do
   factory :pipeline_destination do
     name { generate :pipeline_destination_name }
   end
-
 end

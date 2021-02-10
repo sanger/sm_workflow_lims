@@ -5,7 +5,7 @@ class AddPipelineDestination < ActiveRecord::Migration
         t.column :name, :string
       end
       change_table(:assets) do |t|
-        t.references :pipeline_destination, :null => true
+        t.references :pipeline_destination, null: true
       end
     end
   end

@@ -1,5 +1,4 @@
-FactoryGirl.define do
-
+FactoryBot.define do
   sequence :cost_code_name do |n|
     "A#{n}"
   end
@@ -7,5 +6,4 @@ FactoryGirl.define do
   factory :cost_code do
     name { generate :cost_code_name }
   end
-
 end

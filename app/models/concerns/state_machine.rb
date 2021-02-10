@@ -1,6 +1,4 @@
-
 module StateMachine
-
   extend ActiveSupport::Concern
 
   included do
@@ -9,7 +7,7 @@ module StateMachine
 
   StateMachineError = Class.new(StandardError)
 
-  VALID_ACTIONS = ['cherrypicking', 'check_volume', 'complete', 'report']
+  VALID_ACTIONS = %w[cherrypicking check_volume complete report]
 
   def perform_action(action)
     if VALID_ACTIONS.include? action
@@ -20,13 +18,13 @@ module StateMachine
   end
 
   def complete
-    events.create! state_name: 'completed' if (in_progress? || quant? || cherrypick?)
+    events.create! state_name: 'completed' if in_progress? || quant? || cherrypick?
     events.create! state_name: 'report_required' if reportable?
   end
 
   def cherrypicking
-    complete if (cherrypick? && !qcable?)
-    events.create! state_name: 'volume_check' if (cherrypick? && qcable?)
+    complete if cherrypick? && !qcable?
+    events.create! state_name: 'volume_check' if cherrypick? && qcable?
   end
 
   def check_volume
@@ -40,5 +38,4 @@ module StateMachine
   def current_state
     events.last.state.name.inquiry
   end
-
 end

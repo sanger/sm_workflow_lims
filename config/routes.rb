@@ -8,11 +8,11 @@ Rails.application.routes.draw do
   resources :assets, only: [:index]
   get 'assets/update'
 
-  resources :batches, except: [:index, :edit]
+  resources :batches, except: %i[index edit]
 
   resources :admin, only: [:index] do
     collection do
-      resources :workflows, only: [:show, :update, :create]
+      resources :workflows, only: %i[show update create]
       resources :pipeline_destinations, only: [:create]
     end
   end
@@ -24,6 +24,4 @@ Rails.application.routes.draw do
       get :csv
     end
   end
-
-
 end

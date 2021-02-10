@@ -1,14 +1,17 @@
 require 'rails_helper'
 
 describe Batch::Updater do
-
   before do
     Timecop.freeze(Time.local(2017, 3, 7))
   end
 
-  it 'should not be valid if the begun_at date is wrong, required attributes were not provided' do
+  after do
+    Timecop.return
+  end
+
+  it 'is not valid if the begun_at date is wrong, required attributes were not provided' do
     batch_updater = Batch::Updater.new(
-      begun_at: '005/05/23456',
+      begun_at: '005/05/23456'
     )
     expect(batch_updater.valid?).to be false
     expect(batch_updater.errors.messages.count).to eq 3
@@ -17,7 +20,7 @@ describe Batch::Updater do
     expect(batch_updater).to have(1).errors_on(:dates)
   end
 
-  it 'should create the right batch and the right assets' do
+  it 'creates the right batch and the right assets' do
     state = create :state, name: 'in_progress'
     workflow = create :workflow, name: 'New workflow'
     batch = create :batch_with_assets
@@ -34,9 +37,4 @@ describe Batch::Updater do
       expect(asset.workflow.name).to eq 'New workflow'
     end
   end
-
-  after(:each) do
-    Timecop.return
-  end
-
 end

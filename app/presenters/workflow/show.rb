@@ -1,9 +1,7 @@
 require './app/presenters/presenter'
 
 module Presenter::WorkflowPresenter
-
   class Show < Presenter
-
     attr_reader :workflow
 
     def initialize(workflow)
@@ -19,7 +17,5 @@ module Presenter::WorkflowPresenter
     def action
       "/admin/workflows/#{workflow.id}"
     end
-
   end
-
 end

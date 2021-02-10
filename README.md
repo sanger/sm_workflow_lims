@@ -1,7 +1,7 @@
 Sample Management Workflow
 ==========================
 
-[![Build Status](https://travis-ci.org/sanger/sm_workflow_lims.svg?branch=master)](https://travis-ci.org/sanger/sm_workflow_lims)
+![Ruby Lint and Test](https://github.com/sanger/sm_workflow_lims/workflows/Ruby%20Lint%20and%20Test/badge.svg)
 
 Description
 -----------
@@ -28,4 +28,3 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-

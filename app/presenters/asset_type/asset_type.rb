@@ -2,7 +2,6 @@ require './app/presenters/presenter'
 
 module Presenter::AssetTypePresenter
   class AssetType < Presenter
-
     attr_reader :asset_type
 
     ALPHANUMERIC_REGEX = '^[\w-]+$'
@@ -12,9 +11,7 @@ module Presenter::AssetTypePresenter
       @asset_type = asset_type
     end
 
-    def name
-      asset_type.name
-    end
+    delegate :name, to: :asset_type
 
     def identifier
       asset_type.identifier_type
@@ -24,33 +21,31 @@ module Presenter::AssetTypePresenter
       yield if asset_type.has_sample_count
     end
 
-    def id
-      asset_type.id
-    end
+    delegate :id, to: :asset_type
 
     def type
       asset_type.labware_type
     end
 
     def template_name
-      asset_type.name.downcase.gsub(' ','_')
+      asset_type.name.downcase.tr(' ', '_')
     end
 
     def validates_with
       {
         'alphanumeric' => ALPHANUMERIC_REGEX,
-        'numeric'      => NUMERIC_REGEX
+        'numeric' => NUMERIC_REGEX
       }[asset_type.identifier_data_type]
     end
 
     def asset_fields
       sample_count = asset_type.has_sample_count ? :sample_count : nil
-      [:batch_id, :identifier, :study, :project, sample_count, :workflow, :pipeline_destination, :cost_code, :created_at, :completed_at].compact
+      [:batch_id, :identifier, :study, :project, sample_count, :workflow, :pipeline_destination, :cost_code,
+       :created_at, :completed_at].compact
     end
 
     def is_field_value_shared_inside_batch?(asset_field)
-      [:batch_id, :workflow, :cost_code, :study, :project].include?(asset_field)
+      %i[batch_id workflow cost_code study project].include?(asset_field)
     end
-
   end
 end

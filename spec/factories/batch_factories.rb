@@ -1,11 +1,8 @@
-FactoryGirl.define do
-
+FactoryBot.define do
   factory :batch do
-
     factory :batch_with_assets do
-
       transient do
-        assets_count 3
+        assets_count { 3 }
       end
 
       after(:create) do |batch, evaluator|
@@ -13,5 +10,4 @@ FactoryGirl.define do
       end
     end
   end
-
 end

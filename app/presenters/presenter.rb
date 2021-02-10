@@ -1,5 +1,4 @@
 class Presenter
-
   module DeploymentInfo
     require './lib/deployed_version'
 
@@ -27,7 +26,6 @@ class Presenter
   include DeploymentInfo
 
   module SharedBehaviour
-
     require './app/presenters/asset_type/asset_type'
 
     def each_asset_type
@@ -82,8 +80,6 @@ class Presenter
         yield cost_code.name, cost_code.id
       end
     end
-
   end
   include SharedBehaviour
-
 end

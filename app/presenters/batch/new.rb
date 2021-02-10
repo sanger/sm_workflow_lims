@@ -2,10 +2,7 @@ require './app/presenters/presenter'
 
 module Presenter::BatchPresenter
   class New < Presenter
-
-    def each_asset
-
-    end
+    def each_asset; end
 
     def study
       ''
@@ -15,8 +12,7 @@ module Presenter::BatchPresenter
       ''
     end
 
-    def workflow
-    end
+    def workflow; end
 
     def pipeline_destination
       'None'
@@ -27,7 +23,7 @@ module Presenter::BatchPresenter
     end
 
     def action
-      "/batches"
+      '/batches'
     end
 
     def comment
@@ -46,12 +42,10 @@ module Presenter::BatchPresenter
       'Today'
     end
 
-    def prohibited_workflow(_reportable, _qc_flow, _cherrypick_flow)
-    end
+    def prohibited_workflow(_reportable, _qc_flow, _cherrypick_flow); end
 
     def workflow_name
       ''
     end
-
   end
 end

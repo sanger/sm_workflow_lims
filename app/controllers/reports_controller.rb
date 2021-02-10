@@ -2,7 +2,6 @@ require './app/presenters/report/new'
 require './app/presenters/report/show'
 
 class ReportsController < ApplicationController
-
   def new
     @presenter = Presenter::ReportPresenter::New.new
   end
@@ -19,14 +18,12 @@ class ReportsController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   def csv
     send_data params[:csv_file_content],
               type: 'text/csv',
-              filename: "report.csv",
+              filename: 'report.csv',
               disposition: 'attachment'
   end
-
 end
