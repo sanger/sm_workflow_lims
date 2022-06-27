@@ -113,5 +113,5 @@ module Deployed
   HOSTNAME       = Socket.gethostname
 
   require 'ostruct'
-  DETAILS = { name: nil, version: VERSION_ID, environment: ENVIRONMENT }
+  DETAILS = { name: nil, version: VERSION_ID, environment: ENVIRONMENT }.freeze
 end
