@@ -30,7 +30,7 @@ class BatchesController < ApplicationController
       redirect_to("/batches/#{params[:id]}")
     else
       flash[:error] = batch_updater.errors.full_messages.join('; ')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 
@@ -59,7 +59,7 @@ class BatchesController < ApplicationController
       redirect_to("/batches/#{@presenter.id}")
     else
       flash[:error] = batch_creator.errors.full_messages.join('; ')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 
@@ -86,7 +86,7 @@ class BatchesController < ApplicationController
       @batch ||= Batch.find_by(id: params[:id])
     else
       flash[:error] = I18n.t('batches.errors.none_selected')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 

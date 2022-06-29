@@ -9,7 +9,7 @@ class AssetsController < ApplicationController
       redirect_to("/assets?state=#{updater.redirect_state}")
     else
       flash[:error] = I18n.t('assets.errors.none_selected')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 

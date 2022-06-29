@@ -10,7 +10,7 @@ class WorkflowsController < ApplicationController
       redirect_to('/admin')
     else
       flash[:error] = @workflow.errors.full_messages.join('; ')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 
@@ -25,7 +25,7 @@ class WorkflowsController < ApplicationController
       redirect_to('/admin')
     else
       flash[:error] = workflow.errors.full_messages.join('; ')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 

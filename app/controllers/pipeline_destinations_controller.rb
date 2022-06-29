@@ -7,7 +7,7 @@ class PipelineDestinationsController < ApplicationController
       redirect_to('/admin')
     else
       flash[:error] = @pipeline_destination.errors.full_messages.join('; ')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 end
