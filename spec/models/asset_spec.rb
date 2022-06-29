@@ -50,14 +50,17 @@ describe Asset do
 
     it 'can have events' do
       expect(asset.events.count).to eq 0
+
       asset.save
       expect(asset.events.count).to eq 1
+
       create_list(:event, 3, asset: asset)
       expect(asset.events.count).to eq 4
     end
 
     it 'knows if it is completed' do
       expect(asset.completed?).to be_falsey
+
       asset.events << create(:event, asset: asset, state: completed)
       expect(asset.completed?).to be_truthy
     end
@@ -115,6 +118,7 @@ describe Asset do
     it 'requires cost code to follow convention format (1 letter + digits)' do
       cost_code = CostCode.new(name: 'NOT VALID')
       expect(cost_code).to have(1).errors_on(:name)
+
       cost_code = CostCode.new(name: 'S1')
       expect(cost_code).to have(0).errors_on(:name)
     end
@@ -188,6 +192,7 @@ describe Asset do
       comment.assets.new(identifier: 'test1')
       comment.assets.new(identifier: 'test2')
       expect(comment.assets.size).to eq(2)
+
       comment.assets.first.destroy!
       expect(comment.destroyed?).to be_falsey
     end
@@ -197,6 +202,7 @@ describe Asset do
       comment.assets.new(identifier: 'test1')
       comment.assets.new(identifier: 'test2')
       expect(comment.assets.size).to eq(2)
+
       comment.assets.each(&:destroy!)
       expect(comment.destroyed?).to be_truthy
     end
@@ -218,11 +224,13 @@ describe Asset do
 
     it 'creates the right events' do
       expect(asset.events.count).to eq 1
+
       asset.complete
       expect(asset.events.count).to eq 2
       expect(asset.completed?).to be_truthy
 
       expect(reportable_asset.events.count).to eq 1
+
       reportable_asset.complete
       expect(reportable_asset.events.count).to eq 3
       expect(reportable_asset.report_required?).to be_truthy
