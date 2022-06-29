@@ -6,7 +6,7 @@ class Report
   attr_accessor :workflow_id, :workflow, :start_date, :end_date
 
   validates :workflow, :start_date, :end_date, presence: true
-  validate :correctness_of_period, if: 'start_date.present? && end_date.present?'
+  validate :correctness_of_period, if: :dates_present?
 
   def to_csv
     CSV.generate do |csv|
@@ -64,6 +64,10 @@ class Report
 
   def correctness_of_period
     errors.add(:start_date, 'should be earlier than the end date.') unless start_date <= end_date
+  end
+
+  def dates_present?
+    start_date.present? && end_date.present?
   end
 
   class Row
