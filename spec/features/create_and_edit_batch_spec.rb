@@ -20,6 +20,7 @@ describe 'create and edit batch', js: true do
     end
     click_on 'Append to batch'
     expect(page).to have_content 'Asset added to the batch'
+
     fill_in 'Study', with: 'STDY'
     select('Workflow', from: 'Workflow')
     click_on 'Save'
@@ -32,12 +33,14 @@ describe 'create and edit batch', js: true do
     expect(options[2].disabled?).to be true
     expect(options[3].text).to include 'QC workflow'
     expect(options[3].disabled?).to be true
+
     fill_in 'Study', with: 'STDY2'
     click_on 'Save'
     expect(page).to have_content 'The batch was updated.'
     Batch.last.assets.each do |asset|
       expect(asset.study).to eq 'STDY2'
     end
+
     count = Batch.count
     click_on 'Remove'
     click_on 'Accept'

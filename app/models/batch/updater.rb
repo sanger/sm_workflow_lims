@@ -19,7 +19,7 @@ class Batch
     private
 
     def asset_params
-      { study: study, project: project, workflow_id: workflow, pipeline_destination_id: pipeline_destination,
+      { study: study, project: project, workflow_id: workflow.id, pipeline_destination_id: pipeline_destination,
         cost_code_id: cost_code, comment_id: comment_object }.tap do |params|
         # Only update begun at if its actually provided
         params.merge!(begun_at: date) if date.present?
