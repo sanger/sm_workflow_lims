@@ -39,7 +39,7 @@ describe Presenter::ReportPresenter::Show do
                                  "<td class='text-center'>A1</td>" +
                                  "<td class='text-center'>1</td>" +
                                  '</tr>'
-    expect(presenter.flash).to be nil
+    expect(presenter.flash).to be_nil
     expect(presenter.page).to eq :'reports/show'
     Timecop.return
   end

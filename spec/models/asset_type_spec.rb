@@ -13,7 +13,7 @@ describe AssetType do
       expect(asset_type).to have(0).errors_on(:identifier_type)
       expect(asset_type.name).to eq(test_name)
       expect(asset_type.identifier_type).to eq(test_identifier_type)
-      expect(asset_type.has_sample_count).to eq(false)
+      expect(asset_type.has_sample_count).to be(false)
       expect(asset_type.identifier_data_type).to eq('alphanumeric')
       expect(asset_type.labware_type).to eq('Plate')
     end
