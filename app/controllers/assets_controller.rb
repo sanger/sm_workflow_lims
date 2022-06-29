@@ -34,7 +34,7 @@ class AssetsController < ApplicationController
   end
 
   def assets_provided
-    params[:assets].is_a?(Hash) && params[:assets].keys.present?
+    params[:assets].is_a?(ActionController::Parameters) && params[:assets].keys.present?
   end
 
   def assets_to_be_updated
