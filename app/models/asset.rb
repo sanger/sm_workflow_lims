@@ -5,10 +5,10 @@ class Asset < ApplicationRecord
 
   belongs_to :asset_type
   belongs_to :workflow
-  belongs_to :pipeline_destination
-  belongs_to :cost_code
+  belongs_to :pipeline_destination, optional: true
+  belongs_to :cost_code, optional: true
   belongs_to :batch
-  belongs_to :comment
+  belongs_to :comment, optional: true
   has_many :events, dependent: :destroy
 
   before_create :set_begun_at
