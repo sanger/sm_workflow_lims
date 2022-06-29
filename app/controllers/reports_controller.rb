@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
   end
 
   def create
-    report = Report.new(params.except(:controller, :action))
+    report = Report.new(params.permit(:workflow_id, :start_date, :end_date))
     if report.valid?
       @presenter = Presenter::ReportPresenter::Show.new(report)
       render :show
