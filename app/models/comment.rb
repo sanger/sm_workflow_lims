@@ -1,4 +1,4 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   has_many :assets
 
   before_destroy :no_assets?

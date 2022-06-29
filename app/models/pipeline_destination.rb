@@ -1,4 +1,4 @@
-class PipelineDestination < ActiveRecord::Base
+class PipelineDestination < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: true
 

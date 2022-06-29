@@ -1,4 +1,4 @@
-class Batch < ActiveRecord::Base
+class Batch < ApplicationRecord
   has_many :assets
   has_many :comments, through: :assets
 

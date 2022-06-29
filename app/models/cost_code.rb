@@ -1,6 +1,6 @@
 require './lib/client_side_validations'
 
-class CostCode < ActiveRecord::Base
+class CostCode < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: true
 

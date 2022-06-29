@@ -1,6 +1,6 @@
 require './lib/client_side_validations'
 
-class Asset < ActiveRecord::Base
+class Asset < ApplicationRecord
   include StateMachine
 
   belongs_to :asset_type
