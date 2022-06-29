@@ -8,7 +8,7 @@ class AssetsController < ApplicationController
       flash[updater.flash_status] = updater.message
       redirect_to("/assets?state=#{updater.redirect_state}")
     else
-      flash[:error] = 'No assets selected'
+      flash[:error] = I18n.t('assets.errors.none_selected')
       redirect_to :back
     end
   end

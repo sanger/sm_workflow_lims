@@ -6,7 +6,7 @@ class WorkflowsController < ApplicationController
   def create
     @workflow = Workflow.new(workflow_params)
     if @workflow.save
-      flash[:notice] = 'The workflow was created.'
+      flash[:notice] = I18n.t('workflows.success.created')
       redirect_to('/admin')
     else
       flash[:error] = @workflow.errors.full_messages.join('; ')
@@ -21,7 +21,7 @@ class WorkflowsController < ApplicationController
   def update
     workflow.assign_attributes(workflow_params)
     if workflow.save
-      flash[:notice] = 'The workflow was updated.'
+      flash[:notice] = I18n.t('workflows.success.updated')
       redirect_to('/admin')
     else
       flash[:error] = workflow.errors.full_messages.join('; ')

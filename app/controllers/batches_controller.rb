@@ -26,7 +26,7 @@ class BatchesController < ApplicationController
     if batch_updater.valid?
       batch = batch_updater.update!
       @presenter = Presenter::BatchPresenter::Show.new(batch)
-      flash[:notice] = 'The batch was updated.'
+      flash[:notice] = I18n.t('batches.success.updated')
       redirect_to("/batches/#{params[:id]}")
     else
       flash[:error] = batch_updater.errors.full_messages.join('; ')
@@ -36,7 +36,7 @@ class BatchesController < ApplicationController
 
   def destroy
     batch.destroy!
-    flash[:notice] = 'The batch was deleted.'
+    flash[:notice] = I18n.t('batches.success.deleted')
     redirect_to('/batches/new')
   end
 
@@ -55,7 +55,7 @@ class BatchesController < ApplicationController
     if batch_creator.valid?
       batch = batch_creator.create!
       @presenter = Presenter::BatchPresenter::Show.new(batch)
-      flash[:notice] = 'The batch was created.'
+      flash[:notice] = I18n.t('batches.success.created')
       redirect_to("/batches/#{@presenter.id}")
     else
       flash[:error] = batch_creator.errors.full_messages.join('; ')
@@ -85,7 +85,7 @@ class BatchesController < ApplicationController
     if params[:id].present?
       @batch ||= Batch.find_by(id: params[:id])
     else
-      flash[:error] = 'You must specify a batch.'
+      flash[:error] = I18n.t('batches.errors.none_selected')
       redirect_to :back
     end
   end
