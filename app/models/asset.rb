@@ -17,7 +17,7 @@ class Asset < ApplicationRecord
 
   include ClientSideValidations
   validate_with_regexp :study, with: /^\w+$/
-  validates :workflow, :batch, :identifier, :asset_type, presence: true
+  validates :identifier, presence: true
 
   delegate :identifier_type, to: :asset_type
   default_scope { includes(:workflow, :asset_type, :comment, :batch, :pipeline_destination, events: :state) }

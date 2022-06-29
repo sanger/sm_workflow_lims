@@ -2,8 +2,6 @@ class Event < ApplicationRecord
   belongs_to :asset
   belongs_to :state
 
-  validates :asset, :state, presence: true
-
   attr_accessor :state_name
 
   def state_name=(state_name)
