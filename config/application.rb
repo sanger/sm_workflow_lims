@@ -26,7 +26,7 @@ module SmWorkflowLims
     config.autoload_paths += %W[#{config.root}/lib/utils]
     config.disable_animations = false
 
-    # Enabling the behaviour where 'belongs_to will now trigger a validation error by default if the association is not present.'
+    # Enabling the behaviour where 'belongs_to' associations are required by default.
     # (https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#active-record-belongs-to-required-by-default-option)
     config.active_record.belongs_to_required_by_default = true
   end
