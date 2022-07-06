@@ -31,10 +31,11 @@ docker-compose up
 ```
 
 With this we should have started sm_workflow_lims server and all required services. You should be
-able to access sm_workflow_lims by going to <http://localhost:3000> and log in with
-username and password admin/admin.
+able to access sm_workflow_lims by going to <http://localhost:3000> 
 
-**ABOUT LOCAL DEVELOPMENT SETUP** You may want to start only the required services for sm_workflow_lims (server and jobs worker) and use your local version of Mysql
+## Local development setup 
+
+You may want to start only the required services for sm_workflow_lims and use your local version of Mysql
 instead of the Docker version, in that case you can start this setup with the
 command:
 
@@ -42,7 +43,24 @@ command:
 docker-compose -f docker-compose-dev.yml up
 ```
 
-**ABOUT RECREATE DOCKER IMAGE** If you ever need to recreate the image built on first start (because you made modifications
+## Running commands inside the container
+
+To access the container and run commands in it there is a script provided in ```./bin/smwf_docker_exec.sh``` that 
+runs a docker exec command on the container of sm_workflow_lims.
+
+Any command you want to run can be passed as argument to the script. Example of commands you may want to use:
+
+To create a new interactive bash:
+
+./bin/smwf_docker_exec.sh bash
+
+To run migrations:
+
+./bin/smwf_docker_exec.sh bundle exec rake db:migrate
+
+
+## Recreating Docker images 
+If you ever need to recreate the image built on first start (because you made modifications
 to the Dockerfile file) you can run a building process with:
 
 ```shell
