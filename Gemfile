@@ -32,7 +32,7 @@ gem 'exception_notification'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'coveralls', require: false
+# gem 'coveralls', require: false
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
@@ -67,4 +67,5 @@ group :test do
   gem 'timecop'
   # Keep webdriver in sync with chrome to prevent frustrating CI failures
   gem 'webdrivers', require: false
+  gem 'simplecov', require: false
 end
