@@ -129,7 +129,7 @@ class Asset < ApplicationRecord
 
     def message
       if done?
-        "#{asset_state.humanize} is done for #{identifiers.to_sentence}"
+        "#{asset_state.humanize} is done for #{identifiers.sort.to_sentence}"
       else
         "#{asset_state.humanize} has not been finished for requested assets."
       end
