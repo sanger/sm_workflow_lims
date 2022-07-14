@@ -21,8 +21,6 @@ module SmWorkflowLims
     # config.i18n.default_locale = :de
 
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
-
-    # Do not swallow errors in after_commit/after_rollback callbacks.
     config.autoload_paths += %W[#{config.root}/lib/utils]
     config.disable_animations = false
 
