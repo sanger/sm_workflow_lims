@@ -29,14 +29,18 @@ describe 'create complete and report assets within Cherrypick flow', js: true do
     end
     click_on 'Append to batch'
     expect(page).to have_content 'Asset added to the batch'
+
     fill_in 'Study', with: 'STDY'
     select('Cherrypick workflow', from: 'Workflow')
     click_on 'Save'
     expect(page).to have_content 'The batch was created.'
+
     click_on 'In Progress'
     expect(page).not_to have_selector('table tr')
+
     click_on 'Cherrypick'
     expect(page).to have_selector('table tr', count: 3)
+
     check "assets[#{Asset.first.id}]"
     click_on 'Completed selected'
     expect(page).to have_content 'Cherrypick is done for 123'
@@ -56,30 +60,39 @@ describe 'create complete and report assets within Cherrypick flow', js: true do
     end
     click_on 'Append to batch'
     expect(page).to have_content 'Asset added to the batch'
+
     fill_in 'Study', with: 'STDY'
     select('Cherrypick QC workflow', from: 'Workflow')
     click_on 'Save'
     expect(page).to have_content 'The batch was created.'
+
     click_on 'In Progress'
     expect(page).not_to have_selector('table tr')
+
     click_on 'Cherrypick'
     expect(page).to have_selector('table tr', count: 3)
+
     check "assets[#{Asset.first.id}]"
     click_on 'Completed selected'
     expect(page).to have_content 'Cherrypick is done for 12345'
     expect(page).to have_selector('table tr', count: 2)
+
     click_on 'Volume check'
     expect(page).to have_selector('table tr', count: 2)
+
     check "assets[#{Asset.first.id}]"
     click_on 'Volume checked selected'
     expect(page).to have_content 'Volume check is done for 12345'
     expect(page).not_to have_selector('table tr')
+
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 2)
+
     check "assets[#{Asset.first.id}]"
     click_on 'Completed selected'
     expect(page).to have_content 'Quant is done for 12345'
     expect(page).not_to have_selector('table tr')
+
     click_on 'Report Required'
     expect(page).not_to have_selector('table tr')
   end
@@ -101,34 +114,44 @@ describe 'create complete and report assets within Cherrypick flow', js: true do
     end
     click_on 'Append to batch'
     expect(page).to have_content 'Asset added to the batch'
+
     fill_in 'Study', with: 'STDY'
     select('Cherrypick Reportable QC workflow', from: 'Workflow')
     click_on 'Save'
     expect(page).to have_content 'The batch was created.'
+
     click_on 'In Progress'
     expect(page).not_to have_selector('table tr')
+
     click_on 'Cherrypick'
     expect(page).to have_selector('table tr', count: 4)
+
     check "assets[#{Asset.first.id}]"
     check "assets[#{Asset.third.id}]"
     click_on 'Completed selected'
     expect(page).to have_content 'Cherrypick is done for 123 and 789'
     expect(page).to have_selector('table tr', count: 2)
+
     click_on 'Volume check'
     expect(page).to have_selector('table tr', count: 3)
+
     check "assets[#{Asset.first.id}]"
     check "assets[#{Asset.third.id}]"
     click_on 'Volume checked selected'
     expect(page).to have_content 'Volume check is done for 123 and 789'
     expect(page).not_to have_selector('table tr')
+
     click_on 'Quant'
     expect(page).to have_selector('table tr', count: 3)
+
     check "assets[#{Asset.third.id}]"
     click_on 'Completed selected'
     expect(page).to have_content 'Quant is done for 789'
     expect(page).to have_selector('table tr', count: 2)
+
     click_on 'Report Required'
     expect(page).to have_selector('table tr', count: 2)
+
     check "assets[#{Asset.third.id}]"
     click_on 'Reported selected'
     expect(page).to have_content 'Report required is done for 789'

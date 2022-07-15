@@ -21,3 +21,24 @@
 
 en:
   hello: "Hello world"
+
+  assets:
+    errors:
+      none_selected: "No assets selected"
+
+  batches:
+    success:
+      created: "The batch was created."
+      updated: "The batch was updated."
+      deleted: "The batch was deleted."
+    errors:
+      none_selected: "You must specify a batch."
+
+  pipeline_destinations:
+    success:
+      created: "The pipeline destination was created."
+
+  workflows:
+    success:
+      created: "The workflow was created."
+      updated: "The workflow was updated."

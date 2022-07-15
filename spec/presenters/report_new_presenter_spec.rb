@@ -11,10 +11,10 @@ describe Presenter::ReportPresenter::New do
 
   context 'with empty report' do
     it 'does not have report data' do
-      expect(presenter.workflow).to be nil
-      expect(presenter.start_date).to be nil
-      expect(presenter.end_date).to be nil
-      expect(presenter.flash).to be nil
+      expect(presenter.workflow).to be_nil
+      expect(presenter.start_date).to be_nil
+      expect(presenter.end_date).to be_nil
+      expect(presenter.flash).to be_nil
       expect(presenter.action).to eq '/reports'
       expect(presenter.page).to eq :'reports/new'
     end
@@ -29,7 +29,7 @@ describe Presenter::ReportPresenter::New do
       expect(presenter.workflow).to eq 'Workflow'
       expect(presenter.start_date).to eq '01/04/2017'
       expect(presenter.end_date).to eq '15/04/2017'
-      expect(presenter.flash).to be nil
+      expect(presenter.flash).to be_nil
       expect(presenter.action).to eq '/reports'
       expect(presenter.page).to eq :'reports/new'
     end
@@ -44,7 +44,7 @@ describe Presenter::ReportPresenter::New do
       expect(presenter.report.valid?).to be false
       expect(presenter.workflow).to eq 'Workflow'
       expect(presenter.start_date).to eq '01/04/2017'
-      expect(presenter.end_date).to be nil
+      expect(presenter.end_date).to be_nil
       expect(presenter.flash).to eq "End date can't be blank"
     end
   end

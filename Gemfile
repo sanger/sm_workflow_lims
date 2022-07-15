@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.6'
+gem 'rails', '~> 6.1.6'
 # Use mysql2 as the database for Active Record
 gem 'mysql2'
 # Use SCSS for stylesheets
@@ -14,7 +14,7 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', '~> 2.4.0', group: :doc # TODO: change to using yard (using this for other apps).
 
 gem 'bootstrap-sass', '3.4.1'
 
@@ -32,20 +32,16 @@ gem 'exception_notification'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'coveralls', require: false
-
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
   gem 'pry'
   # Use Uglifier as compressor for JavaScript assets
   gem 'uglifier', '>= 1.3.0'
-  # Use CoffeeScript for .coffee assets and views
-  gem 'coffee-rails', '~> 4.1.0'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 4.0.4'
   # displays speed badge for every html page
   gem 'rack-mini-profiler'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
@@ -64,6 +60,7 @@ group :test do
   gem 'launchy'
   gem 'rspec-collection_matchers'
   gem 'rspec-rails', '~> 3.5.0'
+  gem 'simplecov', require: false
   gem 'timecop'
   # Keep webdriver in sync with chrome to prevent frustrating CI failures
   gem 'webdrivers', require: false

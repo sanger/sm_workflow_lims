@@ -21,10 +21,11 @@ module SmWorkflowLims
     # config.i18n.default_locale = :de
 
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
-
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
     config.autoload_paths += %W[#{config.root}/lib/utils]
     config.disable_animations = false
+
+    # Enabling the behaviour where 'belongs_to' associations are required by default.
+    # (https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#active-record-belongs-to-required-by-default-option)
+    config.active_record.belongs_to_required_by_default = true
   end
 end

@@ -8,8 +8,8 @@ class AssetsController < ApplicationController
       flash[updater.flash_status] = updater.message
       redirect_to("/assets?state=#{updater.redirect_state}")
     else
-      flash[:error] = 'No assets selected'
-      redirect_to :back
+      flash[:error] = I18n.t('assets.errors.none_selected')
+      redirect_back(fallback_location: root_path)
     end
   end
 
@@ -34,7 +34,7 @@ class AssetsController < ApplicationController
   end
 
   def assets_provided
-    params[:assets].is_a?(Hash) && params[:assets].keys.present?
+    params[:assets].present?
   end
 
   def assets_to_be_updated

@@ -34,6 +34,7 @@ describe 'can generate report', js: true do
     fill_in('end_date', with: '01/03/2017').send_keys(:escape)
     find('button', text: 'Create report').click
     expect(page).to have_content('Start date should be earlier than the end date.')
+
     fill_in('start_date', with: '01/03/2017').send_keys(:escape)
     fill_in('end_date', with: '31/03/2017').send_keys(:escape)
     find('button', text: 'Create report').click
@@ -44,6 +45,7 @@ describe 'can generate report', js: true do
       expect(page).to have_text('1 Study1 Project1 Not defined 1')
       expect(page).to have_text('2 Study1 Project2 A1 1')
     end
+
     click_on 'Download csv file'
   end
 end

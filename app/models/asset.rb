@@ -1,14 +1,14 @@
 require './lib/client_side_validations'
 
-class Asset < ActiveRecord::Base
+class Asset < ApplicationRecord
   include StateMachine
 
   belongs_to :asset_type
   belongs_to :workflow
-  belongs_to :pipeline_destination
-  belongs_to :cost_code
+  belongs_to :pipeline_destination, optional: true
+  belongs_to :cost_code, optional: true
   belongs_to :batch
-  belongs_to :comment
+  belongs_to :comment, optional: true
   has_many :events, dependent: :destroy
 
   before_create :set_begun_at
@@ -17,7 +17,7 @@ class Asset < ActiveRecord::Base
 
   include ClientSideValidations
   validate_with_regexp :study, with: /^\w+$/
-  validates :workflow, :batch, :identifier, :asset_type, presence: true
+  validates :identifier, presence: true
 
   delegate :identifier_type, to: :asset_type
   default_scope { includes(:workflow, :asset_type, :comment, :batch, :pipeline_destination, events: :state) }
@@ -129,7 +129,7 @@ class Asset < ActiveRecord::Base
 
     def message
       if done?
-        "#{asset_state.humanize} is done for #{identifiers.to_sentence}"
+        "#{asset_state.humanize} is done for #{identifiers.sort.to_sentence}"
       else
         "#{asset_state.humanize} has not been finished for requested assets."
       end
