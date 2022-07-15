@@ -14,7 +14,7 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 2.4.0', group: :doc # TODO: change to using yard (using this for other apps).
+gem 'sdoc', '~> 2.4.0', group: :doc # TODO: change to using yard (using this for other apps).
 
 gem 'bootstrap-sass', '3.4.1'
 
