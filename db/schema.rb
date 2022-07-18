@@ -91,7 +91,6 @@ ActiveRecord::Schema.define(version: 2019_09_24_154728) do
     t.boolean "qc_flow", default: false, null: false
     t.boolean "cherrypick_flow", default: false, null: false
     t.index ["initial_state_id"], name: "fk_rails_e3fad0d986"
-    t.index ["team_id"], name: "index_workflows_on_team_id"
   end
 
   add_foreign_key "workflows", "states", column: "initial_state_id"
