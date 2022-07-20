@@ -16,7 +16,6 @@ tar \
   --exclude='./.git' \
   --exclude='./.gitignore' \
   --exclude='./.tags' \
-  --exclude='./.travis.yml' \
   --exclude='./README*' \
   --exclude='./compile-build' \
   --exclude='./coverage' \

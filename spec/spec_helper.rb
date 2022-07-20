@@ -16,12 +16,13 @@
 # users commonly want.
 #
 # require 'database_cleaner'
+
 require 'webdrivers/chromedriver'
 Webdrivers::Chromedriver.update
 
-require 'factory_girl'
-require "capybara/rspec"
-require "capybara/rails"
+require 'factory_bot'
+require 'capybara/rspec'
+require 'capybara/rails'
 require 'selenium/webdriver'
 
 Capybara.register_driver :chrome do |app|
@@ -40,7 +41,6 @@ end
 
 Capybara.javascript_driver = :headless_chrome
 Capybara.default_max_wait_time = 5
-
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
@@ -67,17 +67,17 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
-    FactoryGirl.find_definitions
+    FactoryBot.find_definitions
   end
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before(:each) do
+  config.before do
     DatabaseCleaner.strategy = :transaction
   end
 
@@ -85,17 +85,17 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
   end
 
-  config.before(:each) do
+  config.before do
     DatabaseCleaner.start
   end
 
-  config.after(:each) do
+  config.after do
     Capybara.reset_sessions!
     DatabaseCleaner.clean
   end
 
-# The settings below are suggested to provide a good initial experience
-# with RSpec, but feel free to customize to your heart's content.
+  # The settings below are suggested to provide a good initial experience
+  # with RSpec, but feel free to customize to your heart's content.
 
   # These two settings work together to allow you to limit a spec run
   # to individual examples or groups you care about by tagging them with
@@ -137,5 +137,4 @@ RSpec.configure do |config|
   # test failures related to randomization by passing the same `--seed` value
   # as the one that triggered the failure.
   Kernel.srand config.seed
-
 end

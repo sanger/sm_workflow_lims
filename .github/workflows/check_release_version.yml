@@ -1,0 +1,27 @@
+# Checks that the .release-version file has been updated
+name: Check release version
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v23
+        with:
+          files: |
+            .release-version
+
+      - name: Run step looking for change in the release version
+        run: >-
+          if ! "${{ steps.changed-files-specific.outputs.any_changed }}"; then
+            echo "Please change the release version number"
+            exit 1;
+          fi

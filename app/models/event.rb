@@ -1,8 +1,6 @@
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
   belongs_to :asset
   belongs_to :state
-
-  validates_presence_of :asset, :state
 
   attr_accessor :state_name
 
@@ -11,7 +9,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.latest_event_per_asset
-    select("MAX(id)").group("asset_id")
+    select('MAX(id)').group('asset_id')
   end
 
   def self.with_last_state(state)
@@ -22,5 +20,4 @@ class Event < ActiveRecord::Base
     state = State.find_by(name: 'completed')
     where(created_at: start_date..end_date, state: state)
   end
-
 end

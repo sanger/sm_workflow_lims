@@ -1,5 +1,4 @@
-FactoryGirl.define do
-
+FactoryBot.define do
   sequence :asset_type_name do |n|
     "Asset type #{n}"
   end
@@ -14,7 +13,7 @@ FactoryGirl.define do
     labware_type { 'Plate' }
 
     factory :asset_type_has_sample_count do
-      has_sample_count true
+      has_sample_count { true }
     end
 
     factory :asset_type_with_asset do
@@ -29,5 +28,4 @@ FactoryGirl.define do
       end
     end
   end
-
 end

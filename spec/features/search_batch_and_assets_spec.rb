@@ -1,15 +1,15 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'search assets and batches', js: true do
-
+describe 'search assets and batches', js: true do
   let!(:batch1) { create :batch_with_assets }
   let!(:batch2) { create :batch_with_assets }
   let!(:additional_asset1) { create :asset, identifier: batch1.id }
   let!(:additional_asset2) { create :asset, identifier: 'Identifier' }
   let!(:search_string) { batch1.id.to_s }
 
-  scenario 'can create and edit a batch' do
+  it 'can create and edit a batch' do
     visit '/'
     fill_in 'Search', with: search_string
     click_on 'search'
@@ -28,5 +28,4 @@ feature 'search assets and batches', js: true do
     expect(page).to have_content "Search results where batch id or asset identifier matches '#{batch2.id}'"
     expect(page.all('tbody>tr').count).to eq batch2.assets.count
   end
-
 end

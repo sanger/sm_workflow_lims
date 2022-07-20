@@ -1,5 +1,4 @@
-class Batch < ActiveRecord::Base
-
+class Batch < ApplicationRecord
   has_many :assets
   has_many :comments, through: :assets
 
@@ -7,8 +6,7 @@ class Batch < ActiveRecord::Base
 
   def remove_assets
     ActiveRecord::Base.transaction do
-      self.assets.each(&:destroy!)
+      assets.each(&:destroy!)
     end
   end
-
 end
