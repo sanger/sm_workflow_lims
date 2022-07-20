@@ -1,101 +1,96 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190924154728) do
+ActiveRecord::Schema.define(version: 2019_09_24_154728) do
 
-  create_table "asset_types", id: :integer, force: :cascade do |t|
-    t.string   "name",                 limit: 255,                          null: false
-    t.string   "identifier_type",      limit: 255,                          null: false
-    t.boolean  "has_sample_count",                 default: false,          null: false
+  create_table "asset_types", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "identifier_type", null: false
+    t.boolean "has_sample_count", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "identifier_data_type", limit: 255, default: "alphanumeric", null: false
-    t.string   "labware_type",         limit: 255
+    t.string "identifier_data_type", default: "alphanumeric", null: false
+    t.string "labware_type"
   end
 
-  create_table "assets", id: :integer, force: :cascade do |t|
-    t.string   "identifier",              limit: 255,             null: false
-    t.integer  "asset_type_id",           limit: 4,               null: false
-    t.integer  "workflow_id",             limit: 4,               null: false
-    t.integer  "comment_id",              limit: 4
-    t.integer  "batch_id",                limit: 4,               null: false
-    t.string   "study",                   limit: 255
-    t.integer  "sample_count",            limit: 4,   default: 1, null: false
+  create_table "assets", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "identifier", null: false
+    t.integer "asset_type_id", null: false
+    t.integer "workflow_id", null: false
+    t.integer "comment_id"
+    t.integer "batch_id", null: false
+    t.string "study"
+    t.integer "sample_count", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
     t.datetime "reported_at"
-    t.integer  "pipeline_destination_id", limit: 4
-    t.datetime "begun_at",                                        null: false
-    t.integer  "cost_code_id",            limit: 4
-    t.string   "project",                 limit: 255
+    t.integer "pipeline_destination_id"
+    t.datetime "begun_at", null: false
+    t.integer "cost_code_id"
+    t.string "project"
+    t.index ["asset_type_id"], name: "fk_assets_to_asset_types"
+    t.index ["batch_id"], name: "index_assets_on_batch_id"
+    t.index ["comment_id"], name: "fk_assets_to_comments"
+    t.index ["completed_at"], name: "index_assets_on_completed_at"
+    t.index ["identifier"], name: "index_assets_on_identifier"
+    t.index ["workflow_id"], name: "fk_assets_to_workflows"
   end
 
-  add_index "assets", ["asset_type_id"], name: "index_assets_on_asset_type_id", using: :btree
-  add_index "assets", ["batch_id"], name: "index_assets_on_batch_id", using: :btree
-  add_index "assets", ["comment_id"], name: "index_assets_on_comment_id", using: :btree
-  add_index "assets", ["identifier"], name: "index_assets_on_identifier", using: :btree
-  add_index "assets", ["workflow_id"], name: "index_assets_on_workflow_id", using: :btree
-
-  create_table "batches", id: :integer, force: :cascade do |t|
+  create_table "batches", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "comments", id: :integer, force: :cascade do |t|
-    t.text     "comment",    limit: 65535
+  create_table "comments", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.text "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "cost_codes", id: :integer, force: :cascade do |t|
-    t.string "name", limit: 255, null: false
+  create_table "cost_codes", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
   end
 
-  create_table "events", id: :integer, force: :cascade do |t|
-    t.integer  "asset_id",   limit: 4, null: false
-    t.integer  "state_id",   limit: 4, null: false
+  create_table "events", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "asset_id", null: false
+    t.integer "state_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "pipeline_destinations", id: :integer, force: :cascade do |t|
-    t.string "name", limit: 255
+  create_table "pipeline_destinations", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "name"
   end
 
-  create_table "states", id: :integer, force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
+  create_table "states", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "workflows", id: :integer, force: :cascade do |t|
-    t.string   "name",             limit: 255,                 null: false
-    t.boolean  "has_comment",                  default: false, null: false
+  create_table "workflows", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.boolean "has_comment", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "reportable",                   default: false, null: false
-    t.integer  "turn_around_days", limit: 4
-    t.integer  "initial_state_id", limit: 4
-    t.boolean  "active",                       default: true,  null: false
-    t.boolean  "qc_flow",                      default: false, null: false
-    t.boolean  "cherrypick_flow",              default: false, null: false
+    t.boolean "reportable", default: false, null: false
+    t.integer "turn_around_days"
+    t.integer "initial_state_id"
+    t.boolean "active", default: true, null: false
+    t.boolean "qc_flow", default: false, null: false
+    t.boolean "cherrypick_flow", default: false, null: false
+    t.index ["initial_state_id"], name: "fk_rails_e3fad0d986"
   end
 
-  add_index "workflows", ["initial_state_id"], name: "index_workflows_on_initial_state_id", using: :btree
-
-  add_foreign_key "assets", "asset_types"
-  add_foreign_key "assets", "batches"
-  add_foreign_key "assets", "comments"
-  add_foreign_key "assets", "workflows"
+  add_foreign_key "workflows", "states", column: "initial_state_id"
 end
