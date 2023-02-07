@@ -50,7 +50,7 @@ describe Presenter::AssetPresenter::Asset do
              study: 'study',
              sample_count: 2,
              begun_at: date,
-             comment: comment)
+             comment:)
     end
 
     include_examples 'shared behaviour'
@@ -90,7 +90,7 @@ describe Presenter::AssetPresenter::Asset do
              sample_count: 2,
              begun_at: date,
              completed_at: nil,
-             age: age,
+             age:,
              time_without_completion: 0)
     end
 
@@ -135,7 +135,7 @@ describe Presenter::AssetPresenter::Asset do
                sample_count: 2,
                begun_at: date,
                completed_at: nil,
-               age: age,
+               age:,
                time_without_completion: age)
       end
 
@@ -159,7 +159,7 @@ describe Presenter::AssetPresenter::Asset do
                sample_count: 2,
                begun_at: date,
                completed_at: nil,
-               age: age,
+               age:,
                time_without_completion: age)
       end
       let(:age) { today - date }

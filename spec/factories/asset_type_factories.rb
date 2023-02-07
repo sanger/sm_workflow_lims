@@ -24,7 +24,7 @@ FactoryBot.define do
       after(:create) do |asset_type, evaluator|
         create_list(:asset, 1,
                     identifier: evaluator.asset_identifier,
-                    asset_type: asset_type)
+                    asset_type:)
       end
     end
   end

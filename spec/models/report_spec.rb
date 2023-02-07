@@ -19,9 +19,9 @@ describe Report do
     let!(:workflow) { create(:workflow, name: 'Workflow') }
     let!(:in_progress) { create :state, name: 'in_progress' }
     let!(:completed) { create :state, name: 'completed' }
-    let(:asset1) { create :asset, workflow: workflow, study: 'Study1', project: 'Project1' }
-    let(:asset2) { create :asset, workflow: workflow, study: 'Study1', project: 'Project2' }
-    let(:asset3) { create :asset, workflow: workflow, study: 'Study1', project: 'Project2' }
+    let(:asset1) { create :asset, workflow:, study: 'Study1', project: 'Project1' }
+    let(:asset2) { create :asset, workflow:, study: 'Study1', project: 'Project2' }
+    let(:asset3) { create :asset, workflow:, study: 'Study1', project: 'Project2' }
 
     before do
       Timecop.freeze(Time.local(2017, 4, 7))
@@ -32,7 +32,7 @@ describe Report do
     end
 
     it 'is valid if workflow, start and end dates are provided' do
-      report = Report.new(workflow: workflow, start_date: '01/04/2017', end_date: '15/04/2017')
+      report = Report.new(workflow:, start_date: '01/04/2017', end_date: '15/04/2017')
       expect(report.valid?).to be true
     end
 
@@ -41,7 +41,7 @@ describe Report do
       asset2.complete
       asset3.complete
       asset4 = create :asset, workflow: workflow
-      report = Report.new(workflow: workflow, start_date: '01/04/2017', end_date: '15/04/2017')
+      report = Report.new(workflow:, start_date: '01/04/2017', end_date: '15/04/2017')
       expected_report = <<~REPORT
         Report for 'Workflow' workflow from 01/04/2017 to 15/04/2017
         Study,Project,Cost code name,Assets count

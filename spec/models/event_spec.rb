@@ -19,9 +19,9 @@ describe Event do
 
   it 'finds events with particular last state' do
     report_required = create :state, name: 'report_required'
-    in_progress_event_first_asset = Event.create!(state: in_progress, asset: asset)
+    in_progress_event_first_asset = Event.create!(state: in_progress, asset:)
     in_progress_event_second_asset = Event.create!(state: in_progress, asset: (create :asset))
-    report_required_event_first_asset = Event.create!(state: report_required, asset: asset)
+    report_required_event_first_asset = Event.create!(state: report_required, asset:)
     expect(Event.with_last_state(in_progress).to_a).to eq [in_progress_event_second_asset]
     expect(Event.with_last_state(report_required).to_a).to eq [report_required_event_first_asset]
   end

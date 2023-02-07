@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Presenter::AssetTypePresenter::AssetType do
   describe '#validates_with' do
-    let(:asset_type) { create :asset_type, identifier_data_type: identifier_data_type }
+    let(:asset_type) { create :asset_type, identifier_data_type: }
     let(:presenter) { Presenter::AssetTypePresenter::AssetType.new(asset_type) }
 
     context 'when identifier_data_type is alphanumeric' do
