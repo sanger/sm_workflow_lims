@@ -96,8 +96,8 @@ class Asset < ApplicationRecord
   class AssetAction
     attr_reader :action, :assets, :flash_status, :asset_state
 
-    def self.create!(*args)
-      new(*args).tap { |action| action.do! }
+    def self.create!(**args)
+      new(**args).tap { |action| action.do! }
     end
 
     def initialize(action:, assets:)
