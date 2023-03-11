@@ -14,12 +14,12 @@ class BatchesController < ApplicationController
 
   def update
     batch_updater = Batch::Updater.new(
-      batch: batch,
+      batch:,
       study: params[:study],
       project: params[:project],
-      workflow: workflow,
-      cost_code: cost_code,
-      pipeline_destination: pipeline_destination,
+      workflow:,
+      cost_code:,
+      pipeline_destination:,
       begun_at: params[:begun_at],
       comment: params[:comment]
     )
@@ -44,12 +44,12 @@ class BatchesController < ApplicationController
     batch_creator = Batch::Creator.new(
       study: params[:study],
       project: params[:project],
-      workflow: workflow,
-      pipeline_destination: pipeline_destination,
+      workflow:,
+      pipeline_destination:,
       begun_at: params[:begun_at],
-      cost_code: cost_code,
-      asset_type: asset_type,
-      assets: assets,
+      cost_code:,
+      asset_type:,
+      assets:,
       comment: params[:comment]
     )
     if batch_creator.valid?

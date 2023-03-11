@@ -25,8 +25,8 @@ describe Batch::Updater do
     workflow = create :workflow, name: 'New workflow'
     batch = create :batch_with_assets
     batch_updater = Batch::Updater.new(
-      batch: batch,
-      workflow: workflow
+      batch:,
+      workflow:
     )
     batch.assets.each do |asset|
       expect(asset.workflow.name).not_to eq 'New workflow'

@@ -13,7 +13,7 @@ describe Presenter::BatchPresenter::Show do
              asset_type: mock_type,
              workflow: mock_workflow,
              study: 'study',
-             comment: comment)
+             comment:)
     end
     let(:asset1) do
       double('asset_1',
@@ -21,7 +21,7 @@ describe Presenter::BatchPresenter::Show do
              asset_type: mock_type,
              workflow: mock_workflow,
              study: 'study',
-             comment: comment)
+             comment:)
     end
     let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true) }
     let(:mock_type) { double('mock_type', name: 'Type', identifier_type: 'id', variable_samples: true) }

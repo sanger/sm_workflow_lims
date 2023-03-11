@@ -13,12 +13,12 @@ describe Asset do
     let!(:completed) { create :state, name: 'completed' }
     let!(:asset) do
       build(:asset,
-            identifier: identifier,
-            batch: batch,
-            study: study,
-            asset_type: asset_type,
-            workflow: workflow,
-            comment: comment)
+            identifier:,
+            batch:,
+            study:,
+            asset_type:,
+            workflow:,
+            comment:)
     end
 
     it 'can be created' do
@@ -54,14 +54,14 @@ describe Asset do
       asset.save
       expect(asset.events.count).to eq 1
 
-      create_list(:event, 3, asset: asset)
+      create_list(:event, 3, asset:)
       expect(asset.events.count).to eq 4
     end
 
     it 'knows if it is completed' do
       expect(asset.completed?).to be_falsey
 
-      asset.events << create(:event, asset: asset, state: completed)
+      asset.events << create(:event, asset:, state: completed)
       expect(asset.completed?).to be_truthy
     end
 
@@ -70,12 +70,12 @@ describe Asset do
 
       it 'requires an identifier, batch, asset type and workflow' do
         asset = build(:asset,
-                      identifier: identifier,
-                      batch: batch,
-                      asset_type: asset_type,
-                      workflow: workflow,
-                      comment: comment,
-                      begun_at: begun_at)
+                      identifier:,
+                      batch:,
+                      asset_type:,
+                      workflow:,
+                      comment:,
+                      begun_at:)
         expect(asset.begun_at).to eq(begun_at)
 
         Timecop.freeze(begun_at + 2.days) do
@@ -105,12 +105,12 @@ describe Asset do
 
     it 'requires study to follow convention format (no spaces)' do
       asset = Asset.new(
-        identifier: identifier,
-        batch: batch,
+        identifier:,
+        batch:,
         study: 'Not valid because it has spaces',
-        asset_type: asset_type,
-        workflow: workflow,
-        comment: comment
+        asset_type:,
+        workflow:,
+        comment:
       )
       expect(asset).to have(1).errors_on(:study)
     end
@@ -249,7 +249,7 @@ describe Asset do
     let!(:completed) { create :state, name: 'completed' }
     let!(:cost_code) { create :cost_code }
     let!(:asset1) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project1' }
-    let!(:asset2) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code: cost_code }
+    let!(:asset2) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code: }
     let!(:asset3) { create :asset, workflow: workflow2, study: 'Study1', project: 'Project2' }
     let!(:asset4) { create :asset, workflow: workflow2, study: 'Study1', project: 'Project2' }
     let!(:asset5) { create :asset, workflow: workflow1 }
