@@ -4,6 +4,6 @@ FactoryBot.define do
   end
 
   factory :cost_code do
-    name { generate :cost_code_name }
+    name { generate(:cost_code_name) }
   end
 end

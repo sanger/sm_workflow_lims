@@ -32,7 +32,7 @@ describe Presenter::AssetPresenter::Index do
              study: 'study')
     end
     let(:assets) { [asset1, asset2] }
-    let!(:state) { create :state, name: 'in_progress' }
+    let!(:state) { create(:state, name: 'in_progress') }
     let(:presenter) { Presenter::AssetPresenter::Index.new(assets, search, state) }
   end
 
@@ -97,7 +97,7 @@ describe Presenter::AssetPresenter::Index do
     end
 
     context 'in_progress' do
-      let(:state) { create :state, name: 'in_progress' }
+      let(:state) { create(:state, name: 'in_progress') }
 
       it 'has complete actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
@@ -106,7 +106,7 @@ describe Presenter::AssetPresenter::Index do
     end
 
     context 'volume_check' do
-      let(:state) { create :state, name: 'volume_check' }
+      let(:state) { create(:state, name: 'volume_check') }
 
       it 'has volume_check actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Volume checked selected')
@@ -115,7 +115,7 @@ describe Presenter::AssetPresenter::Index do
     end
 
     context 'quant' do
-      let(:state) { create :state, name: 'quant' }
+      let(:state) { create(:state, name: 'quant') }
 
       it 'has quant actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Completed selected')
@@ -124,7 +124,7 @@ describe Presenter::AssetPresenter::Index do
     end
 
     context 'report_required' do
-      let(:state) { create :state, name: 'report_required' }
+      let(:state) { create(:state, name: 'report_required') }
 
       it 'has reporting actions' do
         expect { |b| presenter.action_button(&b) }.to yield_with_args('Reported selected')
