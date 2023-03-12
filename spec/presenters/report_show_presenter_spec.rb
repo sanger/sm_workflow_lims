@@ -5,10 +5,10 @@ require './spec/presenters/shared_presenter_behaviour'
 describe Presenter::ReportPresenter::Show do
   let(:workflow) { build(:workflow, name: 'Workflow') }
   let!(:report) { Report.new(workflow:, start_date: '01/04/2017', end_date: '15/04/2017') }
-  let!(:completed) { create :state, name: 'completed' }
-  let(:asset1) { create :asset, workflow:, study: 'Study1', project: 'Project1' }
+  let!(:completed) { create(:state, name: 'completed') }
+  let(:asset1) { create(:asset, workflow:, study: 'Study1', project: 'Project1') }
   let(:asset2) do
-    create :asset, workflow:, study: 'Study1', project: 'Project2', cost_code: (create :cost_code, name: 'A1')
+    create(:asset, workflow:, study: 'Study1', project: 'Project2', cost_code: create(:cost_code, name: 'A1'))
   end
   let(:presenter) { Presenter::ReportPresenter::Show.new(report) }
 

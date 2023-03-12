@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 describe 'search assets and batches', js: true do
-  let!(:batch1) { create :batch_with_assets }
-  let!(:batch2) { create :batch_with_assets }
-  let!(:additional_asset1) { create :asset, identifier: batch1.id }
-  let!(:additional_asset2) { create :asset, identifier: 'Identifier' }
+  let!(:batch1) { create(:batch_with_assets) }
+  let!(:batch2) { create(:batch_with_assets) }
+  let!(:additional_asset1) { create(:asset, identifier: batch1.id) }
+  let!(:additional_asset2) { create(:asset, identifier: 'Identifier') }
   let!(:search_string) { batch1.id.to_s }
 
   it 'can create and edit a batch' do

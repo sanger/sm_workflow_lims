@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Workflow do
-  let!(:volume_check) { create :state, name: 'volume_check' }
+  let!(:volume_check) { create(:state, name: 'volume_check') }
 
   context 'with valid parameters' do
     let!(:test_name) { 'test' }

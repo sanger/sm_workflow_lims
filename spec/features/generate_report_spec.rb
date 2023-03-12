@@ -5,14 +5,15 @@ require 'rails_helper'
 describe 'can generate report', js: true do
   let!(:workflow1) { create(:workflow, name: 'Workflow1') }
   let!(:workflow2) { create(:workflow, name: 'Workflow2') }
-  let!(:in_progress) { create :state, name: 'in_progress' }
-  let!(:completed) { create :state, name: 'completed' }
-  let!(:asset1) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project1' }
+  let!(:in_progress) { create(:state, name: 'in_progress') }
+  let!(:completed) { create(:state, name: 'completed') }
+  let!(:asset1) { create(:asset, workflow: workflow1, study: 'Study1', project: 'Project1') }
   let!(:asset2) do
-    create :asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code: (create :cost_code, name: 'A1')
+    create(:asset, workflow: workflow1, study: 'Study1', project: 'Project2',
+                   cost_code: create(:cost_code, name: 'A1'))
   end
-  let!(:asset3) { create :asset, workflow: workflow2, study: 'Study1', project: 'Project2' }
-  let!(:asset4) { create :asset, workflow: workflow1 }
+  let!(:asset3) { create(:asset, workflow: workflow2, study: 'Study1', project: 'Project2') }
+  let!(:asset4) { create(:asset, workflow: workflow1) }
 
   before do
     Timecop.freeze(Time.local(2017, 3, 7))
@@ -32,12 +33,12 @@ describe 'can generate report', js: true do
     select('Workflow1', from: 'Workflow')
     fill_in('start_date', with: '31/03/2017').send_keys(:escape)
     fill_in('end_date', with: '01/03/2017').send_keys(:escape)
-    find('button', text: 'Create report').click
+    click_button(text: 'Create report')
     expect(page).to have_content('Start date should be earlier than the end date.')
 
     fill_in('start_date', with: '01/03/2017').send_keys(:escape)
     fill_in('end_date', with: '31/03/2017').send_keys(:escape)
-    find('button', text: 'Create report').click
+    click_button(text: 'Create report')
     expect(page).to have_content("Report for 'Workflow1' workflow from 01/03/2017 to 31/03/2017")
     within('table#report') do
       expect(page).to have_xpath('.//tr', count: 3)

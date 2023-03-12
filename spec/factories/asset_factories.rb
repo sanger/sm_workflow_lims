@@ -8,8 +8,8 @@ FactoryBot.define do
   end
 
   factory :asset do
-    identifier { generate :asset_identifier }
-    study { generate :asset_study }
+    identifier { generate(:asset_identifier) }
+    study { generate(:asset_study) }
     workflow
     batch
     asset_type

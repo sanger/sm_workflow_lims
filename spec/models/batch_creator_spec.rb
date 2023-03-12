@@ -13,8 +13,8 @@ describe Batch::Creator do
     batch_creator = Batch::Creator.new(
       begun_at: '05/05/2017',
       project: 'project',
-      pipeline_destination: (create :pipeline_destination),
-      cost_code: (create :cost_code),
+      pipeline_destination: create(:pipeline_destination),
+      cost_code: create(:cost_code),
       comment: 'some comment'
     )
     expect(batch_creator.valid?).to be false
@@ -27,20 +27,20 @@ describe Batch::Creator do
   end
 
   it 'creates the right batch and the right assets' do
-    state = create :state, name: 'in_progress'
+    state = create(:state, name: 'in_progress')
     assets = [{ type: 'Plate', identifier: 'test', sample_count: '25' },
               { type: 'Plate', identifier: 'test2', sample_count: '10' },
               { type: 'Plate', identifier: 'test3', sample_count: '96' }]
-    workflow = create :workflow
+    workflow = create(:workflow)
 
     batch_creator = Batch::Creator.new(
       study: 'study',
       project: 'project',
       assets:,
-      asset_type: (create :asset_type_has_sample_count),
+      asset_type: create(:asset_type_has_sample_count),
       workflow:,
-      pipeline_destination: (create :pipeline_destination),
-      cost_code: (create :cost_code),
+      pipeline_destination: create(:pipeline_destination),
+      cost_code: create(:cost_code),
       comment: 'some comment'
     )
     expect(Asset.count).to eq 0

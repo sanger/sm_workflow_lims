@@ -4,8 +4,8 @@ describe AssetType do
   context 'with valid parameters' do
     let(:test_name) { 'test' }
     let(:test_identifier_type) { 'type' }
-    let(:asset_type) { create :asset_type, name: test_name, identifier_type: test_identifier_type }
-    let(:asset_type_with_asset) { create :asset_type_with_asset, asset_identifier: 'test' }
+    let(:asset_type) { create(:asset_type, name: test_name, identifier_type: test_identifier_type) }
+    let(:asset_type_with_asset) { create(:asset_type_with_asset, asset_identifier: 'test') }
 
     it 'can be created' do
       expect(asset_type).to be_valid
