@@ -19,7 +19,7 @@ class Batch
     end
 
     def comment_object
-      @comment_object ||= Comment.create!(comment: comment) if workflow.has_comment?
+      @comment_object ||= Comment.create!(comment:) if workflow.has_comment?
     end
 
     def assets_map
@@ -27,14 +27,14 @@ class Batch
         sample_count = asset_type.has_sample_count? ? asset_params[:sample_count] : 1
         {
           identifier: asset_params[:identifier],
-          sample_count: sample_count,
-          asset_type: asset_type,
-          study: study,
-          project: project,
-          workflow: workflow,
+          sample_count:,
+          asset_type:,
+          study:,
+          project:,
+          workflow:,
           begun_at: date,
-          pipeline_destination: pipeline_destination,
-          cost_code: cost_code,
+          pipeline_destination:,
+          cost_code:,
           comment: comment_object
         }
       end

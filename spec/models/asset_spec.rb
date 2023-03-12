@@ -2,23 +2,23 @@ require 'rails_helper'
 
 describe Asset do
   context 'with valid parameters' do
-    let!(:asset_type) { create :asset_type, identifier_type: 'example', name: 'test' }
+    let!(:asset_type) { create(:asset_type, identifier_type: 'example', name: 'test') }
     let!(:identifier) { 'name' }
     let!(:study) { 'study_A' }
     let!(:project) { 'project' }
     let!(:batch) { Batch.new }
-    let!(:workflow) { create :workflow }
+    let!(:workflow) { create(:workflow) }
     let!(:comment) { Comment.new }
-    let!(:state) { create :state, name: 'in_progress' }
-    let!(:completed) { create :state, name: 'completed' }
+    let!(:state) { create(:state, name: 'in_progress') }
+    let!(:completed) { create(:state, name: 'completed') }
     let!(:asset) do
       build(:asset,
-            identifier: identifier,
-            batch: batch,
-            study: study,
-            asset_type: asset_type,
-            workflow: workflow,
-            comment: comment)
+            identifier:,
+            batch:,
+            study:,
+            asset_type:,
+            workflow:,
+            comment:)
     end
 
     it 'can be created' do
@@ -54,14 +54,14 @@ describe Asset do
       asset.save
       expect(asset.events.count).to eq 1
 
-      create_list(:event, 3, asset: asset)
+      create_list(:event, 3, asset:)
       expect(asset.events.count).to eq 4
     end
 
     it 'knows if it is completed' do
       expect(asset.completed?).to be_falsey
 
-      asset.events << create(:event, asset: asset, state: completed)
+      asset.events << create(:event, asset:, state: completed)
       expect(asset.completed?).to be_truthy
     end
 
@@ -70,12 +70,12 @@ describe Asset do
 
       it 'requires an identifier, batch, asset type and workflow' do
         asset = build(:asset,
-                      identifier: identifier,
-                      batch: batch,
-                      asset_type: asset_type,
-                      workflow: workflow,
-                      comment: comment,
-                      begun_at: begun_at)
+                      identifier:,
+                      batch:,
+                      asset_type:,
+                      workflow:,
+                      comment:,
+                      begun_at:)
         expect(asset.begun_at).to eq(begun_at)
 
         Timecop.freeze(begun_at + 2.days) do
@@ -86,7 +86,7 @@ describe Asset do
   end
 
   context 'with invalid parameters' do
-    let(:asset_type) { create :asset_type, identifier_type: 'example', name: 'test' }
+    let(:asset_type) { create(:asset_type, identifier_type: 'example', name: 'test') }
     let(:identifier) { 'name' }
     let(:study) { 'study_A' }
     let(:batch) { Batch.new }
@@ -105,12 +105,12 @@ describe Asset do
 
     it 'requires study to follow convention format (no spaces)' do
       asset = Asset.new(
-        identifier: identifier,
-        batch: batch,
+        identifier:,
+        batch:,
         study: 'Not valid because it has spaces',
-        asset_type: asset_type,
-        workflow: workflow,
-        comment: comment
+        asset_type:,
+        workflow:,
+        comment:
       )
       expect(asset).to have(1).errors_on(:study)
     end
@@ -125,7 +125,7 @@ describe Asset do
   end
 
   context 'in_state' do
-    let!(:state) { create :state, name: 'in_progress' }
+    let!(:state) { create(:state, name: 'in_progress') }
     let!(:reportable_workflow) do
       Workflow.create!(name: 'reportable',
                        reportable: true,
@@ -136,16 +136,16 @@ describe Asset do
                        reportable: false,
                        initial_state_name: 'in_progress')
     end
-    let!(:in_progress) { create :state, name: 'in_progress' }
-    let!(:completed) { create :state, name: 'completed' }
-    let!(:report_required) { create :state, name: 'report_required' }
-    let!(:reported) { create :state, name: 'reported' }
+    let!(:in_progress) { create(:state, name: 'in_progress') }
+    let!(:completed) { create(:state, name: 'completed') }
+    let!(:report_required) { create(:state, name: 'report_required') }
+    let!(:reported) { create(:state, name: 'reported') }
 
     let(:basics) { { identifier: 'one', asset_type_id: 1, batch_id: 1, workflow_id: reportable_workflow.id } }
 
     it 'in_progress filters on last event' do
-      incomplete = create :asset
-      completed = create :asset
+      incomplete = create(:asset)
+      completed = create(:asset)
       completed.complete
       asset = Asset.in_state(in_progress)
 
@@ -165,7 +165,7 @@ describe Asset do
                                           workflow: create(:workflow, reportable: true))
       asset_completed_reportable.complete
 
-      asset_completed_nonreportable = create :asset
+      asset_completed_nonreportable = create(:asset)
       asset_completed_nonreportable.complete
 
       asset_reported_reportable = create(:asset,
@@ -209,10 +209,10 @@ describe Asset do
   end
 
   context 'state machine' do
-    let!(:state1) { create :state, name: 'in_progress' }
-    let!(:state2) { create :state, name: 'completed' }
-    let!(:state3) { create :state, name: 'report_required' }
-    let(:asset) { create :asset }
+    let!(:state1) { create(:state, name: 'in_progress') }
+    let!(:state2) { create(:state, name: 'completed') }
+    let!(:state3) { create(:state, name: 'report_required') }
+    let(:asset) { create(:asset) }
     let(:reportable_asset) do
       create(:asset, workflow: create(:workflow, reportable: true))
     end
@@ -245,14 +245,14 @@ describe Asset do
   context 'for report' do
     let!(:workflow1) { create(:workflow, name: 'Workflow1') }
     let!(:workflow2) { create(:workflow, name: 'Workflow2') }
-    let!(:in_progress) { create :state, name: 'in_progress' }
-    let!(:completed) { create :state, name: 'completed' }
-    let!(:cost_code) { create :cost_code }
-    let!(:asset1) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project1' }
-    let!(:asset2) { create :asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code: cost_code }
-    let!(:asset3) { create :asset, workflow: workflow2, study: 'Study1', project: 'Project2' }
-    let!(:asset4) { create :asset, workflow: workflow2, study: 'Study1', project: 'Project2' }
-    let!(:asset5) { create :asset, workflow: workflow1 }
+    let!(:in_progress) { create(:state, name: 'in_progress') }
+    let!(:completed) { create(:state, name: 'completed') }
+    let!(:cost_code) { create(:cost_code) }
+    let!(:asset1) { create(:asset, workflow: workflow1, study: 'Study1', project: 'Project1') }
+    let!(:asset2) { create(:asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code:) }
+    let!(:asset3) { create(:asset, workflow: workflow2, study: 'Study1', project: 'Project2') }
+    let!(:asset4) { create(:asset, workflow: workflow2, study: 'Study1', project: 'Project2') }
+    let!(:asset5) { create(:asset, workflow: workflow1) }
 
     after do
       Timecop.return

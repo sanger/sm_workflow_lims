@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 describe Workflow do
-  let!(:volume_check) { create :state, name: 'volume_check' }
+  let!(:volume_check) { create(:state, name: 'volume_check') }
 
   context 'with valid parameters' do
     let!(:test_name) { 'test' }
     let!(:has_comment) { true }
-    let(:workflow) { Workflow.new(name: test_name, has_comment: has_comment, initial_state_name: 'volume_check') }
+    let(:workflow) { Workflow.new(name: test_name, has_comment:, initial_state_name: 'volume_check') }
 
     it 'can be created' do
-      workflow = Workflow.new(name: test_name, has_comment: has_comment, turn_around_days: 2,
+      workflow = Workflow.new(name: test_name, has_comment:, turn_around_days: 2,
                               initial_state: volume_check)
       expect(workflow).to be_valid
       expect(workflow).to have(0).errors_on(:name)

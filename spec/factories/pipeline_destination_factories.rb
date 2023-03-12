@@ -4,6 +4,6 @@ FactoryBot.define do
   end
 
   factory :pipeline_destination do
-    name { generate :pipeline_destination_name }
+    name { generate(:pipeline_destination_name) }
   end
 end
