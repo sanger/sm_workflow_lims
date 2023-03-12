@@ -127,7 +127,7 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
     minitest (5.18.0)
-    mysql2 (0.5.4)
+    mysql2 (0.5.5)
     net-protocol (0.2.1)
       timeout
     net-smtp (0.3.3)
@@ -144,8 +144,9 @@ GEM
       method_source (~> 1.0)
     psych (4.0.4)
       stringio
-    puma (6.1.1)
     public_suffix (5.0.1)
+      nio4r (~> 2.0)
+    puma (6.1.1)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.3)
