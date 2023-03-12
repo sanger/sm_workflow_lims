@@ -21,12 +21,12 @@ describe Batch::Updater do
   end
 
   it 'creates the right batch and the right assets' do
-    state = create :state, name: 'in_progress'
-    workflow = create :workflow, name: 'New workflow'
-    batch = create :batch_with_assets
+    state = create(:state, name: 'in_progress')
+    workflow = create(:workflow, name: 'New workflow')
+    batch = create(:batch_with_assets)
     batch_updater = Batch::Updater.new(
-      batch: batch,
-      workflow: workflow
+      batch:,
+      workflow:
     )
     batch.assets.each do |asset|
       expect(asset.workflow.name).not_to eq 'New workflow'

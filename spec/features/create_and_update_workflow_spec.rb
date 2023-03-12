@@ -4,26 +4,26 @@ require 'rails_helper'
 
 describe 'can create workflow', js: true do
   it 'can create workflow' do
-    create :state, name: 'in_progress'
-    create :state, name: 'cherrypick'
+    create(:state, name: 'in_progress')
+    create(:state, name: 'cherrypick')
     visit '/'
     click_on 'Admin'
     find('a', text: 'Create a new workflow').click
     within('#add-workflow-modal') do
       fill_in 'Name', with: 'New workflow'
-      find('#active', visible: :all).first(:xpath, './/..').click
-      find('#reportable', visible: :all).first(:xpath, './/..').click
-      find('#hasComment', visible: :all).first(:xpath, './/..').click
-      find('#qcFlow', visible: :all).first(:xpath, './/..').click
-      find('#cherrypickFlow', visible: :all).first(:xpath, './/..').click
-      find('button', text: 'Create').click
+      find_by_id('active', visible: :all).first(:xpath, './/..').click
+      find_by_id('reportable', visible: :all).first(:xpath, './/..').click
+      find_by_id('hasComment', visible: :all).first(:xpath, './/..').click
+      find_by_id('qcFlow', visible: :all).first(:xpath, './/..').click
+      find_by_id('cherrypickFlow', visible: :all).first(:xpath, './/..').click
+      click_button(text: 'Create')
     end
     expect(page).to have_content('The workflow was created.')
     expect(Workflow.count).to eq 1
     find('a', text: 'Create a new workflow').click
     within('#add-workflow-modal') do
       fill_in 'Name', with: 'New workflow'
-      find('button', text: 'Create').click
+      click_button(text: 'Create')
     end
     expect(page).to have_content('Name has already been taken')
     expect(Workflow.count).to eq 1
@@ -37,21 +37,21 @@ describe 'can create workflow', js: true do
   end
 
   it 'can update workflow' do
-    create :state, name: 'in_progress'
-    create :state, name: 'cherrypick'
-    create :workflow, name: 'Workflow1'
-    create :workflow, name: 'Workflow2'
+    create(:state, name: 'in_progress')
+    create(:state, name: 'cherrypick')
+    create(:workflow, name: 'Workflow1')
+    create(:workflow, name: 'Workflow2')
     visit '/'
     click_on 'Admin'
     first(:link, 'Edit').click
     fill_in 'Name', with: 'Workflow2'
     click_on 'Update Workflow'
     expect(page).to have_content('Name has already been taken')
-    find('#active', visible: :all).first(:xpath, './/..').click
-    find('#reportable', visible: :all).first(:xpath, './/..').click
-    find('#hasComment', visible: :all).first(:xpath, './/..').click
-    find('#qcFlow', visible: :all).first(:xpath, './/..').click
-    find('#cherrypickFlow', visible: :all).first(:xpath, './/..').click
+    find_by_id('active', visible: :all).first(:xpath, './/..').click
+    find_by_id('reportable', visible: :all).first(:xpath, './/..').click
+    find_by_id('hasComment', visible: :all).first(:xpath, './/..').click
+    find_by_id('qcFlow', visible: :all).first(:xpath, './/..').click
+    find_by_id('cherrypickFlow', visible: :all).first(:xpath, './/..').click
     click_on 'Update Workflow'
     expect(page).to have_content('The workflow was updated.')
     expect(Workflow.count).to eq 2

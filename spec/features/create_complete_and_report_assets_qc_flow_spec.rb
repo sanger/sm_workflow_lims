@@ -4,12 +4,12 @@ require 'rails_helper'
 
 describe 'create complete and report assets within QC flow', js: true do
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
-  let!(:in_progress) { create :state, name: 'in_progress' }
-  let!(:volume_check) { create :state, name: 'volume_check' }
-  let!(:quant) { create :state, name: 'quant' }
-  let!(:report_required) { create :state, name: 'report_required' }
-  let!(:completed) { create :state, name: 'completed' }
-  let!(:reported) { create :state, name: 'reported' }
+  let!(:in_progress) { create(:state, name: 'in_progress') }
+  let!(:volume_check) { create(:state, name: 'volume_check') }
+  let!(:quant) { create(:state, name: 'quant') }
+  let!(:report_required) { create(:state, name: 'report_required') }
+  let!(:completed) { create(:state, name: 'completed') }
+  let!(:reported) { create(:state, name: 'reported') }
   let!(:workflow1) { create(:qc_workflow, name: 'QC workflow') }
   let!(:workflow2) { create(:qc_workflow, name: 'Reportable QC workflow', reportable: true) }
 
