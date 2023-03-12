@@ -8,8 +8,8 @@ describe 'create and edit batch', js: true do
   let!(:workflow2) { create(:workflow, name: 'Reportable workflow', reportable: true) }
   let!(:workflow3) { create(:qc_workflow, name: 'QC workflow') }
   let!(:workflow4) { create(:workflow, name: 'Deactivated workflow', active: false) }
-  let!(:in_progress) { create :state, name: 'in_progress' }
-  let!(:volume_check) { create :state, name: 'volume_check' }
+  let!(:in_progress) { create(:state, name: 'in_progress') }
+  let!(:volume_check) { create(:state, name: 'volume_check') }
 
   it 'can create and edit a batch' do
     visit '/'

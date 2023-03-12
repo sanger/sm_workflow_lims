@@ -6,7 +6,7 @@ FactoryBot.define do
       end
 
       after(:create) do |batch, evaluator|
-        create_list(:asset, evaluator.assets_count, batch: batch)
+        create_list(:asset, evaluator.assets_count, batch:)
       end
     end
   end

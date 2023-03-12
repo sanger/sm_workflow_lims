@@ -34,7 +34,7 @@ jobs:
       - name: Setup database
         run: bundle exec rake db:setup
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v2.7.5
+        uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID:  ${{ secrets.CC_TEST_REPORTER_ID || '5e399530a457db7a41cd5785ce0536b79e9022b3c2d4382f101310b3b166eb38' }}
         with:

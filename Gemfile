@@ -5,7 +5,9 @@ gem 'rails', '~> 6.1.6'
 # Use mysql2 as the database for Active Record
 gem 'mysql2'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 6.0'
+
+gem 'net-smtp'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -14,7 +16,7 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', '~> 2.4.0', group: :doc # TODO: change to using yard (using this for other apps).
 
 gem 'bootstrap-sass', '3.4.1'
 
@@ -32,15 +34,11 @@ gem 'exception_notification'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'coveralls', require: false
-
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
   gem 'pry'
   # Use Uglifier as compressor for JavaScript assets
   gem 'uglifier', '>= 1.3.0'
-  # Use CoffeeScript for .coffee assets and views
-  gem 'coffee-rails', '~> 4.2.2'
 end
 
 group :development do
@@ -64,6 +62,7 @@ group :test do
   gem 'launchy'
   gem 'rspec-collection_matchers'
   gem 'rspec-rails', '~> 3.5.0'
+  gem 'simplecov', require: false
   gem 'timecop'
   # Keep webdriver in sync with chrome to prevent frustrating CI failures
   gem 'webdrivers', require: false

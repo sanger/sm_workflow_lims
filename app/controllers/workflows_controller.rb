@@ -39,8 +39,8 @@ class WorkflowsController < ApplicationController
       qc_flow: params[:qcFlow] || false,
       cherrypick_flow: params[:cherrypickFlow] || false,
       active: params[:active] || false,
-      initial_state_name: initial_state_name,
-      turn_around_days: turn_around_days
+      initial_state_name:,
+      turn_around_days:
     }
   end
 

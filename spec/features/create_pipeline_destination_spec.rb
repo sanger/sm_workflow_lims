@@ -9,14 +9,14 @@ describe 'can create pipeline destination', js: true do
     find('a', text: 'Create a new destination').click
     within('#add-pipeline-destination-modal') do
       fill_in 'Name', with: 'New pipeline destination'
-      find('button', text: 'Create').click
+      click_button(text: 'Create')
     end
     expect(page).to have_content('The pipeline destination was created.')
     expect(PipelineDestination.count).to eq 1
     find('a', text: 'Create a new destination').click
     within('#add-pipeline-destination-modal') do
       fill_in 'Name', with: 'New pipeline destination'
-      find('button', text: 'Create').click
+      click_button(text: 'Create')
     end
     expect(page).to have_content('Name has already been taken')
     expect(PipelineDestination.count).to eq 1

@@ -4,16 +4,16 @@ require 'rails_helper'
 
 describe 'create complete and report assets within Cherrypick flow', js: true do
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
-  let!(:in_progress) { create :state, name: 'in_progress' }
-  let!(:volume_check) { create :state, name: 'volume_check' }
-  let!(:quant) { create :state, name: 'quant' }
-  let!(:report_required) { create :state, name: 'report_required' }
-  let!(:completed) { create :state, name: 'completed' }
-  let!(:reported) { create :state, name: 'reported' }
-  let!(:workflow1) { create :cherrypick_workflow, name: 'Cherrypick workflow' }
-  let!(:workflow2) { create :cherrypick_qc_workflow, name: 'Cherrypick QC workflow' }
+  let!(:in_progress) { create(:state, name: 'in_progress') }
+  let!(:volume_check) { create(:state, name: 'volume_check') }
+  let!(:quant) { create(:state, name: 'quant') }
+  let!(:report_required) { create(:state, name: 'report_required') }
+  let!(:completed) { create(:state, name: 'completed') }
+  let!(:reported) { create(:state, name: 'reported') }
+  let!(:workflow1) { create(:cherrypick_workflow, name: 'Cherrypick workflow') }
+  let!(:workflow2) { create(:cherrypick_qc_workflow, name: 'Cherrypick QC workflow') }
   let!(:workflow3) do
-    create :cherrypick_qc_workflow, name: 'Cherrypick Reportable QC workflow', reportable: true
+    create(:cherrypick_qc_workflow, name: 'Cherrypick Reportable QC workflow', reportable: true)
   end
 
   it 'can create and complete a non-reportable asset' do

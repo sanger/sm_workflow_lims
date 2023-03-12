@@ -38,7 +38,7 @@ class Asset < ApplicationRecord
 
   def self.with_identifier(search_string)
     if search_string.present?
-      where('identifier = :search_string or batch_id = :search_string', search_string: search_string)
+      where('identifier = :search_string or batch_id = :search_string', search_string:)
     else
       all
     end
@@ -51,7 +51,7 @@ class Asset < ApplicationRecord
 
   # returns an array of hashes
   def self.generate_report_data(start_date, end_date, workflow)
-    where(workflow: workflow)
+    where(workflow:)
       .joins(:events)
       .merge(Event.completed_between(start_date, end_date))
       .joins('LEFT JOIN cost_codes ON assets.cost_code_id = cost_codes.id')
@@ -96,8 +96,8 @@ class Asset < ApplicationRecord
   class AssetAction
     attr_reader :action, :assets, :flash_status, :asset_state
 
-    def self.create!(*args)
-      new(*args).tap { |action| action.do! }
+    def self.create!(**args)
+      new(**args).tap { |action| action.do! }
     end
 
     def initialize(action:, assets:)
@@ -129,7 +129,7 @@ class Asset < ApplicationRecord
 
     def message
       if done?
-        "#{asset_state.humanize} is done for #{identifiers.to_sentence}"
+        "#{asset_state.humanize} is done for #{identifiers.sort.to_sentence}"
       else
         "#{asset_state.humanize} has not been finished for requested assets."
       end
