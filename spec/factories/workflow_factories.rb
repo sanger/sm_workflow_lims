@@ -4,7 +4,7 @@ FactoryBot.define do
   end
 
   factory :workflow do
-    name { generate :workflow_name }
+    name { generate(:workflow_name) }
     has_comment { false }
     reportable { false }
     turn_around_days { nil }
