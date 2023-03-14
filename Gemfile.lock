@@ -127,6 +127,8 @@ GEM
     mini_portile2 (2.8.1)
     minitest (5.18.0)
     mysql2 (0.5.5)
+    net-pop (0.1.2)
+      net-protocol
     net-protocol (0.2.1)
       timeout
     net-smtp (0.3.3)
@@ -144,7 +146,6 @@ GEM
     psych (4.0.4)
       stringio
     public_suffix (5.0.1)
-      nio4r (~> 2.0)
     puma (6.1.1)
       nio4r (~> 2.0)
     racc (1.6.2)
@@ -304,6 +305,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   mysql2
+  net-pop
   net-smtp
   pry
   puma

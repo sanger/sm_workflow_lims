@@ -7,6 +7,7 @@ gem 'mysql2'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 6.0'
 
+gem 'net-pop', require: false
 gem 'net-smtp'
 
 # Use jquery as the JavaScript library
