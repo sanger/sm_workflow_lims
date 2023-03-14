@@ -1,6 +1,16 @@
 require './app/presenters/asset/index'
 
 class AssetsController < ApplicationController
+  def index
+    if params[:state].nil? && params[:identifier].nil?
+      redirect_to('/assets?state=in_progress')
+    else
+      assets = Asset.in_state(state)
+                    .with_identifier(params[:identifier])
+      @presenter = Presenter::AssetPresenter::Index.new(assets, search, state)
+    end
+  end
+
   # Assets updater creates new events for assets and moves assets to the next state
   def update
     if assets_provided
@@ -10,16 +20,6 @@ class AssetsController < ApplicationController
     else
       flash[:error] = I18n.t('assets.errors.none_selected')
       redirect_back(fallback_location: root_path)
-    end
-  end
-
-  def index
-    if params[:state].nil? && params[:identifier].nil?
-      redirect_to('/assets?state=in_progress')
-    else
-      assets = Asset.in_state(state)
-                    .with_identifier(params[:identifier])
-      @presenter = Presenter::AssetPresenter::Index.new(assets, search, state)
     end
   end
 
