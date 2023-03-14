@@ -4,12 +4,35 @@ require './app/presenters/batch/show'
 class BatchesController < ApplicationController
   before_action :batch, only: %i[show update remove]
 
+  def show
+    @presenter = Presenter::BatchPresenter::Show.new(batch)
+  end
+
   def new
     @presenter = Presenter::BatchPresenter::New.new
   end
 
-  def show
-    @presenter = Presenter::BatchPresenter::Show.new(batch)
+  def create
+    batch_creator = Batch::Creator.new(
+      study: params[:study],
+      project: params[:project],
+      workflow:,
+      pipeline_destination:,
+      begun_at: params[:begun_at],
+      cost_code:,
+      asset_type:,
+      assets:,
+      comment: params[:comment]
+    )
+    if batch_creator.valid?
+      batch = batch_creator.create!
+      @presenter = Presenter::BatchPresenter::Show.new(batch)
+      flash[:notice] = I18n.t('batches.success.created')
+      redirect_to("/batches/#{@presenter.id}")
+    else
+      flash[:error] = batch_creator.errors.full_messages.join('; ')
+      redirect_back(fallback_location: root_path)
+    end
   end
 
   def update
@@ -38,29 +61,6 @@ class BatchesController < ApplicationController
     batch.destroy!
     flash[:notice] = I18n.t('batches.success.deleted')
     redirect_to('/batches/new')
-  end
-
-  def create
-    batch_creator = Batch::Creator.new(
-      study: params[:study],
-      project: params[:project],
-      workflow:,
-      pipeline_destination:,
-      begun_at: params[:begun_at],
-      cost_code:,
-      asset_type:,
-      assets:,
-      comment: params[:comment]
-    )
-    if batch_creator.valid?
-      batch = batch_creator.create!
-      @presenter = Presenter::BatchPresenter::Show.new(batch)
-      flash[:notice] = I18n.t('batches.success.created')
-      redirect_to("/batches/#{@presenter.id}")
-    else
-      flash[:error] = batch_creator.errors.full_messages.join('; ')
-      redirect_back(fallback_location: root_path)
-    end
   end
 
   private

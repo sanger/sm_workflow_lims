@@ -3,6 +3,10 @@ require './app/presenters/workflow/show'
 class WorkflowsController < ApplicationController
   include InitialState
 
+  def show
+    @presenter = Presenter::WorkflowPresenter::Show.new(workflow)
+  end
+
   def create
     @workflow = Workflow.new(workflow_params)
     if @workflow.save
@@ -12,10 +16,6 @@ class WorkflowsController < ApplicationController
       flash[:error] = @workflow.errors.full_messages.join('; ')
       redirect_back(fallback_location: root_path)
     end
-  end
-
-  def show
-    @presenter = Presenter::WorkflowPresenter::Show.new(workflow)
   end
 
   def update
