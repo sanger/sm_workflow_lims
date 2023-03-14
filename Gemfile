@@ -7,6 +7,7 @@ gem 'mysql2'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 6.0'
 
+gem 'net-imap', require: false
 gem 'net-pop', require: false
 gem 'net-smtp'
 
