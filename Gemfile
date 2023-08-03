@@ -66,6 +66,5 @@ group :test do
   gem 'rspec-rails', '~> 3.5.0'
   gem 'simplecov', require: false
   gem 'timecop'
-  # Keep webdriver in sync with chrome to prevent frustrating CI failures
-  gem 'webdrivers', require: false
+  gem 'selenium-webdriver', '~> 4.1', require: false
 end
