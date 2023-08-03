@@ -1,4 +1,4 @@
-class UpdateStatesAndWorkflows < ActiveRecord::Migration
+class UpdateStatesAndWorkflows < ActiveRecord::Migration[4.2]
   def change
     ActiveRecord::Base.transaction do
       Workflow.where(initial_state: nil).each do |workflow|

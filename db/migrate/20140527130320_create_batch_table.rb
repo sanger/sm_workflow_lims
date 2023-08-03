@@ -1,4 +1,4 @@
-class CreateBatchTable < ActiveRecord::Migration
+class CreateBatchTable < ActiveRecord::Migration[4.2]
   def change
     create_table(:batches) do |t|
       # id

@@ -1,4 +1,4 @@
-class AddPipelineDestination < ActiveRecord::Migration
+class AddPipelineDestination < ActiveRecord::Migration[4.2]
   def up
     ActiveRecord::Base.transaction do
       create_table(:pipeline_destinations) do |t|
