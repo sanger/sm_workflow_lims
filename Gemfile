@@ -64,8 +64,7 @@ group :test do
   gem 'launchy'
   gem 'rspec-collection_matchers'
   gem 'rspec-rails', '~> 3.5.0'
+  gem 'selenium-webdriver', require: false
   gem 'simplecov', require: false
   gem 'timecop'
-  # Keep webdriver in sync with chrome to prevent frustrating CI failures
-  gem 'webdrivers', require: false
 end

@@ -17,8 +17,7 @@
 #
 # require 'database_cleaner'
 
-require 'webdrivers/chromedriver'
-Webdrivers::Chromedriver.update
+require 'selenium-webdriver'
 
 require 'factory_bot'
 require 'capybara/rspec'
