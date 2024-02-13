@@ -611,3 +611,7 @@ Style/ZeroLengthPredicate:
   Exclude:
     - 'app/controllers/batches_controller.rb'
     - 'app/presenters/asset/index.rb'
+
+Rails/ThreeStateBooleanColumn:
+  Exclude:
+    - 'db/migrate/20190923133947_add_qc_flow_column_to_workflows.rb'
