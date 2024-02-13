@@ -57,7 +57,8 @@ module Presenter::AssetPresenter
       if completed_early?
         return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'day'.pluralize(overdue_by)}"
       end
-      return 'On time' if completed_on_time?
+
+      'On time' if completed_on_time?
     end
 
     def completed_at_status
