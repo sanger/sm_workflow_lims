@@ -4,7 +4,7 @@ class Proc
     self === Class.new do
       method_name = callable.to_sym
       define_method(method_name) { |&block| block ? block.call(*args) : true }
-      define_method("#{method_name}?") { true }
+      define_method(:"#{method_name}?") { true }
       def method_missing(*_args)
         false
       end
