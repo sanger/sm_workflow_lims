@@ -19,9 +19,9 @@ describe Report do
     let!(:workflow) { create(:workflow, name: 'Workflow') }
     let!(:in_progress) { create(:state, name: 'in_progress') }
     let!(:completed) { create(:state, name: 'completed') }
-    let(:asset1) { create(:asset, workflow:, study: 'Study1', project: 'Project1') }
-    let(:asset2) { create(:asset, workflow:, study: 'Study1', project: 'Project2') }
-    let(:asset3) { create(:asset, workflow:, study: 'Study1', project: 'Project2') }
+    let(:asset_first) { create(:asset, workflow:, study: 'Study1', project: 'Project1') }
+    let(:asset_second) { create(:asset, workflow:, study: 'Study1', project: 'Project2') }
+    let(:asset_third) { create(:asset, workflow:, study: 'Study1', project: 'Project2') }
 
     before do
       Timecop.freeze(Time.local(2017, 4, 7))
@@ -37,9 +37,9 @@ describe Report do
     end
 
     it 'creates the right csv' do
-      asset1.complete
-      asset2.complete
-      asset3.complete
+      asset_first.complete
+      asset_second.complete
+      asset_third.complete
       asset4 = create(:asset, workflow:)
       report = Report.new(workflow:, start_date: '01/04/2017', end_date: '15/04/2017')
       expected_report = <<~REPORT
