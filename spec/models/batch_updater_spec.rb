@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Batch::Updater do
+describe 'Batch::Updater' do
   before do
     Timecop.freeze(Time.local(2017, 3, 7))
   end

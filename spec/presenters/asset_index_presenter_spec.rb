@@ -2,7 +2,7 @@ require 'rails_helper'
 require './app/presenters/asset/index'
 require './spec/presenters/shared_presenter_behaviour'
 
-describe Presenter::AssetPresenter::Index do
+describe 'Presenter::AssetPresenter::Index' do
   shared_context 'shared mocks' do
     let(:mock_type) do
       double('mock_type',
@@ -17,21 +17,21 @@ describe Presenter::AssetPresenter::Index do
              variable_samples: true)
     end
     let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true) }
-    let(:asset1) do
-      double('asset_1',
-             identifier: 'asset_1',
+    let(:asset_first) do
+      double('asset_first',
+             identifier: 'asset_first',
              asset_type: mock_type,
              workflow: mock_workflow,
              study: 'study')
     end
-    let(:asset2) do
-      double('asset_2',
-             identifier: 'asset_2',
+    let(:asset_second) do
+      double('asset_second',
+             identifier: 'asset_second',
              asset_type: mock_type2,
              workflow: mock_workflow,
              study: 'study')
     end
-    let(:assets) { [asset1, asset2] }
+    let(:assets) { [asset_first, asset_second] }
     let!(:state) { create(:state, name: 'in_progress') }
     let(:presenter) { Presenter::AssetPresenter::Index.new(assets, search, state) }
   end
@@ -47,7 +47,7 @@ describe Presenter::AssetPresenter::Index do
     it 'yields each asset of type x in turn for each_asset(x)' do
       expect { |b| presenter.each_asset('Type', &b) }.to yield_with_args(Presenter::AssetPresenter::Asset)
       presenter.each_asset('Type') do |asset|
-        expect(asset.identifier).to eq('asset_1')
+        expect(asset.identifier).to eq('asset_first')
       end
     end
   end
