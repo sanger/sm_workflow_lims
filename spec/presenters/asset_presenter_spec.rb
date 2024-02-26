@@ -2,7 +2,7 @@ require 'rails_helper'
 require './app/presenters/asset/asset'
 require 'timecop'
 
-describe Presenter::AssetPresenter::Asset do
+describe 'Presenter::AssetPresenter::Asset' do
   shared_examples 'shared behaviour' do
     let(:mock_type) do
       double('mock_type',
