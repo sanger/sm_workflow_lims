@@ -209,9 +209,9 @@ describe Asset do
   end
 
   context 'state machine' do
-    let!(:state1) { create(:state, name: 'in_progress') }
-    let!(:state2) { create(:state, name: 'completed') }
-    let!(:state3) { create(:state, name: 'report_required') }
+    let!(:state_first) { create(:state, name: 'in_progress') }
+    let!(:state_second) { create(:state, name: 'completed') }
+    let!(:state_third) { create(:state, name: 'report_required') }
     let(:asset) { create(:asset) }
     let(:reportable_asset) do
       create(:asset, workflow: create(:workflow, reportable: true))
@@ -243,16 +243,16 @@ describe Asset do
   end
 
   context 'for report' do
-    let!(:workflow1) { create(:workflow, name: 'Workflow1') }
-    let!(:workflow2) { create(:workflow, name: 'Workflow2') }
+    let!(:workflow_first) { create(:workflow, name: 'Workflow_first') }
+    let!(:workflow_second) { create(:workflow, name: 'Workflow_second') }
     let!(:in_progress) { create(:state, name: 'in_progress') }
     let!(:completed) { create(:state, name: 'completed') }
     let!(:cost_code) { create(:cost_code) }
-    let!(:asset1) { create(:asset, workflow: workflow1, study: 'Study1', project: 'Project1') }
-    let!(:asset2) { create(:asset, workflow: workflow1, study: 'Study1', project: 'Project2', cost_code:) }
-    let!(:asset3) { create(:asset, workflow: workflow2, study: 'Study1', project: 'Project2') }
-    let!(:asset4) { create(:asset, workflow: workflow2, study: 'Study1', project: 'Project2') }
-    let!(:asset5) { create(:asset, workflow: workflow1) }
+    let!(:asset_first) { create(:asset, workflow: workflow_first, study: 'Study1', project: 'Project1') }
+    let!(:asset_second) { create(:asset, workflow: workflow_first, study: 'Study1', project: 'Project2', cost_code:) }
+    let!(:asset_third) { create(:asset, workflow: workflow_second, study: 'Study1', project: 'Project2') }
+    let!(:asset_fourth) { create(:asset, workflow: workflow_second, study: 'Study1', project: 'Project2') }
+    let!(:asset_fifth) { create(:asset, workflow: workflow_first) }
 
     after do
       Timecop.return
@@ -260,17 +260,17 @@ describe Asset do
 
     it 'generates the right data for reports' do
       Timecop.freeze(Time.local(2017, 3, 7))
-      asset1.complete
-      asset2.complete
-      asset3.complete
-      asset4.complete
+      asset_first.complete
+      asset_second.complete
+      asset_third.complete
+      asset_fourth.complete
       start_date = Date.today - 1
       end_date = Date.today + 1
-      expect(Asset.generate_report_data(start_date, end_date, workflow1))
+      expect(Asset.generate_report_data(start_date, end_date, workflow_first))
         .to eq([{ 'study' => 'Study1', 'project' => 'Project1', 'cost_code_name' => nil, 'assets_count' => 1 },
                 { 'study' => 'Study1',
                   'project' => 'Project2', 'cost_code_name' => cost_code.name, 'assets_count' => 1 }])
-      expect(Asset.generate_report_data(start_date, end_date, workflow2))
+      expect(Asset.generate_report_data(start_date, end_date, workflow_second))
         .to eq([{ 'study' => 'Study1', 'project' => 'Project2',
                   'cost_code_name' => nil, 'assets_count' => 2 }])
     end
