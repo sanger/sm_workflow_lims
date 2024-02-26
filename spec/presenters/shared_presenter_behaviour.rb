@@ -1,17 +1,17 @@
 shared_examples 'shared presenter behaviour' do
-  let!(:asset_type_1) do
+  let!(:asset_type_first) do
     create(:asset_type,
            name: 'type1',
            identifier_type: 'id1',
            has_sample_count: true)
   end
-  let!(:asset_type_2) do
+  let!(:asset_type_second) do
     create(:asset_type,
            name: 'type2',
            identifier_type: 'id2',
            has_sample_count: false)
   end
-  let!(:workflow_1) do
+  let!(:workflow) do
     create(:qc_workflow,
            name: 'wf1',
            has_comment: true,
@@ -38,6 +38,6 @@ shared_examples 'shared presenter behaviour' do
 
   it 'yields only active workflows (rev)' do
     expect { |b| presenter.active_workflows(&b) }
-      .to yield_with_args('wf1', true, workflow_1.id, true, true, workflow_1.cherrypick_flow, 1, true)
+      .to yield_with_args('wf1', true, workflow.id, true, true, workflow.cherrypick_flow, 1, true)
   end
 end

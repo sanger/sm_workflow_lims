@@ -2,7 +2,7 @@ require 'rails_helper'
 require './app/presenters/report/new'
 require './spec/presenters/shared_presenter_behaviour'
 
-describe Presenter::ReportPresenter::New do
+describe 'Presenter::ReportPresenter::New' do
   let(:presenter) { Presenter::ReportPresenter::New.new }
 
   context 'always' do
