@@ -1,5 +1,5 @@
 require 'rails_helper'
-require './app/presenters/asset/index'
+require './app/presenters/asset_presenter/index'
 require './spec/presenters/shared_presenter_behaviour'
 
 describe 'Presenter::AssetPresenter::Index' do
@@ -63,8 +63,8 @@ describe 'Presenter::AssetPresenter::Index' do
     # Eg. presenter.search_parameters {|sp| puts sp }
     # -> identifier matches 'my plate'
 
-    it 'returns true for is_search?' do
-      expect(presenter.is_search?).to be_truthy
+    it 'returns true for search?' do
+      expect(presenter.search?).to be_truthy
     end
   end
 
@@ -78,8 +78,8 @@ describe 'Presenter::AssetPresenter::Index' do
     end
     # Eg. presenter.search_parameters {|sp| puts "Never called" }
 
-    it 'returns false for is_search?' do
-      expect(presenter.is_search?).to be_falsey
+    it 'returns false for search?' do
+      expect(presenter.search?).to be_falsey
     end
   end
 

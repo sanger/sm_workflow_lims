@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require './app/presenters/presenter'
 
 module Presenter::AssetPresenter
+  # Presenter for showing an asset
   class Asset < Presenter
     attr_reader :asset
 
@@ -62,7 +65,7 @@ module Presenter::AssetPresenter
     end
 
     def completed_at_status
-      "#{asset.completed_at.strftime('%d/%m/%Y')} #{'(' + completed_status_label + ')' if completed_status_label}"
+      "#{asset.completed_at.strftime('%d/%m/%Y')} #{"(#{completed_status_label})" if completed_status_label}"
     end
 
     def completed_at
@@ -70,7 +73,7 @@ module Presenter::AssetPresenter
       return 'Due today' if due_today?
       return "Overdue (#{overdue_by} #{'day'.pluralize(overdue_by)})" if overdue?
 
-      'In progress' + in_progress_status
+      "In progress#{in_progress_status}"
     end
 
     def days_left
@@ -86,7 +89,7 @@ module Presenter::AssetPresenter
     def due_today?
       return false if asset.workflow.turn_around_days.nil?
 
-      (0..1).include?(time_from_due_date)
+      (0..1).cover?(time_from_due_date)
     end
 
     def time_from_due_date
@@ -118,7 +121,7 @@ module Presenter::AssetPresenter
     end
 
     def overdue?
-      asset.completed_at.nil? && overdue_by > 0
+      asset.completed_at.nil? && overdue_by.positive?
     end
 
     def completed?

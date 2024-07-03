@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require './app/presenters/presenter'
 
 module Presenter::ReportPresenter
+  # Presenter for creating a new report
   class New < Presenter
     attr_reader :report
 

@@ -27,5 +27,7 @@ module SmWorkflowLims
     # Enabling the behaviour where 'belongs_to' associations are required by default.
     # (https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#active-record-belongs-to-required-by-default-option)
     config.active_record.belongs_to_required_by_default = true
+
+    config.active_record.legacy_connection_handling = false
   end
 end

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require './app/presenters/presenter'
-require './app/presenters/asset/asset'
+require './app/presenters/asset_presenter/asset'
 
 module Presenter::BatchPresenter
+  # Presenter for showing a batch
   class Show < Presenter
     attr_reader :batch
 
@@ -38,11 +41,11 @@ module Presenter::BatchPresenter
     end
 
     def prohibited_workflow(reportable, qc_flow, cherrypick_flow)
-      if workflow.present?
-        (workflow.reportable != reportable) ||
-          (workflow.qc_flow != qc_flow) ||
-          (workflow.cherrypick_flow != cherrypick_flow)
-      end
+      return if workflow.blank?
+
+      (workflow.reportable != reportable) ||
+        (workflow.qc_flow != qc_flow) ||
+        (workflow.cherrypick_flow != cherrypick_flow)
     end
 
     def workflow_name
@@ -62,7 +65,7 @@ module Presenter::BatchPresenter
     end
 
     def comment
-      return first_asset.comment.comment if first_asset && first_asset.comment
+      return first_asset.comment.comment if first_asset&.comment
 
       ''
     end

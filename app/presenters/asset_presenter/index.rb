@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require './app/presenters/presenter'
-require './app/presenters/asset/asset'
+require './app/presenters/asset_presenter/asset'
 
 module Presenter::AssetPresenter
+  # Presenter for showing a list of assets
   class Index < Presenter
     attr_reader :search, :assets, :total
 
@@ -16,8 +19,8 @@ module Presenter::AssetPresenter
       assets.values.flatten.map(&:identifier)
     end
 
-    def has_assets?(type)
-      assets[type].length > 0
+    def assets?(type)
+      assets[type].length.positive?
     end
 
     def num_assets(type)
@@ -37,10 +40,10 @@ module Presenter::AssetPresenter
     end
 
     def search_parameters
-      yield search if is_search?
+      yield search if search?
     end
 
-    def is_search?
+    def search?
       search.present?
     end
 

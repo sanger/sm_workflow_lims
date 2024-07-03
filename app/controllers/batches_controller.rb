@@ -1,5 +1,5 @@
-require './app/presenters/batch/new'
-require './app/presenters/batch/show'
+require './app/presenters/batch_presenter/new'
+require './app/presenters/batch_presenter/show'
 
 class BatchesController < ApplicationController
   before_action :batch, only: %i[show update remove]
