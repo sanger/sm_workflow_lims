@@ -1,4 +1,4 @@
-require './app/presenters/workflow/show'
+require './app/presenters/workflow_presenter/show'
 
 class WorkflowsController < ApplicationController
   include InitialState

@@ -1,5 +1,5 @@
-require './app/presenters/report/new'
-require './app/presenters/report/show'
+require './app/presenters/report_presenter/new'
+require './app/presenters/report_presenter/show'
 
 class ReportsController < ApplicationController
   def show; end

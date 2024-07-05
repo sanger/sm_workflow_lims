@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require './app/presenters/presenter'
 
 module Presenter::BatchPresenter
+  # Presenter for creating a new batch
   class New < Presenter
     def each_asset; end
 

@@ -1,5 +1,4 @@
 require 'rails_helper'
-require './app/presenters/asset/asset'
 require 'timecop'
 
 describe 'Presenter::AssetPresenter::Asset' do

@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
+# This file contains the Presenter module, which is included in all presenters.
 class Presenter
+  # Provides information about the deployed version
   module DeploymentInfo
     require './lib/deployed_version'
 
@@ -25,8 +29,9 @@ class Presenter
   end
   include DeploymentInfo
 
+  # Presenter::SharedBehaviour
   module SharedBehaviour
-    require './app/presenters/asset_type/asset_type'
+    require './app/presenters/asset_type_presenter/asset_type'
 
     def each_asset_type
       AssetType.find_each do |asset_type|

@@ -1,5 +1,5 @@
 require 'rails_helper'
-require './app/presenters/batch/show'
+require './app/presenters/batch_presenter/show'
 require './spec/presenters/shared_presenter_behaviour'
 
 describe 'Presenter::BatchPresenter::Show' do

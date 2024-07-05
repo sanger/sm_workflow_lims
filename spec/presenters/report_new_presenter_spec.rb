@@ -1,5 +1,5 @@
 require 'rails_helper'
-require './app/presenters/report/new'
+require './app/presenters/report_presenter/new'
 require './spec/presenters/shared_presenter_behaviour'
 
 describe 'Presenter::ReportPresenter::New' do

@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require './app/presenters/presenter'
 
 module Presenter::WorkflowPresenter
+  # Presenter for showing a workflow
   class Show < Presenter
     attr_reader :workflow
 

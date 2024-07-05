@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require './app/presenters/report/show'
+require './app/presenters/report_presenter/show'
 require './spec/presenters/shared_presenter_behaviour'
 
 describe 'Presenter::ReportPresenter::Show' do

@@ -1,4 +1,4 @@
-require './app/presenters/asset/index'
+require './app/presenters/asset_presenter/index'
 
 class AssetsController < ApplicationController
   def index
