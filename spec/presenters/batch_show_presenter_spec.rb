@@ -4,7 +4,7 @@ require './spec/presenters/shared_presenter_behaviour'
 
 describe 'Presenter::BatchPresenter::Show' do
   context 'with a batch' do
-    let(:presenter) { Presenter::BatchPresenter::Show.new(test_batch) }
+    let(:presenter) { Presenters::BatchPresenter::Show.new(test_batch) }
     let(:test_batch) { double('batch', assets: [asset_first, asset_second]) }
     let(:comment) { double('comment', comment: 'A comment') }
     let(:asset_second) do
@@ -29,12 +29,12 @@ describe 'Presenter::BatchPresenter::Show' do
     include_examples('shared presenter behaviour')
 
     it 'yields each asset in the batch in turn for each_asset' do
-      expect(Presenter::AssetPresenter::Asset).to receive(:new).with(asset_first).and_call_original
-      expect(Presenter::AssetPresenter::Asset).to receive(:new).with(asset_second).and_call_original
+      expect(Presenters::AssetPresenter::Asset).to receive(:new).with(asset_first).and_call_original
+      expect(Presenters::AssetPresenter::Asset).to receive(:new).with(asset_second).and_call_original
 
       expect do |b|
         presenter.each_asset(&b)
-      end.to yield_successive_args(Presenter::AssetPresenter::Asset, Presenter::AssetPresenter::Asset)
+      end.to yield_successive_args(Presenters::AssetPresenter::Asset, Presenters::AssetPresenter::Asset)
     end
 
     it 'returns the study_name (of the first asset) for study' do

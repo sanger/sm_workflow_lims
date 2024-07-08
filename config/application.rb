@@ -24,6 +24,11 @@ module SmWorkflowLims
     config.autoload_paths += %W[#{config.root}/lib/utils]
     config.disable_animations = false
 
+    config.autoload_paths += %W[#{Rails.root}/app]
+    config.eager_load_paths += %W[#{Rails.root}/app]
+    config.autoload_paths += %W[#{Rails.root}/app/presenters]
+    config.eager_load_paths += %W[#{Rails.root}/app/presenters]
+
     # Enabling the behaviour where 'belongs_to' associations are required by default.
     # (https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#active-record-belongs-to-required-by-default-option)
     config.active_record.belongs_to_required_by_default = true

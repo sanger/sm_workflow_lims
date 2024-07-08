@@ -1,89 +1,90 @@
 # frozen_string_literal: true
 
-require './app/presenters/presenter'
 require './app/presenters/asset_presenter/asset'
 
-module Presenter::BatchPresenter
-  # Presenter for showing a batch
-  class Show < Presenter
-    attr_reader :batch
+module Presenters
+  module BatchPresenter
+    # Presenter for showing a batch
+    class Show < Presenter
+      attr_reader :batch
 
-    def initialize(batch)
-      @batch = batch
-    end
-
-    delegate :id, to: :batch
-
-    def action
-      "/batches/#{id}"
-    end
-
-    def each_asset
-      batch.assets.each do |asset|
-        yield Presenter::AssetPresenter::Asset.new(asset)
+      def initialize(batch)
+        @batch = batch
       end
-    end
 
-    def study
-      return first_asset.study if first_asset
+      delegate :id, to: :batch
 
-      'Not Applicable'
-    end
+      def action
+        "/batches/#{id}"
+      end
 
-    def project
-      return first_asset.project if first_asset
+      def each_asset
+        batch.assets.each do |asset|
+          yield Presenters::AssetPresenter::Asset.new(asset)
+        end
+      end
 
-      'Not Applicable'
-    end
+      def study
+        return first_asset.study if first_asset
 
-    def workflow
-      @workflow ||= (first_asset.workflow if first_asset.present?) || ''
-    end
+        'Not Applicable'
+      end
 
-    def prohibited_workflow(reportable, qc_flow, cherrypick_flow)
-      return if workflow.blank?
+      def project
+        return first_asset.project if first_asset
 
-      (workflow.reportable != reportable) ||
-        (workflow.qc_flow != qc_flow) ||
-        (workflow.cherrypick_flow != cherrypick_flow)
-    end
+        'Not Applicable'
+      end
 
-    def workflow_name
-      workflow.name if workflow.present?
-    end
+      def workflow
+        @workflow ||= (first_asset.workflow if first_asset.present?) || ''
+      end
 
-    def pipeline_destination
-      return first_asset.pipeline_destination.name if first_asset && !first_asset.pipeline_destination.nil?
+      def prohibited_workflow(reportable, qc_flow, cherrypick_flow)
+        return if workflow.blank?
 
-      'None'
-    end
+        (workflow.reportable != reportable) ||
+          (workflow.qc_flow != qc_flow) ||
+          (workflow.cherrypick_flow != cherrypick_flow)
+      end
 
-    def cost_code
-      return first_asset.cost_code.name if first_asset && !first_asset.cost_code.nil?
+      def workflow_name
+        workflow.name if workflow.present?
+      end
 
-      ''
-    end
+      def pipeline_destination
+        return first_asset.pipeline_destination.name if first_asset && !first_asset.pipeline_destination.nil?
 
-    def comment
-      return first_asset.comment.comment if first_asset&.comment
+        'None'
+      end
 
-      ''
-    end
+      def cost_code
+        return first_asset.cost_code.name if first_asset && !first_asset.cost_code.nil?
 
-    def show_completed?
-      true
-    end
+        ''
+      end
 
-    def first_asset
-      batch.assets.first
-    end
+      def comment
+        return first_asset.comment.comment if first_asset&.comment
 
-    def num_assets
-      batch.assets.count
-    end
+        ''
+      end
 
-    def placeholder_date
-      first_asset.begun_at.strftime('%d/%m/%Y')
+      def show_completed?
+        true
+      end
+
+      def first_asset
+        batch.assets.first
+      end
+
+      def num_assets
+        batch.assets.count
+      end
+
+      def placeholder_date
+        first_asset.begun_at.strftime('%d/%m/%Y')
+      end
     end
   end
 end

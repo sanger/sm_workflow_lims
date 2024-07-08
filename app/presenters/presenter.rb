@@ -44,7 +44,7 @@ class Presenter
 
     def with_each_asset_type
       AssetType.find_each do |asset_type|
-        yield(Presenter::AssetTypePresenter::AssetType.new(asset_type))
+        yield(Presenters::AssetTypePresenter::AssetType.new(asset_type))
       end
     end
 

@@ -4,7 +4,7 @@ class WorkflowsController < ApplicationController
   include InitialState
 
   def show
-    @presenter = Presenter::WorkflowPresenter::Show.new(workflow)
+    @presenter = Presenters::WorkflowPresenter::Show.new(workflow)
   end
 
   def create
