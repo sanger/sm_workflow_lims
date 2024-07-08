@@ -328,7 +328,7 @@ Style/CaseEquality:
 # SupportedStyles: nested, compact
 Style/ClassAndModuleChildren:
   Exclude:
-    - 'app/presenters/admin/index.rb'
+    - 'app/presenters/admin_presenter/index.rb'
     - 'app/presenters/asset_presenter/asset.rb'
     - 'app/presenters/asset_presenter/index.rb'
     - 'app/presenters/asset_type_presenter/asset_type.rb'
