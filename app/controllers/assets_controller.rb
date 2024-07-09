@@ -5,7 +5,7 @@ class AssetsController < ApplicationController
     else
       assets = Asset.in_state(state)
                     .with_identifier(params[:identifier])
-      @presenter = Presenters::AssetPresenter::Index.new(assets, search, state)
+      @presenter = AssetPresenter::Index.new(assets, search, state)
     end
   end
 

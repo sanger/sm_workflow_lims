@@ -1,8 +1,7 @@
 require 'rails_helper'
-require './app/presenters/asset_presenter/index'
 require './spec/presenters/shared_presenter_behaviour'
 
-describe 'Presenter::AssetPresenter::Index' do
+describe 'AssetPresenter::Index' do
   shared_context 'shared mocks' do
     let(:mock_type) do
       double('mock_type',
@@ -33,7 +32,7 @@ describe 'Presenter::AssetPresenter::Index' do
     end
     let(:assets) { [asset_first, asset_second] }
     let!(:state) { create(:state, name: 'in_progress') }
-    let(:presenter) { Presenters::AssetPresenter::Index.new(assets, search, state) }
+    let(:presenter) { AssetPresenter::Index.new(assets, search, state) }
   end
 
   shared_examples 'standard behaviour' do
@@ -45,7 +44,7 @@ describe 'Presenter::AssetPresenter::Index' do
     end
 
     it 'yields each asset of type x in turn for each_asset(x)' do
-      expect { |b| presenter.each_asset('Type', &b) }.to yield_with_args(Presenters::AssetPresenter::Asset)
+      expect { |b| presenter.each_asset('Type', &b) }.to yield_with_args(AssetPresenter::Asset)
       presenter.each_asset('Type') do |asset|
         expect(asset.identifier).to eq('asset_first')
       end

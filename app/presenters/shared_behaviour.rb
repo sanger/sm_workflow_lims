@@ -1,37 +1,5 @@
-# frozen_string_literal: true
-
-# This file contains the Presenter module, which is included in all presenters.
-class Presenter
-  # Provides information about the deployed version
-  module DeploymentInfo
-    require './lib/deployed_version'
-
-    def version_information
-      # Provides a quick means of checking the deployed version
-      Deployed::VERSION_STRING
-    end
-
-    def commit_information
-      Deployed::VERSION_COMMIT
-    end
-
-    def repo_url
-      Deployed::REPO_URL
-    end
-
-    def host_name
-      Deployed::HOSTNAME
-    end
-
-    def release_name
-      Deployed::RELEASE_NAME
-    end
-  end
-  include DeploymentInfo
-
-  # Presenter::SharedBehaviour
+# module Presenters
   module SharedBehaviour
-    require './app/presenters/asset_type_presenter/asset_type'
 
     def each_asset_type
       AssetType.find_each do |asset_type|
@@ -44,7 +12,7 @@ class Presenter
 
     def with_each_asset_type
       AssetType.find_each do |asset_type|
-        yield(Presenters::AssetTypePresenter::AssetType.new(asset_type))
+        yield(AssetTypePresenter::AssetType.new(asset_type))
       end
     end
 
@@ -86,5 +54,4 @@ class Presenter
       end
     end
   end
-  include SharedBehaviour
-end
+# end

@@ -2,16 +2,16 @@ class ReportsController < ApplicationController
   def show; end
 
   def new
-    @presenter = Presenters::ReportPresenter::New.new
+    @presenter = ReportPresenter::New.new
   end
 
   def create
     report = Report.new(params.permit(:workflow_id, :start_date, :end_date))
     if report.valid?
-      @presenter = Presenters::ReportPresenter::Show.new(report)
+      @presenter = ReportPresenter::Show.new(report)
       render :show
     else
-      @presenter = Presenters::ReportPresenter::New.new(report)
+      @presenter = ReportPresenter::New.new(report)
       flash[:error] = @presenter.flash
       render :new
     end

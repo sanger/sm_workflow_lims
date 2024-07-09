@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-module Presenters
-  module AssetTypePresenter
+module AssetTypePresenter
     # Presenter for showing an asset type
-    class AssetType < Presenter
+    class AssetType
+      include SharedBehaviour
+      include DeploymentInfo
       attr_reader :asset_type
 
       ALPHANUMERIC_REGEX = '^[\w-]+$'
@@ -50,5 +51,4 @@ module Presenters
         %i[batch_id workflow cost_code study project].include?(asset_field)
       end
     end
-  end
 end

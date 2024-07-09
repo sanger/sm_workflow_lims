@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Presenters
-  module AdminPresenter
-    class Index < Presenter
-    end
+module AdminPresenter
+  class Index
+    include SharedBehaviour
+    include DeploymentInfo
   end
 end
