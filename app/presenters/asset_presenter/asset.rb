@@ -56,11 +56,11 @@ module AssetPresenter
     def completed_status_label
       if completed_late?
         return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} " \
-                "#{'day'.pluralize(overdue_by)}"
+               "#{'day'.pluralize(overdue_by)}"
       end
       if completed_early?
         return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} " \
-                "#{'day'.pluralize(overdue_by)}"
+               "#{'day'.pluralize(overdue_by)}"
       end
 
       'On time' if completed_on_time?

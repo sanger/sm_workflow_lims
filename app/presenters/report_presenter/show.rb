@@ -25,11 +25,11 @@ module ReportPresenter
       ''.tap do |html|
         report.rows.each_with_index do |row, index|
           html_for_row = '<tr>' \
-                          "<td class='text-center'> #{index + 1} </td>" \
-                          "<td class='text-center'>" +
-                          row.data_for(report.column_names).join("</td><td class='text-center'>") +
-                          '</td>' \
-                          '</tr>'
+                         "<td class='text-center'> #{index + 1} </td>" \
+                         "<td class='text-center'>" +
+                         row.data_for(report.column_names).join("</td><td class='text-center'>") +
+                         '</td>' \
+                         '</tr>'
           html << html_for_row
         end
       end
