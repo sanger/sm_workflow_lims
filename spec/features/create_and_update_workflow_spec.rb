@@ -2,9 +2,6 @@
 
 require 'rails_helper'
 
-require './app/presenters/batch_presenter/new'
-require './app/presenters/batch_presenter/show'
-
 describe 'can create workflow', :js do
   it 'can create workflow' do
     create(:state, name: 'in_progress')

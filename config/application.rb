@@ -26,9 +26,6 @@ module SmWorkflowLims
     config.autoload_paths += %W[#{config.root}/lib/utils]
     config.disable_animations = false
 
-    config.autoload_paths += %W[#{Rails.root}/app]
-    config.eager_load_paths += %W[#{Rails.root}/app]
-
     config.autoload_paths += %W[#{Rails.root}/app/presenters]
     config.eager_load_paths += %W[#{Rails.root}/app/presenters]
 
