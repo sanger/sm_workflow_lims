@@ -20,9 +20,14 @@ module SmWorkflowLims
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    config.load_defaults 7.0
+
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
     config.autoload_paths += %W[#{config.root}/lib/utils]
     config.disable_animations = false
+
+    config.autoload_paths += %W[#{Rails.root}/app/presenters]
+    config.eager_load_paths += %W[#{Rails.root}/app/presenters]
 
     # Enabling the behaviour where 'belongs_to' associations are required by default.
     # (https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#active-record-belongs-to-required-by-default-option)

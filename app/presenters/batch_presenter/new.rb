@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require './app/presenters/presenter'
-
-module Presenter::BatchPresenter
+module BatchPresenter
   # Presenter for creating a new batch
-  class New < Presenter
+  class New
+    include SharedBehaviour
+    include DeploymentInfo
     def each_asset; end
 
     def study

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require './app/presenters/presenter'
-
-module Presenter::AssetTypePresenter
+module AssetTypePresenter
   # Presenter for showing an asset type
-  class AssetType < Presenter
+  class AssetType
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :asset_type
 
     ALPHANUMERIC_REGEX = '^[\w-]+$'
