@@ -34,5 +34,7 @@ module SmWorkflowLims
     config.active_record.belongs_to_required_by_default = true
 
     config.active_record.legacy_connection_handling = false
+
+    config.action_controller.default_protect_from_forgery = false
   end
 end
