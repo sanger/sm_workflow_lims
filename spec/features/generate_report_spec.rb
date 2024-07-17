@@ -2,18 +2,18 @@
 
 require 'rails_helper'
 
-describe 'can generate report', js: true do
-  let!(:workflow1) { create(:workflow, name: 'Workflow1') }
-  let!(:workflow2) { create(:workflow, name: 'Workflow2') }
+describe 'can generate report', :js do
+  let!(:workflow_first) { create(:workflow, name: 'Workflow_first') }
+  let!(:workflow_second) { create(:workflow, name: 'Workflow_second') }
   let!(:in_progress) { create(:state, name: 'in_progress') }
   let!(:completed) { create(:state, name: 'completed') }
-  let!(:asset1) { create(:asset, workflow: workflow1, study: 'Study1', project: 'Project1') }
-  let!(:asset2) do
-    create(:asset, workflow: workflow1, study: 'Study1', project: 'Project2',
+  let!(:asset_first) { create(:asset, workflow: workflow_first, study: 'Study1', project: 'Project1') }
+  let!(:asset_second) do
+    create(:asset, workflow: workflow_first, study: 'Study1', project: 'Project2',
                    cost_code: create(:cost_code, name: 'A1'))
   end
-  let!(:asset3) { create(:asset, workflow: workflow2, study: 'Study1', project: 'Project2') }
-  let!(:asset4) { create(:asset, workflow: workflow1) }
+  let!(:asset_third) { create(:asset, workflow: workflow_second, study: 'Study1', project: 'Project2') }
+  let!(:asset_fourth) { create(:asset, workflow: workflow_first) }
 
   before do
     Timecop.freeze(Time.local(2017, 3, 7))
@@ -24,22 +24,22 @@ describe 'can generate report', js: true do
   end
 
   it 'can generate report' do
-    asset1.complete
-    asset2.complete
-    asset3.complete
+    asset_first.complete
+    asset_second.complete
+    asset_third.complete
     visit '/'
     click_on 'Admin'
     click_on 'Create a new report'
-    select('Workflow1', from: 'Workflow')
+    select('Workflow_first', from: 'Workflow')
     fill_in('start_date', with: '31/03/2017').send_keys(:escape)
     fill_in('end_date', with: '01/03/2017').send_keys(:escape)
-    click_button(text: 'Create report')
+    click_on(text: 'Create report')
     expect(page).to have_content('Start date should be earlier than the end date.')
 
     fill_in('start_date', with: '01/03/2017').send_keys(:escape)
     fill_in('end_date', with: '31/03/2017').send_keys(:escape)
-    click_button(text: 'Create report')
-    expect(page).to have_content("Report for 'Workflow1' workflow from 01/03/2017 to 31/03/2017")
+    click_on(text: 'Create report')
+    expect(page).to have_content("Report for 'Workflow_first' workflow from 01/03/2017 to 31/03/2017")
     within('table#report') do
       expect(page).to have_xpath('.//tr', count: 3)
       expect(page).to have_text('Study Project Cost code name Assets count')

@@ -15,13 +15,13 @@ Lint/DuplicateMethods:
 # Offense count: 7
 Lint/MissingSuper:
   Exclude:
-    - 'app/presenters/asset/asset.rb'
-    - 'app/presenters/asset/index.rb'
-    - 'app/presenters/asset_type/asset_type.rb'
-    - 'app/presenters/batch/show.rb'
-    - 'app/presenters/report/new.rb'
-    - 'app/presenters/report/show.rb'
-    - 'app/presenters/workflow/show.rb'
+    - 'app/presenters/asset_presenter/asset.rb'
+    - 'app/presenters/asset_presenter/index.rb'
+    - 'app/presenters/asset_type_presenter/asset_type.rb'
+    - 'app/presenters/batch_presenter/show.rb'
+    - 'app/presenters/report_presenter/new.rb'
+    - 'app/presenters/report_presenter/show.rb'
+    - 'app/presenters/workflow_presenter/show.rb'
 
 # Offense count: 6
 Lint/UselessAssignment:
@@ -328,15 +328,15 @@ Style/CaseEquality:
 # SupportedStyles: nested, compact
 Style/ClassAndModuleChildren:
   Exclude:
-    - 'app/presenters/admin/index.rb'
-    - 'app/presenters/asset/asset.rb'
-    - 'app/presenters/asset/index.rb'
-    - 'app/presenters/asset_type/asset_type.rb'
-    - 'app/presenters/batch/new.rb'
-    - 'app/presenters/batch/show.rb'
-    - 'app/presenters/report/new.rb'
-    - 'app/presenters/report/show.rb'
-    - 'app/presenters/workflow/show.rb'
+    - 'app/presenters/admin_presenter/index.rb'
+    - 'app/presenters/asset_presenter/asset.rb'
+    - 'app/presenters/asset_presenter/index.rb'
+    - 'app/presenters/asset_type_presenter/asset_type.rb'
+    - 'app/presenters/batch_presenter/new.rb'
+    - 'app/presenters/batch_presenter/show.rb'
+    - 'app/presenters/report_presenter/new.rb'
+    - 'app/presenters/report_presenter/show.rb'
+    - 'app/presenters/workflow_presenter/show.rb'
 
 # Offense count: 69
 Style/Documentation:
@@ -359,15 +359,6 @@ Style/Documentation:
     - 'app/models/event.rb'
     - 'app/models/report.rb'
     - 'app/models/workflow.rb'
-    - 'app/presenters/asset/asset.rb'
-    - 'app/presenters/asset/index.rb'
-    - 'app/presenters/asset_type/asset_type.rb'
-    - 'app/presenters/batch/new.rb'
-    - 'app/presenters/batch/show.rb'
-    - 'app/presenters/presenter.rb'
-    - 'app/presenters/report/new.rb'
-    - 'app/presenters/report/show.rb'
-    - 'app/presenters/workflow/show.rb'
     - 'config/application.rb'
     - 'config/data/asset_types.rb'
     - 'config/data/pipeline_destinations.rb'
@@ -436,16 +427,7 @@ Style/FrozenStringLiteralComment:
     - 'app/models/report.rb'
     - 'app/models/state.rb'
     - 'app/models/workflow.rb'
-    - 'app/presenters/admin/index.rb'
-    - 'app/presenters/asset/asset.rb'
-    - 'app/presenters/asset/index.rb'
-    - 'app/presenters/asset_type/asset_type.rb'
-    - 'app/presenters/batch/new.rb'
-    - 'app/presenters/batch/show.rb'
-    - 'app/presenters/presenter.rb'
-    - 'app/presenters/report/new.rb'
-    - 'app/presenters/report/show.rb'
-    - 'app/presenters/workflow/show.rb'
+    - 'app/presenters/report_presenter/show.rb'
     - 'config.ru'
     - 'config/application.rb'
     - 'config/boot.rb'
@@ -611,3 +593,11 @@ Style/ZeroLengthPredicate:
   Exclude:
     - 'app/controllers/batches_controller.rb'
     - 'app/presenters/asset/index.rb'
+
+Rails/ThreeStateBooleanColumn:
+  Exclude:
+    - 'db/migrate/20190923133947_add_qc_flow_column_to_workflows.rb'
+
+Layout/LineLength:
+  Exclude:
+    - 'config/initializers/new_framework_defaults_7_0.rb'

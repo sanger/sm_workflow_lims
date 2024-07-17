@@ -2,18 +2,18 @@
 
 require 'rails_helper'
 
-describe 'create and edit batch', js: true do
+describe 'create and edit batch', :js do
   let!(:asset_type) { create(:asset_type, name: 'Sample', identifier_type: 'Name') }
-  let!(:workflow1) { create(:workflow, name: 'Workflow') }
-  let!(:workflow2) { create(:workflow, name: 'Reportable workflow', reportable: true) }
-  let!(:workflow3) { create(:qc_workflow, name: 'QC workflow') }
-  let!(:workflow4) { create(:workflow, name: 'Deactivated workflow', active: false) }
+  let!(:workflow_first) { create(:workflow, name: 'Workflow') }
+  let!(:workflow_second) { create(:workflow, name: 'Reportable workflow', reportable: true) }
+  let!(:workflow_third) { create(:qc_workflow, name: 'QC workflow') }
+  let!(:workflow_fourth) { create(:workflow, name: 'Deactivated workflow', active: false) }
   let!(:in_progress) { create(:state, name: 'in_progress') }
   let!(:volume_check) { create(:state, name: 'volume_check') }
 
   it 'can create and edit a batch' do
     visit '/'
-    click_link 'New Batch'
+    click_on 'New Batch'
     click_on 'Sample'
     within('div#sample-template') do
       fill_in 'identifier', with: 'sample1 sample2'
@@ -51,7 +51,7 @@ describe 'create and edit batch', js: true do
   it 'can create a batch with an Aker barcode' do
     create(:asset_type, name: 'Plate with Name', identifier_type: 'Name')
     visit '/'
-    click_link 'New Batch'
+    click_on 'New Batch'
     click_on 'Plate with Name'
     within('div#plate_with_name-template') do
       fill_in 'identifier', with: 'AKER-123'

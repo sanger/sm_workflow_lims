@@ -1,7 +1,10 @@
-require './app/presenters/presenter'
+# frozen_string_literal: true
 
-module Presenter::AssetTypePresenter
-  class AssetType < Presenter
+module AssetTypePresenter
+  # Presenter for showing an asset type
+  class AssetType
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :asset_type
 
     ALPHANUMERIC_REGEX = '^[\w-]+$'
@@ -44,7 +47,7 @@ module Presenter::AssetTypePresenter
        :created_at, :completed_at].compact
     end
 
-    def is_field_value_shared_inside_batch?(asset_field)
+    def field_value_shared_inside_batch?(asset_field)
       %i[batch_id workflow cost_code study project].include?(asset_field)
     end
   end

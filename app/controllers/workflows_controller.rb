@@ -1,10 +1,8 @@
-require './app/presenters/workflow/show'
-
 class WorkflowsController < ApplicationController
   include InitialState
 
   def show
-    @presenter = Presenter::WorkflowPresenter::Show.new(workflow)
+    @presenter = WorkflowPresenter::Show.new(workflow)
   end
 
   def create

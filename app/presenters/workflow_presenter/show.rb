@@ -1,7 +1,10 @@
-require './app/presenters/presenter'
+# frozen_string_literal: true
 
-module Presenter::WorkflowPresenter
-  class Show < Presenter
+module WorkflowPresenter
+  # Presenter for showing a workflow
+  class Show
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :workflow
 
     def initialize(workflow)

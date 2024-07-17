@@ -10,7 +10,7 @@
       <% if new_batch != previous_batch %>
 
         <td rowspan=<%= presenter.assets_from_batch(asset_type.name, new_batch).count %> class="batch-box" style="text-align: center;">
-          <% if !presenter.is_search? %>
+          <% if !presenter.search? %>
             <div class="checkbox">
               <input name="batch_id" type="checkbox" data-psg-select-batch="true" data-psg-batch-id="<%= asset.batch_id %>" />
             </div>
@@ -21,7 +21,7 @@
       <% end %>
     <% else %>
       <td class="common-attribute">
-        <% if ((asset_field == :identifier) && (!presenter.is_search?)) %>
+        <% if ((asset_field == :identifier) && (!presenter.search?)) %>
           <div class="checkbox">
             <input name="assets[<%= asset.id %>]" type="checkbox" data-psg-select-asset="true" data-psg-batch-id="<%= asset.batch_id %>" />
           </div>

@@ -4,7 +4,7 @@ class Comment < ApplicationRecord
   before_destroy :no_assets?
 
   def no_assets?
-    return if assets.empty? || assets.all? { |a| a.destroyed? }
+    return false if assets.empty? || assets.all? { |a| a.destroyed? }
 
     throw(:abort)
   end
