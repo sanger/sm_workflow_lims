@@ -1,8 +1,8 @@
-require './app/presenters/presenter'
-
-module Presenter::ReportPresenter
+module ReportPresenter
   # Presenter for showing a report
-  class Show < Presenter
+  class Show
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :report
 
     def initialize(report)

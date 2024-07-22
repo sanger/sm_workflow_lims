@@ -328,7 +328,7 @@ Style/CaseEquality:
 # SupportedStyles: nested, compact
 Style/ClassAndModuleChildren:
   Exclude:
-    - 'app/presenters/admin/index.rb'
+    - 'app/presenters/admin_presenter/index.rb'
     - 'app/presenters/asset_presenter/asset.rb'
     - 'app/presenters/asset_presenter/index.rb'
     - 'app/presenters/asset_type_presenter/asset_type.rb'
@@ -597,3 +597,7 @@ Style/ZeroLengthPredicate:
 Rails/ThreeStateBooleanColumn:
   Exclude:
     - 'db/migrate/20190923133947_add_qc_flow_column_to_workflows.rb'
+
+Layout/LineLength:
+  Exclude:
+    - 'config/initializers/new_framework_defaults_7_0.rb'

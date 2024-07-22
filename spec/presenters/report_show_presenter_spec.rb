@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require './app/presenters/report_presenter/show'
-require './spec/presenters/shared_presenter_behaviour'
 
-describe 'Presenter::ReportPresenter::Show' do
+describe 'ReportPresenter::Show' do
   let(:workflow) { build(:workflow, name: 'Workflow') }
   let!(:report) { Report.new(workflow:, start_date: '01/04/2017', end_date: '15/04/2017') }
   let(:asset_first) { create(:asset, workflow:, study: 'Study1', project: 'Project1') }
   let(:asset_second) do
     create(:asset, workflow:, study: 'Study1', project: 'Project2', cost_code: create(:cost_code, name: 'A1'))
   end
-  let(:presenter) { Presenter::ReportPresenter::Show.new(report) }
+  let(:presenter) { ReportPresenter::Show.new(report) }
 
   before do
     create(:state, name: 'completed')
