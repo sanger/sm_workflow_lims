@@ -1,8 +1,10 @@
-require './app/presenters/presenter'
-require './app/presenters/asset/asset'
+# frozen_string_literal: true
 
-module Presenter::BatchPresenter
-  class Show < Presenter
+module BatchPresenter
+  # Presenter for showing a batch
+  class Show
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :batch
 
     def initialize(batch)
@@ -17,7 +19,7 @@ module Presenter::BatchPresenter
 
     def each_asset
       batch.assets.each do |asset|
-        yield Presenter::AssetPresenter::Asset.new(asset)
+        yield AssetPresenter::Asset.new(asset)
       end
     end
 
@@ -38,11 +40,11 @@ module Presenter::BatchPresenter
     end
 
     def prohibited_workflow(reportable, qc_flow, cherrypick_flow)
-      if workflow.present?
-        (workflow.reportable != reportable) ||
-          (workflow.qc_flow != qc_flow) ||
-          (workflow.cherrypick_flow != cherrypick_flow)
-      end
+      return if workflow.blank?
+
+      (workflow.reportable != reportable) ||
+        (workflow.qc_flow != qc_flow) ||
+        (workflow.cherrypick_flow != cherrypick_flow)
     end
 
     def workflow_name
@@ -62,7 +64,7 @@ module Presenter::BatchPresenter
     end
 
     def comment
-      return first_asset.comment.comment if first_asset && first_asset.comment
+      return first_asset.comment.comment if first_asset&.comment
 
       ''
     end

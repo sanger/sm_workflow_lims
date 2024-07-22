@@ -1,5 +1,5 @@
 <div class="search-view">
-<% if (@presenter.is_search?) %>
+<% if (@presenter.search?) %>
 <% @presenter.search_parameters do |param| %>
   <div class="alert alert-info">Search results where <%= param %></div>
 <% end %>
@@ -35,8 +35,8 @@
     <h3><%= asset_type.name %> <span class="badge"><%= @presenter.num_assets(asset_type.name) %></span>
      </h3>
 
-    <% if @presenter.has_assets?(asset_type.name) %>
-       <% if (!@presenter.is_search?) %>
+    <% if @presenter.assets?(asset_type.name) %>
+       <% if (!@presenter.search?) %>
          <small><span><a class="selectable">Select all</a> | <a class="selectable">Unselect</a></small>
        <% end %>
 

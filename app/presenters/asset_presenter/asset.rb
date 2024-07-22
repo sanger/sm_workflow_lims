@@ -1,7 +1,10 @@
-require './app/presenters/presenter'
+# frozen_string_literal: true
 
-module Presenter::AssetPresenter
-  class Asset < Presenter
+module AssetPresenter
+  # Presenter for showing an asset
+  class Asset
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :asset
 
     def initialize(asset)
@@ -52,17 +55,19 @@ module Presenter::AssetPresenter
 
     def completed_status_label
       if completed_late?
-        return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} #{'day'.pluralize(overdue_by)}"
+        return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} " \
+               "#{'day'.pluralize(overdue_by)}"
       end
       if completed_early?
-        return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'day'.pluralize(overdue_by)}"
+        return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} " \
+               "#{'day'.pluralize(overdue_by)}"
       end
 
       'On time' if completed_on_time?
     end
 
     def completed_at_status
-      "#{asset.completed_at.strftime('%d/%m/%Y')} #{'(' + completed_status_label + ')' if completed_status_label}"
+      "#{asset.completed_at.strftime('%d/%m/%Y')} #{"(#{completed_status_label})" if completed_status_label}"
     end
 
     def completed_at
@@ -70,7 +75,7 @@ module Presenter::AssetPresenter
       return 'Due today' if due_today?
       return "Overdue (#{overdue_by} #{'day'.pluralize(overdue_by)})" if overdue?
 
-      'In progress' + in_progress_status
+      "In progress#{in_progress_status}"
     end
 
     def days_left
@@ -86,7 +91,7 @@ module Presenter::AssetPresenter
     def due_today?
       return false if asset.workflow.turn_around_days.nil?
 
-      (0..1).include?(time_from_due_date)
+      (0..1).cover?(time_from_due_date)
     end
 
     def time_from_due_date
@@ -118,7 +123,7 @@ module Presenter::AssetPresenter
     end
 
     def overdue?
-      asset.completed_at.nil? && overdue_by > 0
+      asset.completed_at.nil? && overdue_by.positive?
     end
 
     def completed?

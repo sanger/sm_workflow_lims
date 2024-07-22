@@ -1,7 +1,10 @@
-require './app/presenters/presenter'
+# frozen_string_literal: true
 
-module Presenter::ReportPresenter
-  class New < Presenter
+module ReportPresenter
+  # Presenter for creating a new report
+  class New
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :report
 
     def initialize(report = Report.new({}))

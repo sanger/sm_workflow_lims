@@ -1,8 +1,7 @@
 require 'rails_helper'
-require './app/presenters/asset/index'
 require './spec/presenters/shared_presenter_behaviour'
 
-describe 'Presenter::AssetPresenter::Index' do
+describe 'AssetPresenter::Index' do
   shared_context 'shared mocks' do
     let(:mock_type) do
       double('mock_type',
@@ -33,7 +32,7 @@ describe 'Presenter::AssetPresenter::Index' do
     end
     let(:assets) { [asset_first, asset_second] }
     let!(:state) { create(:state, name: 'in_progress') }
-    let(:presenter) { Presenter::AssetPresenter::Index.new(assets, search, state) }
+    let(:presenter) { AssetPresenter::Index.new(assets, search, state) }
   end
 
   shared_examples 'standard behaviour' do
@@ -45,7 +44,7 @@ describe 'Presenter::AssetPresenter::Index' do
     end
 
     it 'yields each asset of type x in turn for each_asset(x)' do
-      expect { |b| presenter.each_asset('Type', &b) }.to yield_with_args(Presenter::AssetPresenter::Asset)
+      expect { |b| presenter.each_asset('Type', &b) }.to yield_with_args(AssetPresenter::Asset)
       presenter.each_asset('Type') do |asset|
         expect(asset.identifier).to eq('asset_first')
       end
@@ -63,8 +62,8 @@ describe 'Presenter::AssetPresenter::Index' do
     # Eg. presenter.search_parameters {|sp| puts sp }
     # -> identifier matches 'my plate'
 
-    it 'returns true for is_search?' do
-      expect(presenter.is_search?).to be_truthy
+    it 'returns true for search?' do
+      expect(presenter.search?).to be_truthy
     end
   end
 
@@ -78,8 +77,8 @@ describe 'Presenter::AssetPresenter::Index' do
     end
     # Eg. presenter.search_parameters {|sp| puts "Never called" }
 
-    it 'returns false for is_search?' do
-      expect(presenter.is_search?).to be_falsey
+    it 'returns false for search?' do
+      expect(presenter.search?).to be_falsey
     end
   end
 

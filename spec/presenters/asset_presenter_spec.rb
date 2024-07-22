@@ -1,8 +1,7 @@
 require 'rails_helper'
-require './app/presenters/asset/asset'
 require 'timecop'
 
-describe 'Presenter::AssetPresenter::Asset' do
+describe 'AssetPresenter::Asset' do
   shared_examples 'shared behaviour' do
     let(:mock_type) do
       double('mock_type',
@@ -14,7 +13,7 @@ describe 'Presenter::AssetPresenter::Asset' do
     let(:date) { DateTime.parse('01-02-2012 13:15') }
     let(:comment) { double('comment', comment: 'A comment') }
 
-    let(:presenter) { Presenter::AssetPresenter::Asset.new(asset) }
+    let(:presenter) { AssetPresenter::Asset.new(asset) }
 
     it 'returns the identifier type for identifier_type' do
       expect(presenter.identifier_type).to eq('id')

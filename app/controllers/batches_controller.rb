@@ -1,15 +1,12 @@
-require './app/presenters/batch/new'
-require './app/presenters/batch/show'
-
 class BatchesController < ApplicationController
   before_action :batch, only: %i[show update remove]
 
   def show
-    @presenter = Presenter::BatchPresenter::Show.new(batch)
+    @presenter = BatchPresenter::Show.new(batch)
   end
 
   def new
-    @presenter = Presenter::BatchPresenter::New.new
+    @presenter = BatchPresenter::New.new
   end
 
   def create
@@ -26,7 +23,7 @@ class BatchesController < ApplicationController
     )
     if batch_creator.valid?
       batch = batch_creator.create!
-      @presenter = Presenter::BatchPresenter::Show.new(batch)
+      @presenter = BatchPresenter::Show.new(batch)
       flash[:notice] = I18n.t('batches.success.created')
       redirect_to("/batches/#{@presenter.id}")
     else
@@ -48,7 +45,7 @@ class BatchesController < ApplicationController
     )
     if batch_updater.valid?
       batch = batch_updater.update!
-      @presenter = Presenter::BatchPresenter::Show.new(batch)
+      @presenter = BatchPresenter::Show.new(batch)
       flash[:notice] = I18n.t('batches.success.updated')
       redirect_to("/batches/#{params[:id]}")
     else
