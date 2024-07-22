@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require './app/presenters/presenter'
-require './app/presenters/asset_presenter/asset'
-
-module Presenter::BatchPresenter
+module BatchPresenter
   # Presenter for showing a batch
-  class Show < Presenter
+  class Show
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :batch
 
     def initialize(batch)
@@ -20,7 +19,7 @@ module Presenter::BatchPresenter
 
     def each_asset
       batch.assets.each do |asset|
-        yield Presenter::AssetPresenter::Asset.new(asset)
+        yield AssetPresenter::Asset.new(asset)
       end
     end
 

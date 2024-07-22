@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require './app/presenters/presenter'
-
-module Presenter::AssetPresenter
+module AssetPresenter
   # Presenter for showing an asset
-  class Asset < Presenter
+  class Asset
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :asset
 
     def initialize(asset)
@@ -55,10 +55,12 @@ module Presenter::AssetPresenter
 
     def completed_status_label
       if completed_late?
-        return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} #{'day'.pluralize(overdue_by)}"
+        return "Late #{asset.time_without_completion - asset.workflow.turn_around_days} " \
+               "#{'day'.pluralize(overdue_by)}"
       end
       if completed_early?
-        return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} #{'day'.pluralize(overdue_by)}"
+        return "Early #{asset.workflow.turn_around_days - asset.time_without_completion} " \
+               "#{'day'.pluralize(overdue_by)}"
       end
 
       'On time' if completed_on_time?
