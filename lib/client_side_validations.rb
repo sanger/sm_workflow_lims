@@ -21,7 +21,8 @@ module ClientSideValidations
       end
 
       def validationErrorMsg(attr_name)
-        nil if @regexp[attr_name].nil?
+        return if @regexp[attr_name].nil?
+
         @regexp[attr_name][:error_msg]
       end
 
