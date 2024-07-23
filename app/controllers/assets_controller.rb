@@ -1,5 +1,3 @@
-require './app/presenters/asset_presenter/index'
-
 class AssetsController < ApplicationController
   def index
     if params[:state].nil? && params[:identifier].nil?
@@ -7,7 +5,7 @@ class AssetsController < ApplicationController
     else
       assets = Asset.in_state(state)
                     .with_identifier(params[:identifier])
-      @presenter = Presenter::AssetPresenter::Index.new(assets, search, state)
+      @presenter = AssetPresenter::Index.new(assets, search, state)
     end
   end
 

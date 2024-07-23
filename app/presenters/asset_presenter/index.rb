@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require './app/presenters/presenter'
-require './app/presenters/asset_presenter/asset'
-
-module Presenter::AssetPresenter
+module AssetPresenter
   # Presenter for showing a list of assets
-  class Index < Presenter
+  class Index
+    include SharedBehaviour
+    include DeploymentInfo
     attr_reader :search, :assets, :total
 
     def initialize(found_assets, search = nil, state = nil)
@@ -35,7 +34,7 @@ module Presenter::AssetPresenter
       return if assets[type].nil?
 
       assets[type].each do |asset|
-        yield Presenter::AssetPresenter::Asset.new(asset)
+        yield AssetPresenter::Asset.new(asset)
       end
     end
 
