@@ -333,7 +333,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 7.0.8)
   rspec-collection_matchers
-  rspec-rails (~> 3.5.0)
+  rspec-rails
   rubocop
   rubocop-performance
   rubocop-rails

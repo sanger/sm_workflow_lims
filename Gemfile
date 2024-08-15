@@ -63,7 +63,7 @@ group :test do
   gem 'factory_bot'
   gem 'launchy'
   gem 'rspec-collection_matchers'
-  gem 'rspec-rails', '~> 3.5.0'
+  gem 'rspec-rails'
   gem 'selenium-webdriver', require: false
   gem 'simplecov', require: false
   gem 'timecop'
