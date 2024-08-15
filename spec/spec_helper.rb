@@ -25,23 +25,17 @@ require 'capybara/rails'
 require 'selenium/webdriver'
 
 Capybara.register_driver :chrome do |app|
-  client = Selenium::WebDriver::Remote::Http::Default.new
-  client.read_timeout = 120
-
-  Capybara::Selenium::Driver.new(app, { browser: :chrome, http_client: client })
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
 Capybara.register_driver :headless_chrome do |app|
-  client = Selenium::WebDriver::Remote::Http::Default.new
-  client.timeout = 120 # instead of the default 60
   options = Selenium::WebDriver::Chrome::Options.new
-  options.headless!
 
-  Capybara::Selenium::Driver.new(app, {
-                                   browser: :chrome,
-                                   http_client: client,
-                                   options:
-                                 })
+  options.add_argument('--headless')
+  options.add_argument('--disable_gpu')
+  # options.add_argument('--disable-popup-blocking')
+  options.add_argument('--window-size=1600,3200')
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
 end
 
 Capybara.javascript_driver = :headless_chrome
