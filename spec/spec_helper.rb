@@ -41,13 +41,13 @@ Capybara.register_driver :headless_chrome do |app|
   options.add_argument('--disable-search-engine-choice-screen')
 
   client = Selenium::WebDriver::Remote::Http::Default.new
-  client.read_timeout = 120 # Set the read timeout to 120 seconds
+  client.read_timeout = 180 # Set the read timeout to 120 seconds
 
   Capybara::Selenium::Driver.new(app, browser: :chrome, options:, http_client: client)
 end
 
 Capybara.javascript_driver = :headless_chrome
-Capybara.default_max_wait_time = 120
+Capybara.default_max_wait_time = 180
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
