@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-xdescribe 'create complete and report assets within standard flow', :js do
+describe 'create complete and report assets within standard flow', :js do
   let!(:asset_type) { create(:asset_type, name: 'Tube', identifier_type: 'ID') }
   let!(:workflow_first) { create(:workflow, name: 'Workflow') }
   let!(:workflow_second) { create(:workflow, name: 'Reportable workflow', reportable: true) }
