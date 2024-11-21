@@ -25,28 +25,20 @@ require 'capybara/rails'
 require 'selenium/webdriver'
 
 Capybara.register_driver :chrome do |app|
-  client = Selenium::WebDriver::Remote::Http::Default.new
-  client.read_timeout = 120 # Set the read timeout to 120 seconds
-
-  Capybara::Selenium::Driver.new(app, browser: :chrome, http_client: client)
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
 Capybara.register_driver :headless_chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new
-
-  options.add_argument('--headless')
+  options.add_argument('--headless=old')
   options.add_argument('--disable_gpu')
-  # options.add_argument('--disable-popup-blocking')
   options.add_argument('--window-size=1600,3200')
-
-  client = Selenium::WebDriver::Remote::Http::Default.new
-  client.read_timeout = 120 # Set the read timeout to 120 seconds
-
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options:, http_client: client)
+  options.add_argument('--disable-search-engine-choice-screen')
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
 end
 
 Capybara.javascript_driver = :headless_chrome
-Capybara.default_max_wait_time = 5
+Capybara.default_max_wait_time = 120
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
