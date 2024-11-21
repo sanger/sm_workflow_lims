@@ -34,10 +34,11 @@ end
 Capybara.register_driver :headless_chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new
 
-  options.add_argument('--headless')
+  options.add_argument('--headless=old')
   options.add_argument('--disable_gpu')
   # options.add_argument('--disable-popup-blocking')
   options.add_argument('--window-size=1600,3200')
+  options.add_argument('--disable-search-engine-choice-screen')
 
   client = Selenium::WebDriver::Remote::Http::Default.new
   client.read_timeout = 120 # Set the read timeout to 120 seconds
