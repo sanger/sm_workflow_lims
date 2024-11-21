@@ -51,11 +51,7 @@ class Report
   private
 
   def create_rows
-    [].tap do |rows|
-      assets_data.each do |data|
-        rows << Row.new(data)
-      end
-    end
+    assets_data.map { |data| Row.new(data) }
   end
 
   def assets_data
