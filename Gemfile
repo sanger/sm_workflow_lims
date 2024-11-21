@@ -58,12 +58,13 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-selenium'
   gem 'database_cleaner'
   gem 'factory_bot'
   gem 'launchy'
   gem 'rspec-collection_matchers'
   gem 'rspec-rails'
-  gem 'selenium-webdriver', require: false
+  gem 'selenium-webdriver', '~> 4.1', require: false
   gem 'simplecov', require: false
   gem 'timecop'
 end

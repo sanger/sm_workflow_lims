@@ -86,6 +86,9 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    capybara-selenium (0.0.6)
+      capybara
+      selenium-webdriver
     childprocess (5.0.0)
     coderay (1.1.3)
     concurrent-ruby (1.3.3)
@@ -310,6 +313,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass (= 3.4.1)
   capybara
+  capybara-selenium
   database_cleaner
   exception_notification
   factory_bot
@@ -332,7 +336,7 @@ DEPENDENCIES
   rubocop-rspec
   sass-rails (~> 6.0)
   sdoc (~> 2.4.0)
-  selenium-webdriver
+  selenium-webdriver (~> 4.1)
   simplecov
   spring
   timecop
