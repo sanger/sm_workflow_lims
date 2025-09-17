@@ -208,7 +208,7 @@ GEM
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
-    rexml (3.3.9)
+    rexml (3.4.4)
     rspec-collection_matchers (1.2.1)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.13.2)
