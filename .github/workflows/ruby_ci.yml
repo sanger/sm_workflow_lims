@@ -34,12 +34,15 @@ jobs:
             # example if you need more control over bundler.
       - name: Setup database
         run: bundle exec rake db:setup
-      - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v8.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID || '5e399530a457db7a41cd5785ce0536b79e9022b3c2d4382f101310b3b166eb38' }}
+      - name: Run rspec
+        run: bundle exec rspec
+      - name: Upload coverage reports to Codecov
+        uses: sanger/.github/.github/actions/tests/codecov@master
         with:
-          coverageCommand: bundle exec rspec
+          name: ${{ github.run_id }}_${{ github.job }}_${{ github.event_name }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: ruby,${{ github.event_name }}
+          disable-search: true
 
   lint:
     runs-on: ubuntu-latest
