@@ -31,9 +31,6 @@ jobs:
       - name: Setup Ruby
         uses: sanger/.github/.github/actions/setup/ruby@master
 
-      - name: Setup Node
-        uses: sanger/.github/.github/actions/setup/node@master
-
       - name: Setup stable Chrome
         uses: sanger/.github/.github/actions/tests/setup-chrome@master
         with:
