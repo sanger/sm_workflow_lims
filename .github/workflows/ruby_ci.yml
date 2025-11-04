@@ -25,17 +25,28 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Checkout Repository
+        uses: sanger/.github/.github/actions/setup/checkout@master
+
+      - name: Setup Ruby
+        uses: sanger/.github/.github/actions/setup/ruby@master
+
+      - name: Setup Node
+        uses: sanger/.github/.github/actions/setup/node@master
+
+      - name: Setup stable Chrome
+        uses: sanger/.github/.github/actions/tests/setup-chrome@master
         with:
-          bundler-cache:
-            true # Runs bundle install and caches gems. See the ruby_test.yml
-            # example if you need more control over bundler.
-      - name: Setup database
-        run: bundle exec rake db:setup
+          chrome-version: 128
+          install-chromedriver: true
+          install-dependencies: true
+
+      - name: Additional setup
+        run: bin/setup
+
       - name: Run rspec
         run: bundle exec rspec
+
       - name: Upload coverage reports to Codecov
         uses: sanger/.github/.github/actions/tests/codecov@master
         with:
