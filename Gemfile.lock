@@ -343,7 +343,7 @@ DEPENDENCIES
   rubocop-rspec
   sass-rails (~> 6.0)
   sdoc (~> 2.4.0)
-  selenium-webdriver (~> 4.1)
+  selenium-webdriver
   simplecov
   simplecov-lcov
   spring
