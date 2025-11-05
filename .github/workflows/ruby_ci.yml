@@ -49,7 +49,7 @@ jobs:
         with:
           name: ${{ github.run_id }}_${{ github.job }}_${{ github.event_name }}
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: ruby,${{ github.event_name }}
+          flags: ${{ github.event_name }}
           disable-search: true
           files: ${{ github.workspace }}/lcov.info
 
