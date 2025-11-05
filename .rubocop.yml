@@ -9,7 +9,7 @@
 #
 # See https://docs.rubocop.org/rubocop/configuration
 inherit_from: .rubocop_todo.yml
-require:
+plugins:
  - rubocop-performance
  - rubocop-rails
  - rubocop-rspec
