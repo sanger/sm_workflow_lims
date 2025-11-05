@@ -26,6 +26,8 @@ Layout/EmptyLinesAfterModuleInclusion:
 # URISchemes: http, https
 Layout/LineLength:
   Max: 190
+  Exclude:
+    - 'config/initializers/new_framework_defaults_7_0.rb'
 
 # Offense count: 4
 Lint/DuplicateMethods:
@@ -327,10 +329,3 @@ Style/SymbolProc:
 Style/ZeroLengthPredicate:
   Exclude:
     - 'app/controllers/batches_controller.rb'
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowHeredoc, AllowURI, AllowQualifiedName, URISchemes, IgnoreCopDirectives, AllowedPatterns, SplitStrings.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 190
