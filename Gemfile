@@ -64,7 +64,8 @@ group :test do
   gem 'launchy'
   gem 'rspec-collection_matchers'
   gem 'rspec-rails'
-  gem 'selenium-webdriver', '~> 4.1', require: false
+  gem 'selenium-webdriver'
   gem 'simplecov', require: false
+  gem 'simplecov-lcov', require: false
   gem 'timecop'
 end
