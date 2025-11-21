@@ -13,7 +13,7 @@ module ClientSideValidations
         {
           'data-psg-regexp': @regexp[attr_name][:with].source.to_s,
           'data-psg-input-optional': (@regexp[attr_name][:allow_blank] == true).to_s,
-          'data-psg-validation-error-msg': (@regexp[attr_name][:error_msg]).to_s
+          'data-psg-validation-error-msg': @regexp[attr_name][:error_msg].to_s
         }.tap do |obj|
           # For the moment, it's just for data-psg-validation-error-msg
           obj.delete_if { |_k, v| v.empty? }
