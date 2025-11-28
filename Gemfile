@@ -11,6 +11,8 @@ gem 'net-imap', require: false
 gem 'net-pop', require: false
 gem 'net-smtp'
 
+gem 'csv'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
