@@ -4,6 +4,6 @@ describe 'BatchPresenter::New' do
   let(:presenter) { BatchPresenter::New.new }
 
   context 'always' do
-    include_examples('shared presenter behaviour')
+    it_behaves_like('shared presenter behaviour')
   end
 end

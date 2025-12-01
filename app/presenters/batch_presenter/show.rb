@@ -5,6 +5,7 @@ module BatchPresenter
   class Show
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :batch
 
     def initialize(batch)

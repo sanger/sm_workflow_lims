@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.8'
+gem 'rails', '~> 7.2.2'
 # Use mysql2 as the database for Active Record
 gem 'mysql2'
 # Use SCSS for stylesheets
@@ -10,6 +10,8 @@ gem 'sass-rails', '~> 6.0'
 gem 'net-imap', require: false
 gem 'net-pop', require: false
 gem 'net-smtp'
+
+gem 'csv'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
