@@ -5,6 +5,7 @@ module BatchPresenter
   class New
     include SharedBehaviour
     include DeploymentInfo
+
     def each_asset; end
 
     def study

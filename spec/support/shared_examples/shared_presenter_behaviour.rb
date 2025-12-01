@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples 'shared presenter behaviour' do
   let!(:asset_type_first) do
     create(:asset_type,
@@ -18,7 +20,7 @@ shared_examples 'shared presenter behaviour' do
            reportable: true,
            turn_around_days: 1)
   end
-  let!(:workflow_2) { create(:workflow, name: 'wf2', active: false) }
+  let!(:workflow2) { create(:workflow, name: 'wf2', active: false) }
 
   it 'yields each asset_type and its identifier in turn for each_asset_type' do
     yielded = []

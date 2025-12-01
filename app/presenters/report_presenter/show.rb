@@ -3,6 +3,7 @@ module ReportPresenter
   class Show
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :report
 
     def initialize(report)

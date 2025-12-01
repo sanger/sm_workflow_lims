@@ -5,6 +5,7 @@ module AssetTypePresenter
   class AssetType
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :asset_type
 
     ALPHANUMERIC_REGEX = '^[\w-]+$'
