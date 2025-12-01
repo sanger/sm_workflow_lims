@@ -5,6 +5,7 @@ module ReportPresenter
   class New
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :report
 
     def initialize(report = Report.new({}))
