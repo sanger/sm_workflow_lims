@@ -72,7 +72,7 @@ Naming/MethodName:
 # ForbiddenPrefixes: is_, has_, have_
 # AllowedMethods: is_a?
 # MethodDefinitionMacros: define_method, define_singleton_method
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Exclude:
     - "app/presenters/asset/index.rb"
     - "app/presenters/asset_type/asset_type.rb"
@@ -83,7 +83,7 @@ Naming/PredicateName:
 # AllowedIdentifiers: capture3, iso8601, rfc1123_date, rfc822, rfc2822, rfc3339
 Naming/VariableNumber:
   Exclude:
-    - "spec/presenters/shared_presenter_behaviour.rb"
+    - "spec/support/shared_examples/shared_presenter_behaviour.rb"
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -192,7 +192,7 @@ RSpec/LetSetup:
     - "spec/models/asset_spec.rb"
     - "spec/models/report_spec.rb"
     - "spec/presenters/report_show_presenter_spec.rb"
-    - "spec/presenters/shared_presenter_behaviour.rb"
+    - "spec/support/shared_examples/shared_presenter_behaviour.rb"
 
 # Offense count: 2
 # Configuration parameters: .
@@ -513,7 +513,7 @@ Style/FrozenStringLiteralComment:
     - "spec/presenters/batch_show_presenter_spec.rb"
     - "spec/presenters/report_new_presenter_spec.rb"
     - "spec/presenters/report_show_presenter_spec.rb"
-    - "spec/presenters/shared_presenter_behaviour.rb"
+    - "spec/support/shared_examples/shared_presenter_behaviour.rb"
     - "spec/rails_helper.rb"
     - "spec/spec_helper.rb"
 
@@ -603,3 +603,14 @@ Rails/ThreeStateBooleanColumn:
 Layout/LineLength:
   Exclude:
     - "config/initializers/new_framework_defaults_7_0.rb"
+
+Naming/PredicateMethod:
+  Exclude:
+    - "app/controllers/assets_controller.rb"
+    - "app/models/asset.rb"
+    - "app/presenters/asset_type_presenter/asset_type.rb"
+    - "config/initializers/01_proc.rb"
+
+RSpec/IncludeExamples:
+  Exclude:
+    - "spec/presenters/asset_presenter_spec.rb"

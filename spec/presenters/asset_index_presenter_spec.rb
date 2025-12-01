@@ -1,5 +1,4 @@
 require 'rails_helper'
-require './spec/presenters/shared_presenter_behaviour'
 
 describe 'AssetPresenter::Index' do
   shared_context 'shared mocks' do
@@ -36,8 +35,8 @@ describe 'AssetPresenter::Index' do
   end
 
   shared_examples 'standard behaviour' do
-    include_examples('shared presenter behaviour')
-    include_examples('shared mocks')
+    it_behaves_like('shared presenter behaviour')
+    include_context('shared mocks')
 
     it 'returns a count of assets for total' do
       expect(presenter.total).to eq(2)
@@ -54,7 +53,7 @@ describe 'AssetPresenter::Index' do
   context 'when returning search results' do
     let(:search) { "identifier matches 'Type'" }
 
-    include_examples 'standard behaviour'
+    include_context 'standard behaviour'
 
     it 'yields the search parameters on search_parameters' do
       expect { |b| presenter.search_parameters(&b) }.to yield_with_args(search)
@@ -70,7 +69,7 @@ describe 'AssetPresenter::Index' do
   context 'when returning a complete index' do
     let(:search) { nil }
 
-    include_examples 'standard behaviour'
+    include_context 'standard behaviour'
 
     it 'does not yield on search_parameters' do
       expect { |b| presenter.search_parameters(&b) }.to yield_successive_args
@@ -85,7 +84,7 @@ describe 'AssetPresenter::Index' do
   context 'when state is' do
     let(:search) { nil }
 
-    include_examples 'shared mocks'
+    include_context 'shared mocks'
 
     context 'all' do
       let(:state) { nil }
