@@ -5,6 +5,7 @@ module WorkflowPresenter
   class Show
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :workflow
 
     def initialize(workflow)

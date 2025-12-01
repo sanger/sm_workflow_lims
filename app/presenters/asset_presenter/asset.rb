@@ -5,6 +5,7 @@ module AssetPresenter
   class Asset
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :asset
 
     def initialize(asset)

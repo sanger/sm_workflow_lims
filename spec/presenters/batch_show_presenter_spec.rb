@@ -24,7 +24,7 @@ describe 'BatchPresenter::Show' do
     let(:mock_workflow) { double('mock_wf', name: 'Work', has_comment: true) }
     let(:mock_type) { double('mock_type', name: 'Type', identifier_type: 'id', variable_samples: true) }
 
-    include_examples('shared presenter behaviour')
+    it_behaves_like('shared presenter behaviour')
 
     it 'yields each asset in the batch in turn for each_asset' do
       expect(AssetPresenter::Asset).to receive(:new).with(asset_first).and_call_original
