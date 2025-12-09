@@ -16,7 +16,7 @@ describe 'ReportPresenter::Show' do
   end
 
   context 'when always' do
-    include_examples('shared presenter behaviour')
+    it_behaves_like('shared presenter behaviour')
   end
 
   it 'generates correct html for report' do
