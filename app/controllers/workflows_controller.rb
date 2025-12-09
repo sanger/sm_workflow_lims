@@ -43,7 +43,9 @@ class WorkflowsController < ApplicationController
   end
 
   def workflow
-    @workflow ||= Workflow.find_by(id: params[:id])
+    return @workflow if defined?(@workflow)
+
+    @workflow = Workflow.find_by(id: params[:id])
   end
 
   def turn_around_days
