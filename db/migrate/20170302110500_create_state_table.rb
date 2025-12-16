@@ -1,4 +1,4 @@
-class CreateStateTable < ActiveRecord::Migration
+class CreateStateTable < ActiveRecord::Migration[4.2]
   def change
     create_table(:states) do |t|
       # id

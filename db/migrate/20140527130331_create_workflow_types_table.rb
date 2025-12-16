@@ -1,4 +1,4 @@
-class CreateWorkflowTypesTable < ActiveRecord::Migration
+class CreateWorkflowTypesTable < ActiveRecord::Migration[4.2]
   def change
     create_table(:workflows) do |t|
       # id
