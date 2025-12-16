@@ -1,4 +1,4 @@
-class AddCostCode < ActiveRecord::Migration
+class AddCostCode < ActiveRecord::Migration[4.2]
   def up
     ActiveRecord::Base.transaction do
       create_table(:cost_codes) do |t|

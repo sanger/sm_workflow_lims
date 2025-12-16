@@ -1,4 +1,4 @@
-class CreateAssetTypeTable < ActiveRecord::Migration
+class CreateAssetTypeTable < ActiveRecord::Migration[4.2]
   def change
     create_table(:asset_types) do |t|
       # id
