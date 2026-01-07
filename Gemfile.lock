@@ -331,6 +331,8 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     stringio (3.1.9)
+    syslog (0.3.0)
+      logger
     syslog-logger (1.6.8)
     thor (1.4.0)
     tilt (2.0.11)
@@ -396,6 +398,7 @@ DEPENDENCIES
   simplecov
   simplecov-lcov
   spring
+  syslog
   syslog-logger
   timecop
   turbolinks
