@@ -11,6 +11,9 @@ gem 'net-imap', require: false
 gem 'net-pop', require: false
 gem 'net-smtp'
 
+gem 'syslog'
+gem 'syslog-logger'
+
 gem 'csv'
 
 # Use jquery as the JavaScript library
