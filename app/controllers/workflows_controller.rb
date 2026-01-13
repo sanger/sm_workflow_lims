@@ -12,7 +12,7 @@ class WorkflowsController < ApplicationController
       redirect_to('/admin')
     else
       flash[:error] = @workflow.errors.full_messages.join('; ')
-      redirect_back(fallback_location: root_path)
+      redirect_back_or_to(root_path)
     end
   end
 
@@ -23,7 +23,7 @@ class WorkflowsController < ApplicationController
       redirect_to('/admin')
     else
       flash[:error] = workflow.errors.full_messages.join('; ')
-      redirect_back(fallback_location: root_path)
+      redirect_back_or_to(root_path)
     end
   end
 
@@ -43,11 +43,13 @@ class WorkflowsController < ApplicationController
   end
 
   def workflow
-    @workflow ||= Workflow.find_by(id: params[:id])
+    return @workflow if defined?(@workflow)
+
+    @workflow = Workflow.find_by(id: params[:id])
   end
 
   def turn_around_days
-    params[:turnAroundDays].to_i if params[:turnAroundDays].present?
+    params[:turnAroundDays].presence&.to_i
   end
 
   def initial_state_name

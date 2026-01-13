@@ -22,18 +22,16 @@ module SmWorkflowLims
 
     config.load_defaults 7.0
 
-    config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
+    config.mailer = YAML.load_file(Rails.root.join('config/mailer.yml').to_s)[Rails.env]
     config.autoload_paths += %W[#{config.root}/lib/utils]
     config.disable_animations = false
 
-    config.autoload_paths += %W[#{Rails.root}/app/presenters]
-    config.eager_load_paths += %W[#{Rails.root}/app/presenters]
+    config.autoload_paths += %W[#{Rails.root.join('app/presenters')}]
+    config.eager_load_paths += %W[#{Rails.root.join('app/presenters')}]
 
     # Enabling the behaviour where 'belongs_to' associations are required by default.
     # (https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#active-record-belongs-to-required-by-default-option)
     config.active_record.belongs_to_required_by_default = true
-
-    config.active_record.legacy_connection_handling = false
 
     config.action_controller.default_protect_from_forgery = false
   end

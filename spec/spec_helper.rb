@@ -26,20 +26,24 @@ require 'selenium/webdriver'
 
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
+  options.add_argument('--disable_gpu')
+  options.add_argument('--window-size=1600,3200')
+  options.add_argument('--disable-search-engine-choice-screen')
 end
 
 Capybara.register_driver :headless_chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new
-
   options.add_argument('--headless')
   options.add_argument('--disable_gpu')
-  # options.add_argument('--disable-popup-blocking')
   options.add_argument('--window-size=1600,3200')
+  options.add_argument('--disable-search-engine-choice-screen')
+  options.add_argument('--no-sandbox')
+  options.add_preference('profile.password_manager_leak_detection', false)
   Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
 end
 
 Capybara.javascript_driver = :headless_chrome
-Capybara.default_max_wait_time = 5
+Capybara.default_max_wait_time = 120
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

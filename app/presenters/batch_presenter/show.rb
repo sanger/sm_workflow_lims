@@ -5,6 +5,7 @@ module BatchPresenter
   class Show
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :batch
 
     def initialize(batch)
@@ -36,7 +37,7 @@ module BatchPresenter
     end
 
     def workflow
-      @workflow ||= (first_asset.workflow if first_asset.present?) || ''
+      @workflow ||= first_asset.presence&.workflow || ''
     end
 
     def prohibited_workflow(reportable, qc_flow, cherrypick_flow)
@@ -48,7 +49,7 @@ module BatchPresenter
     end
 
     def workflow_name
-      workflow.name if workflow.present?
+      workflow.presence&.name
     end
 
     def pipeline_destination

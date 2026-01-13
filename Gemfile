@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.8'
+gem 'rails', '~> 7.2.2'
 # Use mysql2 as the database for Active Record
 gem 'mysql2'
 # Use SCSS for stylesheets
@@ -10,6 +10,11 @@ gem 'sass-rails', '~> 6.0'
 gem 'net-imap', require: false
 gem 'net-pop', require: false
 gem 'net-smtp'
+
+gem 'syslog'
+gem 'syslog-logger'
+
+gem 'csv'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -45,7 +50,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 4.0.4'
+  gem 'web-console', '~> 4.2.1'
   # displays speed badge for every html page
   gem 'rack-mini-profiler'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
@@ -63,8 +68,9 @@ group :test do
   gem 'factory_bot'
   gem 'launchy'
   gem 'rspec-collection_matchers'
-  gem 'rspec-rails', '~> 3.5.0'
-  gem 'selenium-webdriver', require: false
+  gem 'rspec-rails'
+  gem 'selenium-webdriver'
   gem 'simplecov', require: false
+  gem 'simplecov-lcov', require: false
   gem 'timecop'
 end

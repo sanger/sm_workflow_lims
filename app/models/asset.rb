@@ -16,6 +16,7 @@ class Asset < ApplicationRecord
   after_destroy :remove_comment, if: :comment
 
   include ClientSideValidations
+
   validate_with_regexp :study, with: /^\w+$/
   validates :identifier, presence: true
 

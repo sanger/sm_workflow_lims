@@ -5,6 +5,7 @@ module AssetPresenter
   class Index
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :search, :assets, :total
 
     def initialize(found_assets, search = nil, state = nil)

@@ -5,6 +5,7 @@ module ReportPresenter
   class New
     include SharedBehaviour
     include DeploymentInfo
+
     attr_reader :report
 
     def initialize(report = Report.new({}))
@@ -24,15 +25,15 @@ module ReportPresenter
     end
 
     def workflow
-      report.workflow.name if report.workflow.present?
+      report.workflow.presence&.name
     end
 
     def start_date
-      report.start_date.strftime(report.date_format) if report.start_date.present?
+      report.start_date.presence&.strftime(report.date_format)
     end
 
     def end_date
-      report.end_date.strftime(report.date_format) if report.end_date.present?
+      report.end_date.presence&.strftime(report.date_format)
     end
   end
 end
