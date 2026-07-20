@@ -5,7 +5,8 @@ module StateMachine
     delegate :in_progress?, :cherrypick?, :volume_check?, :quant?, :report_required?, :reported?, to: :current_state
   end
 
-  StateMachineError = Class.new(StandardError)
+  class StateMachineError < StandardError
+  end
 
   VALID_ACTIONS = %w[cherrypicking check_volume complete report]
 

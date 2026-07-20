@@ -43,7 +43,7 @@ describe 'can create workflow', :js do
     create(:workflow, name: 'Workflow2')
     visit '/'
     click_on 'Admin'
-    first(:link, 'Edit').click
+    find('tr', text: 'Workflow1').find('a', text: 'Edit').click
     fill_in 'Name', with: 'Workflow2'
     click_on 'Update Workflow'
     expect(page).to have_content('Name has already been taken')
