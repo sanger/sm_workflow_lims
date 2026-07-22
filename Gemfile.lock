@@ -117,7 +117,7 @@ GEM
     diff-lcs (1.5.1)
     docile (1.4.0)
     drb (2.2.3)
-    erb (6.0.0)
+    erb (6.0.4)
     erubi (1.13.1)
     exception_notification (4.5.0)
       actionmailer (>= 5.2, < 8)
