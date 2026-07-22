@@ -34,7 +34,7 @@ describe 'create and edit batch', :js do
     expect(options[3].text).to include 'QC workflow'
     expect(options[3].disabled?).to be true
 
-    fill_in 'Study', with: 'STDY2'
+    fill_in 'Study', with: 'STDY2', fill_options: { clear: :backspace }
     click_on 'Save'
     expect(page).to have_content 'The batch was updated.'
     Batch.last.assets.each do |asset|
