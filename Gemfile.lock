@@ -167,7 +167,8 @@ GEM
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
-    mysql2 (0.5.6)
+    mysql2 (0.5.7)
+      bigdecimal
     net-imap (0.6.4.1)
       date
       net-protocol
@@ -202,7 +203,7 @@ GEM
     rack (3.2.6)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
-    rack-session (2.1.1)
+    rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
     rack-test (2.2.0)
