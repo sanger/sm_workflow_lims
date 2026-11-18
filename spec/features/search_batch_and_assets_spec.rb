@@ -15,21 +15,21 @@ describe 'search assets and batches', :js do
     click_on 'search'
 
     expect(page).to have_content "Search results where batch id or asset identifier matches '#{search_string}'"
-    expect(page).to have_css('tbody>tr', count: batch_first.assets.count + 1)
+    expect(page).to have_css('.search-view table.filter-table tbody > tr', count: batch_first.assets.count + 1)
     fill_in 'Search', with: 'Empty'
     click_on 'search'
 
     expect(page).to have_content "Search results where batch id or asset identifier matches 'Empty'"
-    expect(page).to have_no_css('tbody>tr')
+    expect(page).to have_no_css('.search-view table.filter-table tbody > tr')
     fill_in 'Search', with: 'Identifier'
     click_on 'search'
 
     expect(page).to have_content "Search results where batch id or asset identifier matches 'Identifier'"
-    expect(page).to have_css('tbody>tr', count: 1)
+    expect(page).to have_css('.search-view table.filter-table tbody > tr', count: 1)
     fill_in 'Search', with: batch_second.id
     click_on 'search'
 
     expect(page).to have_content "Search results where batch id or asset identifier matches '#{batch_second.id}'"
-    expect(page).to have_css('tbody>tr', count: batch_second.assets.count)
+    expect(page).to have_css('.search-view table.filter-table tbody > tr', count: batch_second.assets.count)
   end
 end
